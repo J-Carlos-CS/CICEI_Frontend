@@ -1,0 +1,8 @@
+.ant-card{
+    border-radius: 15px;
+    border: 1px solid gray;
+}
+
+.ant-card-actions {
+    border-radius: 15px;
+}

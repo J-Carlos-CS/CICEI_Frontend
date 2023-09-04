@@ -1,0 +1,30 @@
+.ImageBackgroundCard{
+    background-color: white;
+    border: solid 1px #000000;
+    max-width: inherit;
+    max-height: 60vh;
+    position: relative;
+    border-radius: 1%;
+
+}
+
+.ImagePerfilCoordinator{
+    border-radius: 100%;
+    width: 10px;
+    border: solid 3px black;
+    max-width: 15vw;
+    max-height: 30vh;
+    z-index:2 ;
+    position: absolute;
+    margin-top: -10%;
+    margin-left: 1%;
+}
+
+.titleCard{
+    font-size: large;
+    font-weight: bold;
+    font-size: 10%;
+    padding: 5%;
+    text-align: center;
+    z-index: 1;
+}
