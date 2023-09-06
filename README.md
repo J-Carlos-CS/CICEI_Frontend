@@ -1,4 +1,4 @@
-<h1 align="center">Aplicación Frontend del SNGPI</h1>
+<h1 align="center">Aplicación Frontend del Laboratorio CICEI</h1>
 
 ## Descripción
 
