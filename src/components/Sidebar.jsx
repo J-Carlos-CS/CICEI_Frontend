@@ -2,7 +2,6 @@ import React from 'react'
 import {
     Box,
     Divider,
-    Drawer,
     IconButton,
     List,
     Listltem,
@@ -12,13 +11,16 @@ import {
     Typography ,
     useTheme,
     ListItem,
-    ListItemIcon
+    ListItemIcon,
+    Button
 } from "@mui/material";
+import Drawer from '@mui/material/Drawer';
 import{
-    Settings0utlined,
+    SettingsOutlined,
     ChevronLeft,
     ChevronRightOutlined,
-    Home0utlined ,
+    KitchenOutlined,
+  
     ShoppingCart0ultined,
     Groups20utlined,
     ReceiptLong0utlined ,
@@ -35,16 +37,19 @@ import{
     CancelOutlinedIcon,
     WaterDropOutlined,
     ScienceOutlined,
-
+    LibraryBooksOutlined,
     BiotechOutlined,
     HomeOutlined,
-    CancelOutlined
+    CancelOutlined,
+    SetMealOutlined,
+    FeedOutlined,
+    ArrowDropDownOutlined
 } from "@mui/icons-material"
 
 import { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import FlexBetween from './FlexBetween';
-import profileImage from "assets/ImagePerfil.jpg"
+import FlexBetween from './FlexBetween.jsx';
+import ImagePerfil from "assets/ImagePerfil.jpg"
 
 const navItems=[
     {
@@ -58,22 +63,42 @@ const navItems=[
 
     },
     {
-        text: "Reactivos/CF",
+        text: "Reactivos",
         icon: < WaterDropOutlined />
 
     },{
-        text: "Equipos/Prod",
-        icon: <BiotechOutlined/>
+        text: "Equipos",
+        icon: <KitchenOutlined/>
 
     },
     {
-        text: "Materiales/Custom",
+        text: "Materiales",
         icon: <ScienceOutlined/>
 
     },
     {
-        text: "Manuales",
+        text: "Categorias",
         icon: <AutoStoriesOutlined />
+
+    },
+    
+    {
+        text: "",
+        icon: null
+
+    },
+    {
+      text: "Proyectos",
+      icon: <LibraryBooksOutlined />
+  },
+    {
+        text: "Guias",
+        icon: <FeedOutlined/>
+
+    },
+    {
+        text: "Ambientes",
+        icon: <BiotechOutlined/>
 
     },
     {
@@ -96,6 +121,7 @@ const navItems=[
         icon: <CancelOutlined   />
 
     },
+    
 
 
 
@@ -141,7 +167,7 @@ const Sidebar = ({
                 <FlexBetween color={theme.palette.secondary.main}>
                   <Box display="flex" alignItems="center" gap="0.5rem">
                     <Typography variant="h4" fontWeight="bold">
-                      ECOMVISION
+                      CICEI-LAB
                     </Typography>
                   </Box>
                   {!isNonMobile && (
@@ -200,6 +226,35 @@ const Sidebar = ({
                   );
                 })}
               </List>
+            </Box>
+            <Box position="absolute" bottom="2rem">
+                <Divider/>
+                <FlexBetween textTransform="none" gap="1rem" m="1.5rem 2rem 0 3rem">
+                  <Box
+                    component="img"
+                    alt="profile"
+                    src={ImagePerfil}
+                    height="40px"
+                    width="40px"
+                    borderRadius="50%"
+                    sx={{
+                      objectFit: "cover"
+                    }}
+                  />
+                    <Box textAlign="left">
+                      <Typography fontWeight="bold" fontSize="0.9rem" sx={{color:theme.palette.secondary[100]}}>
+                        {user.firstName}
+                      </Typography>
+                      <Typography  fontSize="0.8rem" sx={{color:theme.palette.secondary[200]}}>
+                        {user.systemRol}
+                      </Typography>
+                      </Box>
+                      
+                   
+                    <SettingsOutlined
+                      sx={{color: theme.palette.secondary[300], fontSize:"25px"}}
+                    />
+                </FlexBetween>
             </Box>
         </Drawer>
     )}
