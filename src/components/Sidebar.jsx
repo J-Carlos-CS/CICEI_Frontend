@@ -50,6 +50,7 @@ import { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import FlexBetween from './FlexBetween.jsx';
 import ImagePerfil from "assets/ImagePerfil.jpg"
+import LogoCICEI from "assets/LogoCiceiVertical.png"
 
 const navItems=[
     {
@@ -163,11 +164,24 @@ const Sidebar = ({
             }}
           >
             <Box width="100%">
+              
               <Box m="1.5rem 2rem 2rem 3rem">
+                
                 <FlexBetween color={theme.palette.secondary.main}>
-                  <Box display="flex" alignItems="center" gap="0.5rem">
+                  
+                  <Box width="100%" display="flex" alignItems="center" gap="0.5rem">
+                  <Box
+                    component="img"
+                    alt="Logo CICEI"
+                    src={LogoCICEI}
+                    height="80px"
+                    width="80px"
+                    borderRadius="50%"
+               
+                    />
                     <Typography variant="h4" fontWeight="bold">
-                      CICEI-LAB
+                      CICEI
+                      LABO
                     </Typography>
                   </Box>
                   {!isNonMobile && (
