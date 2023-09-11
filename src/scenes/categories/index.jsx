@@ -1,22 +1,22 @@
 import React from "react";
 import { Box, useTheme, IconButton } from "@mui/material";
-import { useGetCategorysQuery } from "state/api";
+import { useGetCategorysQuery, useGetReactivesQuery } from "state/api";
 import Header from "components/Header";
 import { DataGrid } from "@mui/x-data-grid";
 import {EditOutlined , 
   DeleteForeverOutlined } from "@mui/icons-material";
 
 const Categorys
- = () => {
-const theme = useTheme();
+  = () => {
+  const theme = useTheme();
   const { data, isLoading } = useGetCategorysQuery();
-  console.log("data", data);
+    
   
   const columns = [
     {
       field: "id",
       headerName: "ID",
-      flex: 1,
+      flex: 0.5,
     },
     {
       field: "categoria",
@@ -51,7 +51,7 @@ const theme = useTheme();
   ];
   return (
     <Box m="1.5rem 2.5rem">
-      <Header title="Categorias" subtitle="Lista de las Categorias" />
+      <Header title="CATEGORIAS" subtitle="Lista de las Categorias" />
       <Box
         mt="40px"
         height="75vh"

@@ -9,6 +9,8 @@ import Proyects from "scenes/proyects";
 import Dashboard from "scenes/dashboard"
 import Layout from "scenes/layout"
 import Categorys from "scenes/categories"
+import Reactives from "scenes/reactives"
+import Equipment from "scenes/equipment"
 function App() {
   const mode = useSelector((state) => state.global.mode)
   const theme = useMemo(() => createTheme(themeSettings(mode)),[mode]);
@@ -23,7 +25,8 @@ function App() {
               <Route path="/dashboard" element={<Dashboard/>}/>
               <Route path="/proyectos" element={<Proyects/>}/>
               <Route path="/categorias" element={<Categorys/>}/>
-              
+              <Route path="/reactivos" element={<Reactives/>}/>
+              <Route path="/equipos" element={<Equipment/>}/>
               
             </Route>
           </Routes>
