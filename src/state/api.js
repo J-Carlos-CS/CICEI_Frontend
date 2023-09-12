@@ -22,6 +22,15 @@ export const api = createApi({
             providesTags: ["Categorys"]
             
         }),
+        createReactive: build.mutation({
+            query: (nuevoReactivo) => ({
+              url: 'reactivos', // La URL para agregar reactivos
+              method: 'POST', // Método POST para agregar
+              body: nuevoReactivo, // Datos del nuevo reactivo
+            }),
+            // Define cómo se etiquetará la caché después de agregar un reactivo
+            invalidatesTags: ['Reactives'],
+        }),
         getReactives: build.query({
             query: () => `reactivos`,
             providesTags: ["Reactivos"]
@@ -38,4 +47,4 @@ export const api = createApi({
     
 })
 
-export const {useGetUserQuery,useGetProyectsQuery, useGetCategorysQuery, useGetReactivesQuery,useGetEquipmentQuery}= api
+export const {useGetUserQuery,useGetProyectsQuery, useGetCategorysQuery, useGetReactivesQuery,useCreateReactiveMutation,useGetEquipmentQuery}= api
