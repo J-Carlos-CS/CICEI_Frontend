@@ -36,6 +36,24 @@ export const api = createApi({
             providesTags: ["Reactivos"]
             
         }),
+        deleteReactive: build.mutation({
+            
+            query: (id) => ({
+              url: `reactivos/${id}`, // La URL para eliminar reactivo
+              method: 'DELETE', // Método DELETE para eliminar logicamente
+             
+            }),
+            // Define cómo se etiquetará la caché después de agregar un reactivo
+            invalidatesTags: ['Reactives'],
+        }),
+        updateReactive: build.mutation({
+            query: (reactiveData) => ({
+              url: `reactivos/${reactiveData.id}`,
+              method: 'PUT',
+              body: reactiveData,
+            }),
+            invalidatesTags: ['Reactivos'],
+          }),
         getEquipment: build.query({
             query: () => `equipos`,
             providesTags: ["Equipos"]
@@ -46,5 +64,14 @@ export const api = createApi({
     )
     
 })
-
-export const {useGetUserQuery,useGetProyectsQuery, useGetCategorysQuery, useGetReactivesQuery,useCreateReactiveMutation,useGetEquipmentQuery}= api
+export const {useGetUserQuery,
+    useGetProyectsQuery, 
+    useGetCategorysQuery,
+    /*Reactives*/ 
+    useGetReactivesQuery,
+    useCreateReactiveMutation,
+    useDeleteReactiveMutation,
+    useUpdateReactiveMutation,
+    /* Equipment*/
+    useGetEquipmentQuery,
+    }= api
