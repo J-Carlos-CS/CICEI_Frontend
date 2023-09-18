@@ -23,15 +23,17 @@ const Reactives = () => {
     const theme = useTheme();
     const [updateAlertOpen, setUpdateAlertOpen] = useState(false);
     const [deleteAlertOpen, setDeleteAlertOpen] = useState(false);
+    const [createAlertOpen, setCreateAlertOpen] = useState(false);
     const [alertSeverity, setAlertSeverity] = useState('success'); // Puedes cambiar 'success' a 'error' u otro valor según necesites
     const [alertMessage, setAlertMessage] = useState('');
+
     const { data: reactives, isLoading,refetch } = useGetReactivesQuery();
     const { data: categorysData } = useGetCategorysQuery();
     const { data: proyectsData } = useGetProyectsQuery();
 
     const [deleteReactive,] = useDeleteReactiveMutation()
     const [createReactive] = useCreateReactiveMutation();
-    const [updateReactive,id] = useUpdateReactiveMutation();
+    const [updateReactive] = useUpdateReactiveMutation();
 
     const [addReactiveOpen, setAddReactiveOpen] = useState(false);
     const [editReactiveOpen, setEditReactiveOpen] = useState(false);
@@ -71,6 +73,9 @@ const Reactives = () => {
     
     const handleDeleteAlertOpen = () => {
       setDeleteAlertOpen(true);
+    };
+    const handleCreateAlertOpen = () => {
+      setCreateAlertOpen(true);
     };
     
     const handleDeleteAlertClose = () => {
@@ -134,6 +139,10 @@ const Reactives = () => {
           console.error('Error al crear el reactivo:', response.error);
         } else {
           console.log('Reactivo creado con éxito:', response.data);
+          handleCreateAlertOpen();
+          setAlertSeverity('success');
+          setAlertMessage('Reactivo Creado con éxito.');
+          refetch()
           refetch()
         }
       } catch (error) {
@@ -655,9 +664,9 @@ const columns = [
           </DialogActions>
       </Dialog>
       <Snackbar
-                open={updateAlertOpen || deleteAlertOpen}
+                open={updateAlertOpen || deleteAlertOpen|| createAlertOpen}
                 autoHideDuration={4000} // Controla cuánto tiempo se muestra la alerta (en milisegundos)
-                onClose={handleUpdateAlertClose} // Puedes usar handleDeleteAlertClose para la alerta de eliminación
+                onClose={handleUpdateAlertClose||handleCreateAlertOpen} // Puedes usar handleDeleteAlertClose para la alerta de eliminación
                 >
               <Alert severity={alertSeverity} onClose={handleUpdateAlertClose}>
                 {alertMessage}
