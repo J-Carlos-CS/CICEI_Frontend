@@ -6,7 +6,8 @@ import { Box, useTheme, IconButton,Button,Dialog,
   DialogActions,
   FormControl,
   InputLabel,
-  Select,MenuItem   } from "@mui/material";
+  Select,MenuItem,
+   } from "@mui/material";
 
 import {
     useCreateCategoryMutation,
@@ -80,7 +81,7 @@ const Categorys
       setCreateAlertOpen(true);
     };
     const handleCreateAlertClose = () => {
-      setDeleteAlertOpen(false);
+      setCreateAlertOpen(false);
     };
     
    
@@ -109,7 +110,7 @@ const Categorys
             setAlertSeverity('success');
             setAlertMessage('categoria creado con éxito.');
             refetch()
-          refetch();
+   
         }
       } catch (error) {
         console.error('Error al crear el categoria:', error);
@@ -325,6 +326,33 @@ const Categorys
             
           </DialogActions>
           </Dialog>
+          <Snackbar
+                open={createAlertOpen}
+                autoHideDuration={4000} // Controla cuánto tiempo se muestra la alerta (en milisegundos)
+                onClose={handleCreateAlertClose} // Puedes usar handleDeleteAlertClose para la alerta de eliminación
+                >
+              <Alert severity={alertSeverity} onClose={handleCreateAlertClose}>
+                {alertMessage}
+                </Alert>
+      </Snackbar> 
+      <Snackbar
+                open={updateAlertOpen}
+                autoHideDuration={4000} // Controla cuánto tiempo se muestra la alerta (en milisegundos)
+                onClose={handleUpdateAlertClose} // Puedes usar handleDeleteAlertClose para la alerta de eliminación
+                >
+              <Alert severity={alertSeverity} onClose={handleUpdateAlertClose}>
+                {alertMessage}
+                </Alert>
+      </Snackbar> 
+      <Snackbar
+                open={deleteAlertOpen}
+                autoHideDuration={4000} // Controla cuánto tiempo se muestra la alerta (en milisegundos)
+                onClose={handleDeleteAlertClose} // Puedes usar handleDeleteAlertClose para la alerta de eliminación
+                >
+              <Alert severity={alertSeverity} onClose={handleDeleteAlertClose}>
+                {alertMessage}
+                </Alert>
+      </Snackbar> 
     </Box>
   );
 };
