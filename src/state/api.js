@@ -17,6 +17,33 @@ export const api = createApi({
             
         
         }),
+        createProject: build.mutation({
+          query: (newProyect) => ({
+            url: 'proyectos', // La URL para agregar proyectos
+            method: 'POST', // Método POST para agregar
+            body: newProyect, // Datos de la nueva proyect
+          }),
+          // Define cómo se etiquetará la caché después de agregar una proyecto
+          invalidatesTags: ['Proyects'],
+        }),
+        updateProject: build.mutation({
+          query: (projectData) => ({
+            url: `proyectos/${projectData.id}`, // La URL para agregar categorias
+            method: 'PUT', // Método PUT para agregar
+            body: projectData, // Datos de la categroia
+          }),
+          // Define cómo se etiquetará la caché después de agregar una categoria
+          invalidatesTags: ['Categorys'],
+        }),
+        deleteProject: build.mutation({
+          query: (id) => ({
+            url: `proyectos/${id}`, // La URL para eliminar proyectos
+            method: 'DELETE', // Método PUT para eliminar
+            
+          }),
+          // Define cómo se etiquetará la caché después de agregar una proyecto
+          invalidatesTags: ['Categorys'],
+        }),
         //Categorias
         getCategorys: build.query({
             query: () => `categorias`,
@@ -122,6 +149,10 @@ export const api = createApi({
 })
 export const {useGetUserQuery,
     useGetProyectsQuery, 
+    useCreateProjectMutation,
+    useUpdateProjectMutation,
+    useDeleteProjectMutation,
+    /*Categories */
     useGetCategorysQuery,
     useCreateCategoryMutation,
     useUpdateCategoryMutation,
