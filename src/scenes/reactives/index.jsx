@@ -66,7 +66,6 @@ const Reactives = () => {
     const handleUpdateAlertOpen = () => {
       setUpdateAlertOpen(true);
     };
-    
     const handleUpdateAlertClose = () => {
       setUpdateAlertOpen(false);
     };
@@ -74,13 +73,16 @@ const Reactives = () => {
     const handleDeleteAlertOpen = () => {
       setDeleteAlertOpen(true);
     };
-    const handleCreateAlertOpen = () => {
-      setCreateAlertOpen(true);
-    };
-    
     const handleDeleteAlertClose = () => {
       setDeleteAlertOpen(false);
     };
+    const handleCreateAlertOpen = () => {
+      setCreateAlertOpen(true);
+    };
+    const handleCreateAlertClose = () => {
+      setCreateAlertOpen(false);
+    };
+    
     const handleCategoryChange = (event) => {
       console.log('categaria seleccionado:', event.target.value)
       setSelectedCategory(event.target.value);
@@ -664,11 +666,29 @@ const columns = [
           </DialogActions>
       </Dialog>
       <Snackbar
-                open={updateAlertOpen || deleteAlertOpen|| createAlertOpen}
+                open={createAlertOpen}
                 autoHideDuration={4000} // Controla cuánto tiempo se muestra la alerta (en milisegundos)
-                onClose={handleUpdateAlertClose||handleCreateAlertOpen} // Puedes usar handleDeleteAlertClose para la alerta de eliminación
+                onClose={handleCreateAlertClose} // Puedes usar handleDeleteAlertClose para la alerta de eliminación
+                >
+              <Alert severity={alertSeverity} onClose={handleCreateAlertClose}>
+                {alertMessage}
+                </Alert>
+            </Snackbar> 
+            <Snackbar
+                open={updateAlertOpen}
+                autoHideDuration={4000} // Controla cuánto tiempo se muestra la alerta (en milisegundos)
+                onClose={handleUpdateAlertClose} // Puedes usar handleDeleteAlertClose para la alerta de eliminación
                 >
               <Alert severity={alertSeverity} onClose={handleUpdateAlertClose}>
+                {alertMessage}
+                </Alert>
+            </Snackbar> 
+            <Snackbar
+                open={deleteAlertOpen}
+                autoHideDuration={4000} // Controla cuánto tiempo se muestra la alerta (en milisegundos)
+                onClose={handleDeleteAlertOpen} // Puedes usar handleDeleteAlertClose para la alerta de eliminación
+                >
+              <Alert severity={alertSeverity} onClose={handleDeleteAlertOpen}>
                 {alertMessage}
                 </Alert>
             </Snackbar> 
