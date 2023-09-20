@@ -32,18 +32,18 @@ const Equipment = () => {
 
   const { data, isLoading,refetch } = useGetEquipmentQuery();
   const { data: categorysData } = useGetCategorysQuery();
-    const { data: proyectsData } = useGetProyectsQuery();
+  const { data: proyectsData } = useGetProyectsQuery();
 
-   const [deleteEquipment] = useDeleteEquipmentMutation()
-    const [createEquipment] = useCreateEquipmentMutation();
-    const [updateEquipment] = useUpdateEquipmentMutation();
+  const [deleteEquipment] = useDeleteEquipmentMutation()
+  const [createEquipment] = useCreateEquipmentMutation();
+  const [updateEquipment] = useUpdateEquipmentMutation();
 
-    const [addEquipmentOpen, setAddEquipmentOpen] = useState(false);
-    const [editEquipmentOpen, setEditEquipmentOpen] = useState(false);
+  const [addEquipmentOpen, setAddEquipmentOpen] = useState(false);
+  const [editEquipmentOpen, setEditEquipmentOpen] = useState(false);
 
-    const [selectedEquipment, setSelectedEquipment] = useState(null);
-    const [selectedCategory, setSelectedCategory] = useState(""); // Estado para la categoría seleccionada
-    const [selectedProject, setSelectedProject] = useState(""); // Estado para el proyecto seleccionado
+  const [selectedEquipment, setSelectedEquipment] = useState(null);
+  const [selectedCategory, setSelectedCategory] = useState(""); // Estado para la categoría seleccionada
+  const [selectedProject, setSelectedProject] = useState(""); // Estado para el proyecto seleccionado
     
   
     const openAddEquipment = () => {
@@ -516,12 +516,12 @@ const Equipment = () => {
       <Snackbar
                 open={updateAlertOpen || deleteAlertOpen|| createAlertOpen}
                 autoHideDuration={4000} // Controla cuánto tiempo se muestra la alerta (en milisegundos)
-                onClose={handleUpdateAlertClose} // Puedes usar handleDeleteAlertClose para la alerta de eliminación
+                onClose={handleUpdateAlertClose||handleCreateAlertClose} // Puedes usar handleDeleteAlertClose para la alerta de eliminación
                 >
               <Alert severity={alertSeverity} onClose={handleUpdateAlertClose}>
                 {alertMessage}
                 </Alert>
-            </Snackbar> 
+      </Snackbar> 
     </Box>
     
   );
