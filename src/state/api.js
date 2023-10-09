@@ -5,27 +5,49 @@ export const api = createApi({
     reducerPath: "adminApi" ,
     tagTypes: ["User", "Proyects", "Categorys","Reactives","Equipment"],
     endpoints: (build) => ( {
+        //Users
         getUser: build.query({
-            query: (id) => `user/${id}`,
-            providesTags: ["User"]
-            
-        
+          query: (id) => `user/${id}`,
+          providesTags: ['User'],
         }),
-        getProyects: build.query({
+    
+        createUser: build.mutation({
+          query: (user) => ({
+            url: 'user',
+            method: 'POST',
+            body: user,
+          }),
+          invalidatesTags: ['User'],
+        }),
+    
+        loginUser: build.mutation({
+          query: (userCredentials) => ({
+            url: 'login',
+            method: 'POST',
+            body: userCredentials,
+          }),
+        }),
+
+        //Projects
+        getProjects: build.query({
             query: () => `proyectos`,
             providesTags: ["Proyects"]
             
-        
         }),
+
         createProject: build.mutation({
           query: (newProyect) => ({
-            url: 'proyectos', // La URL para agregar proyectos
-            method: 'POST', // Método POST para agregar
-            body: newProyect, // Datos de la nueva proyect
+            // La URL para agregar proyectos
+            url: 'proyectos', 
+            // Método POST para agregar
+            method: 'POST', 
+            // Datos del nuevo project
+            body: newProyect, 
           }),
           // Define cómo se etiquetará la caché después de agregar una proyecto
           invalidatesTags: ['Proyects'],
         }),
+
         updateProject: build.mutation({
           query: (projectData) => ({
             url: `proyectos/${projectData.id}`, // La URL para agregar categorias
@@ -35,6 +57,7 @@ export const api = createApi({
           // Define cómo se etiquetará la caché después de agregar una categoria
           invalidatesTags: ['Categorys'],
         }),
+
         deleteProject: build.mutation({
           query: (id) => ({
             url: `proyectos/${id}`, // La URL para eliminar proyectos
@@ -44,7 +67,8 @@ export const api = createApi({
           // Define cómo se etiquetará la caché después de agregar una proyecto
           invalidatesTags: ['Categorys'],
         }),
-        //Categorias
+
+          //Categorias
         getCategorys: build.query({
             query: () => `categorias`,
             providesTags: ["Categorys"]
@@ -147,8 +171,8 @@ export const api = createApi({
     )
     
 })
-export const {useGetUserQuery,
-    useGetProyectsQuery, 
+export const {useGetUserQuery, useCreateUserMutation, useLoginUserMutation,
+    useGetProjectsQuery, 
     useCreateProjectMutation,
     useUpdateProjectMutation,
     useDeleteProjectMutation,

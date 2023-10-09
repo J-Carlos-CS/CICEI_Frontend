@@ -17,7 +17,7 @@ import {
   useMediaQuery,Dialog
 } from "@mui/material";
 import Header from "components/Header";
-import { useGetProyectsQuery,useCreateProjectMutation,useUpdateProjectMutation,useDeleteProjectMutation } from "state/api";
+import { useGetProjectsQuery,useCreateProjectMutation,useUpdateProjectMutation,useDeleteProjectMutation } from "state/api";
 import {EditOutlined , 
   DeleteForeverOutlined,
    } from "@mui/icons-material";
@@ -96,7 +96,7 @@ const Proyects = () => {
   const [createProject] = useCreateProjectMutation();
   const [updateProject] = useUpdateProjectMutation();
   
-  const { data, isLoading,refetch } = useGetProyectsQuery();
+  const { data, isLoading,refetch } = useGetProjectsQuery();
 
   const [createAlertOpen, setCreateAlertOpen] = useState(false);
   const [updateAlertOpen, setUpdateAlertOpen] = useState(false);

@@ -7,7 +7,7 @@ import { Box, useTheme, IconButton,Button,Dialog,
   FormControl,
   InputLabel,
   Select,MenuItem   } from "@mui/material";
-import {useGetReactivesQuery,useCreateReactiveMutation,useGetCategorysQuery,useGetProyectsQuery,useDeleteReactiveMutation, useUpdateReactiveMutation  } from "state/api";
+import {useGetReactivesQuery,useCreateReactiveMutation,useGetCategorysQuery,useGetProjectsQuery,useDeleteReactiveMutation, useUpdateReactiveMutation  } from "state/api";
 import Header from "components/Header";
 import { DataGrid } from "@mui/x-data-grid";
 import {EditOutlined , 
@@ -29,7 +29,7 @@ const Reactives = () => {
 
     const { data: reactives, isLoading,refetch } = useGetReactivesQuery();
     const { data: categorysData } = useGetCategorysQuery();
-    const { data: proyectsData } = useGetProyectsQuery();
+    const { data: proyectsData } = useGetProjectsQuery();
 
     const [deleteReactive,] = useDeleteReactiveMutation()
     const [createReactive] = useCreateReactiveMutation();

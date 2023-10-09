@@ -11,7 +11,7 @@ import {useGetEquipmentQuery,
   useCreateEquipmentMutation,
   useUpdateEquipmentMutation,
   useDeleteEquipmentMutation,
-  useGetProyectsQuery,
+  useGetProjectsQuery,
   useGetCategorysQuery  } from "state/api";
 import Header from "components/Header";
 import { DataGrid } from "@mui/x-data-grid";
@@ -32,7 +32,7 @@ const Equipment = () => {
 
   const { data, isLoading,refetch } = useGetEquipmentQuery();
   const { data: categorysData } = useGetCategorysQuery();
-  const { data: proyectsData } = useGetProyectsQuery();
+  const { data: proyectsData } = useGetProjectsQuery();
 
   const [deleteEquipment] = useDeleteEquipmentMutation()
   const [createEquipment] = useCreateEquipmentMutation();
