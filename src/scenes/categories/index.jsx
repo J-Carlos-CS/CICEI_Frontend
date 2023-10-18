@@ -13,7 +13,7 @@ import {
     useCreateCategoryMutation,
     useUpdateCategoryMutation,
     useDeleteCategoryMutation,
-    useGetCategorysQuery  } from "state/api";
+    useGetCategorysQuery  } from "services/categoryService";
 import Header from "components/Header";
 import { DataGrid } from "@mui/x-data-grid";
 import {EditOutlined , 

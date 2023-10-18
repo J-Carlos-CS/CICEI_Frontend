@@ -10,9 +10,12 @@ import { Box, useTheme, IconButton,Button,Dialog,
 import {useGetEquipmentQuery,
   useCreateEquipmentMutation,
   useUpdateEquipmentMutation,
-  useDeleteEquipmentMutation,
-  useGetProjectsQuery,
-  useGetCategorysQuery  } from "state/api";
+  useDeleteEquipmentMutation } from "services/equipmentService";
+
+import {useGetCategorysQuery
+  } from "services/categoryService"
+import {useGetProjectsQuery
+  } from "services/projectService"
 import Header from "components/Header";
 import { DataGrid } from "@mui/x-data-grid";
 import {EditOutlined , 

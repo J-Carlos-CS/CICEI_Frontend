@@ -7,7 +7,15 @@ import { Box, useTheme, IconButton,Button,Dialog,
   FormControl,
   InputLabel,
   Select,MenuItem   } from "@mui/material";
-import {useGetReactivesQuery,useCreateReactiveMutation,useGetCategorysQuery,useGetProjectsQuery,useDeleteReactiveMutation, useUpdateReactiveMutation  } from "state/api";
+import {useGetReactivesQuery,
+  useCreateReactiveMutation,
+  useDeleteReactiveMutation, 
+  useUpdateReactiveMutation  } from "services/reactiveService";
+
+import {useGetCategorysQuery
+  } from "services/categoryService"
+import {useGetProjectsQuery
+  } from "services/projectService"
 import Header from "components/Header";
 import { DataGrid } from "@mui/x-data-grid";
 import {EditOutlined , 
@@ -188,15 +196,16 @@ const Reactives = () => {
     };
     
     const handleDeleteReactive = async (id) => {
+      
       try {
         // Muestra una confirmación antes de eliminar
         const confirmed = window.confirm("¿Estás seguro de que deseas eliminar este reactivo?");
-    
+        
         if (confirmed) {
           console.log("REACTIVO A ELIMINAR",id)
           // Realiza una mutación para cambiar el estado del reactivo a false
           const response = await deleteReactive(id);
-    
+
           if (response.error) {
             console.error('Error al eliminar el reactivo:', response.error);
           } else {

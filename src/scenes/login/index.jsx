@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Box, useTheme, IconButton,Button,Dialog,
+import {IconButton,Button,Dialog,
   DialogContent,
   DialogTitle,
   TextField,
@@ -7,41 +7,93 @@ import { Box, useTheme, IconButton,Button,Dialog,
   FormControl,
   InputLabel,
   Select,
-  MenuItem   } from "@mui/material";
+  MenuItem,
+  Box,
+  useTheme, Paper, Grid 
+  } from "@mui/material";
+  import { useLocation, useNavigate } from 'react-router-dom';
+import {
+  useGetUserQuery, useCreateUserMutation, useLoginUserMutation,  } from "services/userService";
 
-import {useGetReactivesQuery,
-  useCreateReactiveMutation,
-  useUpdateReactiveMutation  } from "state/api";
-
-import Header from "components/Header";
 import { DataGrid } from "@mui/x-data-grid";
 
 import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
 import DataGridCustomToolBar from "components/DataGridCustomToolBar"
+import Header from "components/Header";
 
-const Users = () => {
-    
-    const theme = useTheme();
-   
-    return (
-      <Box m="1.5rem 2.5rem">
-   
-        <Header title="LOGIN" subtitle="Lista de los Reactivos" />
-        <Box display="flex" justifyContent="flex-end" mb="1rem">
-          <Button
-          variant="contained"
-          color="secondary"
-          style={{ fontSize: "1rem", padding: "0.5rem 1rem" }} // Ajustar el tamaño del texto y el espacio interno
-          onClick={openAddReactive}
-          >
-            Iniciar Sesión
-          </Button>
-        </Box>
-       
-      </Box>
-    
+const Login = () => {
+  const theme = useTheme();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [login] = useLoginUserMutation();
+  const navigate = useNavigate();
+  const [active, setActive] = useState("");
+  const handleLogin = async () => {
+    try {
+      // Llama a la función de inicio de sesión (login) pasando el email y la contraseña
+      const response = await login({ email, password });
+      console.log(response)
+      // Verifica si la respuesta de la API fue exitosa (debes adaptar esto según tu API)
+      if (response.status === "success") {
+        // La autenticación fue exitosa
+        // Aquí puedes manejar el token de autenticación, redireccionar al usuario, etc.
+        console.log("Inicio de sesión exitoso");
+      } else {
+        // La autenticación falló, puedes manejar los errores aquí
+        console.error("Fallo en el inicio de sesión");
+      }
+    } catch (error) {
+      // Maneja cualquier error de la llamada a la API
+      console.error("Error al iniciar sesión:", error);
+    }
+  };
+
+  return (
+    <Grid
+      container
+      justifyContent="center" // Centra horizontalmente en el centro
+      alignItems="center"     // Centra verticalmente en el centro
+      height="100vh"          // Establece el alto al 100% de la pantalla
+      color="secondary"
+    >
+      <Grid item>
+        <Paper elevation={3} style={{ padding: theme.spacing(4) }}>
+          <Box width="300px">
+            <Header title="LOGIN" subtitle="Ingresa tus credenciales" />
+            {/* Formulario de inicio de sesión */}
+            <TextField
+              label="Correo Electrónico"
+              fullWidth
+              margin="normal"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
+            <TextField
+              label="Contraseña"
+              type="password"
+              fullWidth
+              margin="normal"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
+            <Button
+              variant="contained"
+              color="secondary"
+              style={{ fontSize: "1rem", padding: "0.5rem 1rem", marginTop: theme.spacing(2) }}
+              onClick={() => {
+                handleLogin()
+                navigate(`/dashboard`);
+                setActive(`/dashboard`);
+              }}
+            >
+              Iniciar Sesión
+            </Button>
+          </Box>
+        </Paper>
+      </Grid>
+    </Grid>
   );
 };
 
-export default Users
+export default Login;

@@ -17,7 +17,7 @@ import {
   useMediaQuery,Dialog
 } from "@mui/material";
 import Header from "components/Header";
-import { useGetProjectsQuery,useCreateProjectMutation,useUpdateProjectMutation,useDeleteProjectMutation } from "state/api";
+import { useGetProjectsQuery,useCreateProjectMutation,useUpdateProjectMutation,useDeleteProjectMutation } from "services/projectService";
 import {EditOutlined , 
   DeleteForeverOutlined,
    } from "@mui/icons-material";
@@ -42,7 +42,7 @@ const Proyect = ({
         borderRadius: "0.55rem",
       }}
     >
-      <CardContent>
+    <CardContent>
   {/* <Typography
     sx={{ fontSize: 14 }}
     color={theme.palette.secondary[700]}
@@ -67,7 +67,7 @@ const Proyect = ({
           onClick={() => setIsExpanded(!isExpanded)}
         >
           Mas Información
-        </Button>
+      </Button>
       <IconButton
               color="secondary"
               onClick={()=>onEditClick({ id, proyecto, descripcion })}
