@@ -1,22 +1,21 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
 import { show_alerta } from "./../../services/functions";
 import Header from "components/Header";
 import { Box, Button, Chip, Dialog, IconButton, useTheme, DialogTitle, DialogContent, TextField, FormControlLabel, Switch, DialogActions } from "@mui/material";
 import { EditOutlined, Send } from "@mui/icons-material";
 import { DataGrid } from "@mui/x-data-grid";
-import { getCategoria, putCategoria } from "services/api";
+import { getProyecto, putProyecto } from "services/api";
 
-const Categoria = () => {
+const Proyecto = () => {
   const theme = useTheme();
-  const url = "http://localhost:9000/laboratorio/api/categorias";
+  const url = "http://localhost:9000/laboratorio/api/proyectos";
   const [title, setTitle] = useState("");
   const [modal, setModal] = useState(false);
-  const [categoria, setCategoria] = useState([]);
+  const [proyecto, setProyecto] = useState([]);
   const [operation, setOperation] = useState("");
-  const [newCategoria, setNewCategoria] = useState({
+  const [newProyecto, setNewProyecto] = useState({
     id: 0,
-    categoria: "",
+    proyecto: "",
     estado: false,
   });
 
@@ -25,21 +24,21 @@ const Categoria = () => {
   }, []);
 
   const getProducto = async () => {
-    const respuesta = await getCategoria();
-    setCategoria(respuesta.data);
+    const respuesta = await getProyecto();
+    setProyecto(respuesta.data);
   };
   const clearModal = async () => {
-    setNewCategoria({ ...newCategoria, estado: false, categoria: "" });
+    setNewProyecto({ ...newProyecto, estado: false, proyecto: "" });
   };
   const openModal = (op, proyec) => {
     clearModal();
     setOperation(op);
     if (op === 1) {
-      setTitle("Agregar Categoria");
+      setTitle("Agregar Proyecto");
       setModal(true);
     } else if (op === 2) {
-      setTitle("Editar Categoria");
-      setNewCategoria({ estado: proyec.estado, categoria: proyec.categoria, id: proyec.id });
+      setTitle("Editar Proyecto");
+      setNewProyecto({ estado: proyec.estado, proyecto: proyec.proyecto, id: proyec.id });
       setModal(true);
     }
   };
@@ -50,9 +49,9 @@ const Categoria = () => {
 
   const validar = () => {
     var method;
-    if (newCategoria.categoria.trim() === "") {
+    if (newProyecto.proyecto.trim() === "") {
       closeModal();
-      show_alerta("Escribe el nombre de la categoria", "warning");
+      show_alerta("Escribe el nombre del proyecto", "warning");
     } else {
       closeModal();
       if (operation === 1) {
@@ -63,22 +62,23 @@ const Categoria = () => {
       sendData(method);
     }
   };
-  const sendData = async (metodo) => {
-    const respuesta = await putCategoria(metodo, newCategoria);
 
+  const sendData = async (metodo) => {
+    const respuesta = await putProyecto(metodo, newProyecto);
     if (respuesta.error) {
       show_alerta("Error en la solicitud", "error");
     } else {
       if (operation === 1) {
-        show_alerta("Categoria: " + newCategoria.categoria + ", fue creado con exito! ", "success");
+        show_alerta("Proyecto: " + newProyecto.proyecto + ", fue creado con exito! ", "success");
       } else {
-        show_alerta("Categoria: " + newCategoria.categoria + ", fue actualizado con exito! ", "success");
+        show_alerta("Proyecto: " + newProyecto.proyecto + ", fue actualizado con exito! ", "success");
       }
     }
     getProducto();
   };
+
   const columns = [
-    { field: "categoria", headerName: "CATEGORIA", flex: 0.5 },
+    { field: "proyecto", headerName: "PROYECTO", flex: 0.5 },
     {
       field: "estado",
       headerName: "ESTADO",
@@ -104,10 +104,10 @@ const Categoria = () => {
 
   return (
     <Box m="1.5rem 2.5rem">
-      <Header title="CATEGORIAS" subtitle="Lista de Categorias" />
+      <Header title="PROYECTOS" subtitle="Lista de Proyectos" />
       <Box display="flex" justifyContent="flex-end" mb="1.5rem">
         <Button variant="contained" color="secondary" style={{ fontSize: "1rem", padding: "0.5rem 1rem" }} endIcon={<Send />} onClick={() => openModal(1)}>
-          Agregar Categoria
+          Agregar Proyecto
         </Button>
       </Box>
       <Box
@@ -138,7 +138,7 @@ const Categoria = () => {
           },
         }}>
         {" "}
-        <DataGrid getRowId={(row) => row.id} rows={categoria || []} columns={columns} />
+        <DataGrid getRowId={(row) => row.id} rows={proyecto || []} columns={columns} />
       </Box>
       <Dialog open={modal} onClose={closeModal}>
         <DialogTitle color="secondary">{title}</DialogTitle>
@@ -153,23 +153,23 @@ const Categoria = () => {
             <div>
               {" "}
               <TextField
-                id="categoriainput"
-                label="Nombre Categoria"
-                defaultValue={newCategoria.categoria}
+                id="proyectoinput"
+                label="Nombre Proyecto"
+                defaultValue={newProyecto.proyecto}
                 color="secondary"
-                onChange={(e) => setNewCategoria({ ...newCategoria, categoria: e.target.value })}
+                onChange={(e) => setNewProyecto({ ...newProyecto, proyecto: e.target.value })}
               />
             </div>
             {operation === 2 ? (
               <div class="terms">
                 &nbsp; &nbsp;
                 <FormControlLabel
-                  label="Categoia Activa"
+                  label="Proyecto Activo"
                   control={
                     <Switch
                       color="secondary"
-                      checked={newCategoria.estado}
-                      onChange={(e) => setNewCategoria({ ...newCategoria, estado: e.target.checked })}
+                      checked={newProyecto.estado}
+                      onChange={(e) => setNewProyecto({ ...newProyecto, estado: e.target.checked })}
                       name="estado"
                     />
                   }
@@ -191,4 +191,4 @@ const Categoria = () => {
   );
 };
 
-export default Categoria;
+export default Proyecto;
