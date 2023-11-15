@@ -1,15 +1,13 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
-import { show_alerta } from "./../../services/functions";
+import { show_alerta } from "../../services/functions";
 import Header from "components/Header";
 import { Box, Button, Chip, Dialog, IconButton, useTheme, DialogTitle, DialogContent, TextField, FormControlLabel, Switch, DialogActions } from "@mui/material";
 import { EditOutlined, Send } from "@mui/icons-material";
 import { DataGrid } from "@mui/x-data-grid";
-import { getCategoria, putCategoria } from "services/api";
+import { getCategoria, putCategoria, } from "services/api";
 
 const Categoria = () => {
   const theme = useTheme();
-  const url = "http://localhost:9000/laboratorio/api/categorias";
   const [title, setTitle] = useState("");
   const [modal, setModal] = useState(false);
   const [categoria, setCategoria] = useState([]);

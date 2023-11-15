@@ -1,20 +1,20 @@
 import React, { useEffect, useState } from "react";
-import { show_alerta } from "./../../services/functions";
+import { show_alerta } from "../../services/functions";
 import Header from "components/Header";
 import { Box, Button, Chip, Dialog, IconButton, useTheme, DialogTitle, DialogContent, TextField, FormControlLabel, Switch, DialogActions } from "@mui/material";
 import { EditOutlined, Send } from "@mui/icons-material";
 import { DataGrid } from "@mui/x-data-grid";
-import { getProyecto, putProyecto } from "services/api";
+import { getUnidades, putUnidades } from "services/api";
 
-const Proyecto = () => {
+const Unidades = () => {
   const theme = useTheme();
   const [title, setTitle] = useState("");
   const [modal, setModal] = useState(false);
-  const [proyecto, setProyecto] = useState([]);
+  const [unidades, setUnidades] = useState([]);
   const [operation, setOperation] = useState("");
-  const [newProyecto, setNewProyecto] = useState({
+  const [newUnidades, setNewUnidades] = useState({
     id: 0,
-    proyecto: "",
+    unidades: "",
     estado: false,
   });
 
@@ -23,21 +23,21 @@ const Proyecto = () => {
   }, []);
 
   const getProducto = async () => {
-    const respuesta = await getProyecto();
-    setProyecto(respuesta.data);
+    const respuesta = await getUnidades();
+    setUnidades(respuesta.data);
   };
   const clearModal = async () => {
-    setNewProyecto({ ...newProyecto, estado: false, proyecto: "" });
+    setNewUnidades({ ...newUnidades, estado: false, unidades: "" });
   };
   const openModal = (op, proyec) => {
     clearModal();
     setOperation(op);
     if (op === 1) {
-      setTitle("Agregar Proyecto");
+      setTitle("Agregar Unidades");
       setModal(true);
     } else if (op === 2) {
-      setTitle("Editar Proyecto");
-      setNewProyecto({ estado: proyec.estado, proyecto: proyec.proyecto, id: proyec.id });
+      setTitle("Editar Unidades");
+      setNewUnidades({ estado: proyec.estado, unidades: proyec.unidades, id: proyec.id });
       setModal(true);
     }
   };
@@ -48,9 +48,9 @@ const Proyecto = () => {
 
   const validar = () => {
     var method;
-    if (newProyecto.proyecto.trim() === "") {
+    if (newUnidades.unidades.trim() === "") {
       closeModal();
-      show_alerta("Escribe el nombre del proyecto", "warning");
+      show_alerta("Escribe el nombre de la unidades", "warning");
     } else {
       closeModal();
       if (operation === 1) {
@@ -61,23 +61,22 @@ const Proyecto = () => {
       sendData(method);
     }
   };
-
   const sendData = async (metodo) => {
-    const respuesta = await putProyecto(metodo, newProyecto);
+    const respuesta = await putUnidades(metodo, newUnidades);
+
     if (respuesta.error) {
       show_alerta("Error en la solicitud", "error");
     } else {
       if (operation === 1) {
-        show_alerta("Proyecto: " + newProyecto.proyecto + ", fue creado con exito! ", "success");
+        show_alerta("Unidades: " + newUnidades.unidades + ", fue creado con exito! ", "success");
       } else {
-        show_alerta("Proyecto: " + newProyecto.proyecto + ", fue actualizado con exito! ", "success");
+        show_alerta("Unidades: " + newUnidades.unidades + ", fue actualizado con exito! ", "success");
       }
     }
     getProducto();
   };
-
   const columns = [
-    { field: "proyecto", headerName: "PROYECTO", flex: 0.5 },
+    { field: "unidades", headerName: "UNIDADES", flex: 0.5 },
     {
       field: "estado",
       headerName: "ESTADO",
@@ -102,11 +101,11 @@ const Proyecto = () => {
   ];
 
   return (
-    <Box m="1.5rem 2.5rem" >
-      <Header title="PROYECTOS" subtitle="Lista de Proyectos" />
+    <Box m="1.5rem 2.5rem">
+      <Header title="UNIDADES" subtitle="Lista de Unidades" />
       <Box display="flex" justifyContent="flex-end" mb="1.5rem">
         <Button variant="contained" color="secondary" style={{ fontSize: "1rem", padding: "0.5rem 1rem" }} endIcon={<Send />} onClick={() => openModal(1)}>
-          Agregar Proyecto
+          Agregar Unidades
         </Button>
       </Box>
       <Box
@@ -137,7 +136,7 @@ const Proyecto = () => {
           },
         }}>
         {" "}
-        <DataGrid getRowId={(row) => row.id} rows={proyecto || []} columns={columns} />
+        <DataGrid getRowId={(row) => row.id} rows={unidades || []} columns={columns} />
       </Box>
       <Dialog open={modal} onClose={closeModal}>
         <DialogTitle color="secondary">{title}</DialogTitle>
@@ -152,23 +151,23 @@ const Proyecto = () => {
             <div>
               {" "}
               <TextField
-                id="proyectoinput"
-                label="Nombre Proyecto"
-                defaultValue={newProyecto.proyecto}
+                id="unidadesinput"
+                label="Nombre Unidades"
+                defaultValue={newUnidades.unidades}
                 color="secondary"
-                onChange={(e) => setNewProyecto({ ...newProyecto, proyecto: e.target.value })}
+                onChange={(e) => setNewUnidades({ ...newUnidades, unidades: e.target.value })}
               />
             </div>
             {operation === 2 ? (
               <div class="terms">
                 &nbsp; &nbsp;
                 <FormControlLabel
-                  label="Proyecto Activo"
+                  label="Categoia Activa"
                   control={
                     <Switch
                       color="secondary"
-                      checked={newProyecto.estado}
-                      onChange={(e) => setNewProyecto({ ...newProyecto, estado: e.target.checked })}
+                      checked={newUnidades.estado}
+                      onChange={(e) => setNewUnidades({ ...newUnidades, estado: e.target.checked })}
                       name="estado"
                     />
                   }
@@ -190,4 +189,4 @@ const Proyecto = () => {
   );
 };
 
-export default Proyecto;
+export default Unidades;

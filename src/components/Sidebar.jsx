@@ -4,15 +4,12 @@ import {
   Divider,
   IconButton,
   List,
-  Listltem,
   ListItemButton,
-  Listltemlcon,
   ListItemText,
   Typography,
   useTheme,
   ListItem,
   ListItemIcon,
-  Button,
 } from "@mui/material";
 import Drawer from "@mui/material/Drawer";
 import {
@@ -20,29 +17,17 @@ import {
   ChevronLeft,
   ChevronRightOutlined,
   KitchenOutlined,
-  ShoppingCart0ultined,
-  Groups20utlined,
-  ReceiptLong0utlined,
-  Public0utlined,
-  Point0fSaleOutlined,
-  Today0utlined,
-  CalendarMonth0utlined,
-  AdminPanelSettings0utlined,
-  TrendingUpOutlined,
-  PieChartOutlined,
   CheckCircleOutlineOutlined,
   PauseCircleOutlineOutlined,
   AutoStoriesOutlined,
-  CancelOutlinedIcon,
   WaterDropOutlined,
   ScienceOutlined,
   LibraryBooksOutlined,
   BiotechOutlined,
   HomeOutlined,
   CancelOutlined,
-  SetMealOutlined,
   FeedOutlined,
-  ArrowDropDownOutlined,
+  Scale,
 } from "@mui/icons-material";
 
 import { useEffect, useState } from "react";
@@ -79,6 +64,9 @@ const navItems = [
   {
     text: "Proyecto",
     icon: <LibraryBooksOutlined />,
+  },  {
+    text: "Unidades",
+    icon: <Scale />,
   },
 
   {
