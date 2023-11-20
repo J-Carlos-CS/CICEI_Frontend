@@ -69,3 +69,8 @@ export const putReactivos = async (metodo, newReactivos) => {
   });
   return result;
 };
+
+export const deleteReactivo = async (id) => {
+  const result = await axios.delete(url + "/reactivos/" + id.toString());
+  return result;
+};

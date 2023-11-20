@@ -11,12 +11,10 @@ import {
   DialogTitle,
   DialogContent,
   TextField,
-  FormControlLabel,
-  Switch,
   DialogActions,
   MenuItem,
 } from "@mui/material";
-import { EditOutlined, Send } from "@mui/icons-material";
+import { DeleteForeverOutlined, EditOutlined, Send } from "@mui/icons-material";
 import { DataGrid } from "@mui/x-data-grid";
 import {
   getReactivos,
@@ -24,6 +22,7 @@ import {
   getCategoria,
   getProyecto,
   getUnidades,
+  deleteReactivo,
 } from "services/api";
 import DataGridCustomToolbar from "components/DataGridCustomToolBar";
 
@@ -55,6 +54,7 @@ const Reactivos = () => {
   }, []);
   const getProducto = async () => {
     const respuesta = await getReactivos();
+    console.log(respuesta.data);
     setReactivos(respuesta.data);
   };
   const getCategorias = async () => {
@@ -70,7 +70,21 @@ const Reactivos = () => {
     setUnidades(respuesta.data);
   };
   const clearModal = async () => {
-    setNewReactivos({ ...newReactivos, estado: false, reactivos: "" });
+    setNewReactivos({
+      ...newReactivos,
+      id: 0,
+      nombre: "",
+      cantidad: null,
+      unidades: "",
+      clasificacion: "",
+      codigo: "",
+      observaciones: "",
+      estado: false,
+      marca: "",
+      fecha_vencimiento: "",
+      categoriaId: 0,
+      proyectoId: 0,
+    });
   };
   const openModal = (op, proyec) => {
     clearModal();
@@ -84,9 +98,18 @@ const Reactivos = () => {
     } else if (op === 2) {
       setTitle("Editar Reactivos");
       setNewReactivos({
-        estado: proyec.estado,
-        reactivos: proyec.reactivos,
         id: proyec.id,
+        nombre: proyec.nombre,
+        cantidad: proyec.cantidad,
+        unidades: proyec.unidades,
+        clasificacion: proyec.clasificacion,
+        codigo: proyec.codigo,
+        observaciones: proyec.observaciones,
+        estado: proyec.estado,
+        marca: proyec.marca,
+        fecha_vencimiento: proyec.fecha_vencimiento.slice(0, proyec.fecha_vencimiento.indexOf("T")),
+        categoriaId: proyec.categoriaId,
+        proyectoId: proyec.proyectoId,
       });
       getCategorias();
       getProyectos();
@@ -102,7 +125,7 @@ const Reactivos = () => {
   const validar = () => {
     var method;
     if (
-      newReactivos.npmbre.trim() === "" &&
+      newReactivos.nombre.trim() === "" &&
       newReactivos.cantidad !== 0 &&
       newReactivos.unidades === "" &&
       newReactivos.clasificacion === "" &&
@@ -111,6 +134,7 @@ const Reactivos = () => {
       newReactivos.categoria !== 0 &&
       newReactivos.proyecto !== 0
     ) {
+      console.log(newReactivos);
       closeModal();
       show_alerta("completa todos los datos", "warning");
     } else {
@@ -123,22 +147,31 @@ const Reactivos = () => {
       sendData(method);
     }
   };
+  const EliminarReactivo = async (id) => {
+    if (id) {
+      const respuesta = await deleteReactivo(id);
+      if (respuesta.error) {
+        show_alerta("Error en la solicitud", "error");
+      } else {
+        show_alerta(
+          "Reactivos: " + newReactivos.reactivos + ", fue eliminado con exito! ",
+          "success"
+        );
+      }
+      getProducto();
+    }
+  };
   const sendData = async (metodo) => {
+    console.log(newReactivos);
     const respuesta = await putReactivos(metodo, newReactivos);
-
     if (respuesta.error) {
       show_alerta("Error en la solicitud", "error");
     } else {
       if (operation === 1) {
-        show_alerta(
-          "Reactivos: " + newReactivos.reactivos + ", fue creado con exito! ",
-          "success"
-        );
+        show_alerta("Reactivos: " + newReactivos.reactivos + ", fue creado con exito! ", "success");
       } else {
         show_alerta(
-          "Reactivos: " +
-            newReactivos.reactivos +
-            ", fue actualizado con exito! ",
+          "Reactivos: " + newReactivos.reactivos + ", fue actualizado con exito! ",
           "success"
         );
       }
@@ -147,7 +180,36 @@ const Reactivos = () => {
   };
 
   const columns = [
-    { field: "reactivos", headerName: "REACTIVOS", flex: 0.5 },
+    { field: "nombre", headerName: "NOMBRE", flex: 0.5 },
+    { field: "cantidad", headerName: "CANTIDAD", flex: 0.5 },
+    { field: "unidades", headerName: "UNIDADES", flex: 0.5 },
+    {
+      field: "categoriaId",
+      headerName: "CATEGORIA",
+      flex: 0.5,
+      valueGetter: (params) => params.row.categoria.categoria,
+    },
+    {
+      field: "proyectoId",
+      headerName: "PROYECTO",
+      flex: 0.5,
+      valueGetter: (params) => params.row.proyecto.proyecto,
+    },
+    { field: "marca", headerName: "MARCA", flex: 0.5 },
+    { field: "codigo", headerName: "CODIGO", flex: 0.5 },
+    {
+      field: "observaciones",
+      headerName: "OBSERVACIONES",
+      flex: 0.5,
+    },
+    { field: "clasificacion", headerName: "CLASIFICACION", flex: 0.5 },
+    {
+      field: "fecha_vencimiento",
+      headerName: "FECHA VENCIMIENTO",
+      flex: 0.5,
+      valueGetter: (params) =>
+        params.row.fecha_vencimiento.slice(0, params.row.fecha_vencimiento.indexOf("T")),
+    },
     {
       field: "estado",
       headerName: "ESTADO",
@@ -171,9 +233,12 @@ const Reactivos = () => {
             onClick={() => openModal(2, params.row)}>
             <EditOutlined />
           </IconButton>
-          {/*<IconButton color="secondary" aria-label="Eliminar">
+          <IconButton
+            color="secondary"
+            aria-label="Eliminar"
+            onClick={() => EliminarReactivo(params.row.id)}>
             <DeleteForeverOutlined />
-          </IconButton>*/}
+          </IconButton>
         </Box>
       ),
     },
@@ -243,7 +308,7 @@ const Reactivos = () => {
               <TextField
                 id="nombreReactivo"
                 label="Nombre Reactivo"
-                defaultValue={newReactivos.reactivos}
+                defaultValue={newReactivos.nombre}
                 color="secondary"
                 InputLabelProps={{
                   shrink: true,
@@ -251,7 +316,7 @@ const Reactivos = () => {
                 onChange={(e) =>
                   setNewReactivos({
                     ...newReactivos,
-                    reactivos: e.target.value,
+                    nombre: e.target.value,
                   })
                 }
               />
@@ -259,7 +324,7 @@ const Reactivos = () => {
                 id="cantidadRectivo"
                 type="number"
                 label="Cantidad Reactivo"
-                defaultValue={newReactivos.reactivos}
+                defaultValue={newReactivos.cantidad}
                 color="secondary"
                 InputLabelProps={{
                   shrink: true,
@@ -267,7 +332,7 @@ const Reactivos = () => {
                 onChange={(e) =>
                   setNewReactivos({
                     ...newReactivos,
-                    reactivos: e.target.value,
+                    cantidad: e.target.value,
                   })
                 }
               />
@@ -278,9 +343,7 @@ const Reactivos = () => {
                 select
                 label="Unidades"
                 color="secondary"
-                defaultValue={
-                  newReactivos.unidades ? newReactivos.unidades : null
-                }
+                defaultValue={newReactivos.unidades ? newReactivos.unidades : null}
                 InputLabelProps={{
                   shrink: true,
                 }}
@@ -301,9 +364,7 @@ const Reactivos = () => {
                 select
                 label="Clasificacion"
                 color="secondary"
-                defaultValue={
-                  newReactivos.clasificacion ? newReactivos.clasificacion : null
-                }
+                defaultValue={newReactivos.clasificacion ? newReactivos.clasificacion : null}
                 InputLabelProps={{
                   shrink: true,
                 }}
@@ -356,9 +417,7 @@ const Reactivos = () => {
                 select
                 label="Categoria"
                 color="secondary"
-                defaultValue={
-                  newReactivos.categoriaId ? newReactivos.categoriaId : null
-                }
+                defaultValue={newReactivos.categoriaId ? newReactivos.categoriaId : null}
                 InputLabelProps={{
                   shrink: true,
                 }}
@@ -379,9 +438,7 @@ const Reactivos = () => {
                 select
                 label="Proyecto"
                 color="secondary"
-                defaultValue={
-                  newReactivos.proyectoId ? newReactivos.proyectoId : null
-                }
+                defaultValue={newReactivos.proyectoId ? newReactivos.proyectoId : null}
                 InputLabelProps={{
                   shrink: true,
                 }}
@@ -405,9 +462,7 @@ const Reactivos = () => {
                 id="observacionesReactivo"
                 label="Observaciones"
                 color="secondary"
-                defaultValue={
-                  newReactivos.observaciones ? newReactivos.observaciones : null
-                }
+                defaultValue={newReactivos.observaciones ? newReactivos.observaciones : null}
                 InputLabelProps={{
                   shrink: true,
                 }}
@@ -424,9 +479,7 @@ const Reactivos = () => {
                 type="date"
                 label="Fecha de Vencimiento"
                 defaultValue={
-                  newReactivos.fecha_vencimiento
-                    ? newReactivos.fecha_vencimiento
-                    : null
+                  newReactivos.fecha_vencimiento ? newReactivos.fecha_vencimiento : null
                 }
                 color="secondary"
                 InputLabelProps={{

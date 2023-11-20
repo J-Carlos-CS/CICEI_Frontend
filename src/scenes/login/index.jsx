@@ -1,5 +1,8 @@
 import React, { useState } from "react";
-import {IconButton,Button,Dialog,
+import {
+  IconButton,
+  Button,
+  Dialog,
   DialogContent,
   DialogTitle,
   TextField,
@@ -9,17 +12,18 @@ import {IconButton,Button,Dialog,
   Select,
   MenuItem,
   Box,
-  useTheme, Paper, Grid 
-  } from "@mui/material";
-  import { useLocation, useNavigate } from 'react-router-dom';
-import {
-  useGetUserQuery, useCreateUserMutation, useLoginUserMutation,  } from "services/userService";
+  useTheme,
+  Paper,
+  Grid,
+} from "@mui/material";
+import { useLocation, useNavigate } from "react-router-dom";
+import { useGetUserQuery, useCreateUserMutation, useLoginUserMutation } from "services/userService";
 
 import { DataGrid } from "@mui/x-data-grid";
 
-import Snackbar from '@mui/material/Snackbar';
-import Alert from '@mui/material/Alert';
-import DataGridCustomToolBar from "components/DataGridCustomToolBar"
+import Snackbar from "@mui/material/Snackbar";
+import Alert from "@mui/material/Alert";
+import DataGridCustomToolBar from "components/DataGridCustomToolBar";
 import Header from "components/Header";
 
 const Login = () => {
@@ -33,7 +37,7 @@ const Login = () => {
     try {
       // Llama a la función de inicio de sesión (login) pasando el email y la contraseña
       const response = await login({ email, password });
-      console.log(response)
+      console.log(response);
       // Verifica si la respuesta de la API fue exitosa (debes adaptar esto según tu API)
       if (response.status === "success") {
         // La autenticación fue exitosa
@@ -53,18 +57,17 @@ const Login = () => {
     <Grid
       container
       justifyContent="center" // Centra horizontalmente en el centro
-      alignItems="center"     // Centra verticalmente en el centro
-      height="100vh"          // Establece el alto al 100% de la pantalla
-      color="secondary"
-    >
+      alignItems="center" // Centra verticalmente en el centro
+      height="100vh" // Establece el alto al 100% de la pantalla
+      color="secondary">
       <Grid item>
         <Paper elevation={3} style={{ padding: theme.spacing(4) }}>
-          <Box width="300px">
+          <Box width="500px">
             <Header title="LOGIN" subtitle="Ingresa tus credenciales" />
             {/* Formulario de inicio de sesión */}
             <TextField
               label="Correo Electrónico"
-              fullWidth
+              color="secondary"
               margin="normal"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
@@ -72,7 +75,7 @@ const Login = () => {
             <TextField
               label="Contraseña"
               type="password"
-              fullWidth
+              color="secondary"
               margin="normal"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
@@ -82,11 +85,10 @@ const Login = () => {
               color="secondary"
               style={{ fontSize: "1rem", padding: "0.5rem 1rem", marginTop: theme.spacing(2) }}
               onClick={() => {
-                handleLogin()
+                handleLogin();
                 navigate(`/dashboard`);
                 setActive(`/dashboard`);
-              }}
-            >
+              }}>
               Iniciar Sesión
             </Button>
           </Box>
