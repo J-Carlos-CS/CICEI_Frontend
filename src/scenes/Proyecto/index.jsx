@@ -102,7 +102,7 @@ const Proyecto = () => {
   ];
 
   return (
-    <Box m="1.5rem 2.5rem" >
+    <Box m="1.5rem 2.5rem">
       <Header title="PROYECTOS" subtitle="Lista de Proyectos" />
       <Box display="flex" justifyContent="flex-end" mb="1.5rem">
         <Button variant="contained" color="secondary" style={{ fontSize: "1rem", padding: "0.5rem 1rem" }} endIcon={<Send />} onClick={() => openModal(1)}>
@@ -165,12 +165,7 @@ const Proyecto = () => {
                 <FormControlLabel
                   label="Proyecto Activo"
                   control={
-                    <Switch
-                      color="secondary"
-                      checked={newProyecto.estado}
-                      onChange={(e) => setNewProyecto({ ...newProyecto, estado: e.target.checked })}
-                      name="estado"
-                    />
+                    <Switch color="secondary" checked={newProyecto.estado} onChange={(e) => setNewProyecto({ ...newProyecto, estado: e.target.checked })} name="estado" />
                   }
                 />
               </div>

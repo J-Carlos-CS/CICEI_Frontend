@@ -1,94 +1,59 @@
 import React, { useState } from "react";
-import {
-  IconButton,
-  Button,
-  Dialog,
-  DialogContent,
-  DialogTitle,
-  TextField,
-  DialogActions,
-  FormControl,
-  InputLabel,
-  Select,
-  MenuItem,
-  Box,
-  useTheme,
-  Paper,
-  Grid,
-} from "@mui/material";
-import { useLocation, useNavigate } from "react-router-dom";
-import { useGetUserQuery, useCreateUserMutation, useLoginUserMutation } from "services/userService";
-
-import { DataGrid } from "@mui/x-data-grid";
-
-import Snackbar from "@mui/material/Snackbar";
-import Alert from "@mui/material/Alert";
-import DataGridCustomToolBar from "components/DataGridCustomToolBar";
+import { Button, TextField, Box, useTheme, Paper, Grid } from "@mui/material";
+import { useNavigate, Navigate } from "react-router-dom";
 import Header from "components/Header";
+import { putLogin } from "services/api";
+import { show_alerta } from "services/functions";
+import { useSelector } from "react-redux";
+import { login, selectUser } from "../../Auth/userReducer.js";
 
 const Login = () => {
+  const isUser = useSelector(selectUser);
   const theme = useTheme();
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [login] = useLoginUserMutation();
+  const [user, setUser] = useState({
+    email: "",
+    password: "",
+  });
+  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
-  const [active, setActive] = useState("");
-  const handleLogin = async () => {
-    try {
-      // Llama a la función de inicio de sesión (login) pasando el email y la contraseña
-      const response = await login({ email, password });
-      console.log(response);
-      // Verifica si la respuesta de la API fue exitosa (debes adaptar esto según tu API)
-      if (response.status === "success") {
-        // La autenticación fue exitosa
-        // Aquí puedes manejar el token de autenticación, redireccionar al usuario, etc.
-        console.log("Inicio de sesión exitoso");
-      } else {
-        // La autenticación falló, puedes manejar los errores aquí
-        console.error("Fallo en el inicio de sesión");
-      }
-    } catch (error) {
-      // Maneja cualquier error de la llamada a la API
-      console.error("Error al iniciar sesión:", error);
-    }
+  if (isUser) {
+    return <Navigate to={{ pathname: "/dashboard" }} />;
+  }
+  const userlogin = async () => {
+    setIsLoading(true);
+    await putLogin(user)
+      .then((res) => {
+        if (res.data?.success) {
+          show_alerta("Inicio de Seccion Correcto", "success");
+          console.log(res.data?.response);
+          login(res.data?.response);
+          navigate("/dashboard");
+        }
+      })
+      .catch((e) => {
+        show_alerta(e.message, "error");
+      });
+    setIsLoading(false);
   };
-
   return (
-    <Grid
-      container
-      justifyContent="center" // Centra horizontalmente en el centro
-      alignItems="center" // Centra verticalmente en el centro
-      height="100vh" // Establece el alto al 100% de la pantalla
-      color="secondary">
+    <Grid container justifyContent="center" alignItems="center" height="100vh" color="secondary">
       <Grid item>
         <Paper elevation={3} style={{ padding: theme.spacing(4) }}>
-          <Box width="500px">
-            <Header title="LOGIN" subtitle="Ingresa tus credenciales" />
+          <Box ustifyContent="center" alignItems="center" color="secondary">
+            <Header color="secondary" title="LOGIN" />
             {/* Formulario de inicio de sesión */}
-            <TextField
-              label="Correo Electrónico"
-              color="secondary"
-              margin="normal"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-            />
-            <TextField
-              label="Contraseña"
-              type="password"
-              color="secondary"
-              margin="normal"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-            />
+            <div>
+              <TextField label="Correo Electronico" type="email" color="secondary" margin="normal" onChange={(e) => setUser({ ...user, email: e.target.value })} />
+            </div>
+            <div>
+              <TextField label="Contraseña" type="password" color="secondary" margin="normal" onChange={(e) => setUser({ ...user, password: e.target.value })} />
+            </div>
             <Button
               variant="contained"
               color="secondary"
               style={{ fontSize: "1rem", padding: "0.5rem 1rem", marginTop: theme.spacing(2) }}
-              onClick={() => {
-                handleLogin();
-                navigate(`/dashboard`);
-                setActive(`/dashboard`);
-              }}>
+              onClick={() => userlogin()}
+              disabled={isLoading}>
               Iniciar Sesión
             </Button>
           </Box>

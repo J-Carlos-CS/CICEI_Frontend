@@ -1,43 +1,51 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice } from "@reduxjs/toolkit";
+import { jwtDecode } from "jwt-decode";
 
+export const login = async (action) => {
+  var token = jwtDecode(action);
+  localStorage.setItem("user", JSON.stringify(token));
+  localStorage.setItem("token", JSON.stringify(action));
+};
+
+export const selectUser = () => {
+  var user = JSON.parse(localStorage.getItem("user"));
+  return user;
+};
+export const logout = () => {
+  localStorage.removeItem("user");
+  localStorage.clear();
+  return true;
+};
 export const user = createSlice({
-  name: 'user',
+  name: "user",
   initialState: {
-    user: JSON.parse(window.localStorage.getItem('user')) || null,
-    viewBar:window.localStorage.getItem('viewBar') || "collapse",
+    user: JSON.parse(window.localStorage.getItem("user")) || null,
+    viewBar: window.localStorage.getItem("viewBar") || "collapse",
   },
   reducers: {
-    login: (state, action) => {
-      console.log("action.payload",action.payload)
-      window.localStorage.setItem('user',JSON.stringify(action.payload));
-      let user = JSON.parse(window.localStorage.getItem('user'));
-      state.user = user ;
-      window.localStorage.setItem('viewBar',"visible");
-      let viewBar= window.localStorage.getItem("viewBar");
-      state.viewBar= viewBar;
-      console.log('okey login');
+    login: (action) => {
+      localStorage.setItem("user", JSON.stringify(action));
+      console.log("okey login");
     },
     logout: (state) => {
-        window.localStorage.removeItem('user');
-        window.localStorage.removeItem('centerInformation');
-        state.user=null;
-        window.localStorage.setItem('viewBar',"collapse");
-        state.viewBar="hidden";
-        console.log('okey logout');
+      window.localStorage.removeItem("user");
+      window.localStorage.removeItem("centerInformation");
+      state.user = null;
+      window.localStorage.setItem("viewBar", "collapse");
+      state.viewBar = "hidden";
+      console.log("okey logout");
     },
-    updateToken: (state,action)=>{
+    updateToken: (state, action) => {
       let user = action.payload;
-      state.user = user ;
-      state.viewBar= "visible"
-      console.log('okey refresh');
-    }
-    
+      state.user = user;
+      state.viewBar = "visible";
+      console.log("okey refresh");
+    },
   },
 });
 
-export const { login, logout, updateToken } = user.actions;
+export const { updateToken } = user.actions;
 
-export const selectUser = state => state.user.user;
-export const selectViewBar= state=> state.user.viewBar;
+export const selectViewBar = (state) => state.user.viewBar;
 
 export default user.reducer;

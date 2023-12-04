@@ -1,29 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { show_alerta } from "../../services/functions";
 import Header from "components/Header";
-import {
-  Box,
-  Button,
-  Chip,
-  Dialog,
-  IconButton,
-  useTheme,
-  DialogTitle,
-  DialogContent,
-  TextField,
-  DialogActions,
-  MenuItem,
-} from "@mui/material";
+import { Box, Button, Chip, Dialog, IconButton, useTheme, DialogTitle, DialogContent, TextField, DialogActions, MenuItem } from "@mui/material";
 import { DeleteForeverOutlined, EditOutlined, Send } from "@mui/icons-material";
 import { DataGrid } from "@mui/x-data-grid";
-import {
-  getReactivos,
-  putReactivos,
-  getCategoria,
-  getProyecto,
-  getUnidades,
-  deleteReactivo,
-} from "services/api";
+import { getReactivos, putReactivos, getCategoria, getProyecto, getUnidades, deleteReactivo } from "services/api";
 import DataGridCustomToolbar from "components/DataGridCustomToolBar";
 
 const Reactivos = () => {
@@ -54,7 +35,6 @@ const Reactivos = () => {
   }, []);
   const getProducto = async () => {
     const respuesta = await getReactivos();
-    console.log(respuesta.data);
     setReactivos(respuesta.data);
   };
   const getCategorias = async () => {
@@ -131,8 +111,8 @@ const Reactivos = () => {
       newReactivos.clasificacion === "" &&
       newReactivos.codigo.trim() === "" &&
       newReactivos.marca.trim() === "" &&
-      newReactivos.categoria !== 0 &&
-      newReactivos.proyecto !== 0
+      newReactivos.categoriaId !== 0 &&
+      newReactivos.proyectoId !== 0
     ) {
       console.log(newReactivos);
       closeModal();
@@ -153,10 +133,7 @@ const Reactivos = () => {
       if (respuesta.error) {
         show_alerta("Error en la solicitud", "error");
       } else {
-        show_alerta(
-          "Reactivos: " + newReactivos.reactivos + ", fue eliminado con exito! ",
-          "success"
-        );
+        show_alerta("Reactivos: " + newReactivos.nombre + ", fue eliminado con exito! ", "success");
       }
       getProducto();
     }
@@ -168,12 +145,9 @@ const Reactivos = () => {
       show_alerta("Error en la solicitud", "error");
     } else {
       if (operation === 1) {
-        show_alerta("Reactivos: " + newReactivos.reactivos + ", fue creado con exito! ", "success");
+        show_alerta("Reactivos: " + newReactivos.nombre + ", fue creado con exito! ", "success");
       } else {
-        show_alerta(
-          "Reactivos: " + newReactivos.reactivos + ", fue actualizado con exito! ",
-          "success"
-        );
+        show_alerta("Reactivos: " + newReactivos.nombre + ", fue actualizado con exito! ", "success");
       }
     }
     getProducto();
@@ -207,19 +181,13 @@ const Reactivos = () => {
       field: "fecha_vencimiento",
       headerName: "FECHA VENCIMIENTO",
       flex: 0.5,
-      valueGetter: (params) =>
-        params.row.fecha_vencimiento.slice(0, params.row.fecha_vencimiento.indexOf("T")),
+      valueGetter: (params) => params.row.fecha_vencimiento.slice(0, params.row.fecha_vencimiento.indexOf("T")),
     },
     {
       field: "estado",
       headerName: "ESTADO",
       flex: 0.5,
-      renderCell: (params) => (
-        <Chip
-          label={params.row.estado ? "ACTIVO" : "DESACTIVADO"}
-          color={params.row.estado ? "success" : "error"}
-        />
-      ),
+      renderCell: (params) => <Chip label={params.row.estado ? "ACTIVO" : "DESACTIVADO"} color={params.row.estado ? "success" : "error"} />,
     },
     {
       field: "acciones",
@@ -227,16 +195,10 @@ const Reactivos = () => {
       flex: 0.5,
       renderCell: (params) => (
         <Box>
-          <IconButton
-            color="secondary"
-            aria-label="Editar"
-            onClick={() => openModal(2, params.row)}>
+          <IconButton color="secondary" aria-label="Editar" onClick={() => openModal(2, params.row)}>
             <EditOutlined />
           </IconButton>
-          <IconButton
-            color="secondary"
-            aria-label="Eliminar"
-            onClick={() => EliminarReactivo(params.row.id)}>
+          <IconButton color="secondary" aria-label="Eliminar" onClick={() => EliminarReactivo(params.row.id)}>
             <DeleteForeverOutlined />
           </IconButton>
         </Box>
@@ -248,12 +210,7 @@ const Reactivos = () => {
     <Box m="1.5rem 2.5rem">
       <Header title="REACTIVOS" subtitle="Lista de Reactivos" />
       <Box display="flex" justifyContent="flex-end" mb="1.5rem">
-        <Button
-          variant="contained"
-          color="secondary"
-          style={{ fontSize: "1rem", padding: "0.5rem 1rem" }}
-          endIcon={<Send />}
-          onClick={() => openModal(1)}>
+        <Button variant="contained" color="secondary" style={{ fontSize: "1rem", padding: "0.5rem 1rem" }} endIcon={<Send />} onClick={() => openModal(1)}>
           Agregar Reactivos
         </Button>
       </Box>
@@ -285,13 +242,7 @@ const Reactivos = () => {
           },
         }}>
         {" "}
-        <DataGrid
-          getRowId={(row) => row.id}
-          rows={reactivos || []}
-          columns={columns}
-          disableRowSelectionOnClick
-          components={{ Toolbar: DataGridCustomToolbar }}
-        />
+        <DataGrid getRowId={(row) => row.id} rows={reactivos || []} columns={columns} disableRowSelectionOnClick components={{ Toolbar: DataGridCustomToolbar }} />
       </Box>
       <Dialog open={modal} onClose={closeModal}>
         <DialogTitle color="secondary">{title}</DialogTitle>
@@ -478,9 +429,7 @@ const Reactivos = () => {
                 id="cantidadRectivo"
                 type="date"
                 label="Fecha de Vencimiento"
-                defaultValue={
-                  newReactivos.fecha_vencimiento ? newReactivos.fecha_vencimiento : null
-                }
+                defaultValue={newReactivos.fecha_vencimiento ? newReactivos.fecha_vencimiento : null}
                 color="secondary"
                 InputLabelProps={{
                   shrink: true,

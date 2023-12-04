@@ -1,16 +1,5 @@
 import React from "react";
-import {
-  Box,
-  Divider,
-  IconButton,
-  List,
-  ListItemButton,
-  ListItemText,
-  Typography,
-  useTheme,
-  ListItem,
-  ListItemIcon,
-} from "@mui/material";
+import { Box, Divider, IconButton, List, ListItemButton, ListItemText, Typography, useTheme, ListItem, ListItemIcon } from "@mui/material";
 import Drawer from "@mui/material/Drawer";
 import {
   SettingsOutlined,
@@ -64,7 +53,8 @@ const navItems = [
   {
     text: "Proyecto",
     icon: <LibraryBooksOutlined />,
-  },  {
+  },
+  {
     text: "Unidades",
     icon: <Scale />,
   },
@@ -152,7 +142,6 @@ const Sidebar = ({ user, drawerWidth, isSidebarOpen, setIsSidebarOpen, isNonMobi
                   );
                 }
                 const lcText = text.toLowerCase();
-
                 return (
                   <ListItem key={text} disablePadding>
                     <ListItemButton
@@ -198,7 +187,7 @@ const Sidebar = ({ user, drawerWidth, isSidebarOpen, setIsSidebarOpen, isNonMobi
                   {user.firstName}
                 </Typography>
                 <Typography fontSize="0.8rem" sx={{ color: theme.palette.secondary[200] }}>
-                  {user.systemRol}
+                  {user.rol}
                 </Typography>
               </Box>
 

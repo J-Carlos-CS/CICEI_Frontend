@@ -6,7 +6,7 @@ import { EditOutlined, Send } from "@mui/icons-material";
 import { DataGrid } from "@mui/x-data-grid";
 import { getUnidades, putUnidades } from "services/api";
 
-const Unidades = () => {
+const Unidades = (roles) => {
   const theme = useTheme();
   const [title, setTitle] = useState("");
   const [modal, setModal] = useState(false);
@@ -17,7 +17,7 @@ const Unidades = () => {
     unidades: "",
     estado: false,
   });
-
+  console.log(Object.values(roles)[0]);
   useEffect(() => {
     getProducto();
   }, []);
@@ -164,12 +164,7 @@ const Unidades = () => {
                 <FormControlLabel
                   label="Categoia Activa"
                   control={
-                    <Switch
-                      color="secondary"
-                      checked={newUnidades.estado}
-                      onChange={(e) => setNewUnidades({ ...newUnidades, estado: e.target.checked })}
-                      name="estado"
-                    />
+                    <Switch color="secondary" checked={newUnidades.estado} onChange={(e) => setNewUnidades({ ...newUnidades, estado: e.target.checked })} name="estado" />
                   }
                 />
               </div>
