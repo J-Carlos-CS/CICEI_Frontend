@@ -128,7 +128,7 @@ const Equipos = () => {
     getProducto();
   };
   const ver = async (id) => {
-    navigate("/proyeto/detalle", { state: { data: id } });
+    navigate("/proyeto/detalle", { state: { id: id } });
   };
   const columns = [
     { field: "nombre", headerName: "NOMBRE", flex: 0.5 },

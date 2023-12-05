@@ -85,3 +85,9 @@ export const deleteEquipos = async (id) => {
   const result = await axios.delete(url + "/equipos/" + id.toString());
   return result;
 };
+
+//Detalle Equipo
+export const getDetalleEquipo = async (id) => {
+  const result = await axios.get(url + "/detalle/" + id.toString());
+  return result;
+};
