@@ -1,5 +1,5 @@
 import { useTheme } from "@emotion/react";
-import { Box } from "@mui/material";
+import { Box, Chip } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import DataGridCustomToolbar from "components/DataGridCustomToolBar";
 import Header from "components/Header";
@@ -23,15 +23,28 @@ const DetalleEquipos = () => {
   };
   const columns = [
     { field: "num_ucb", headerName: "CODIGO", flex: 0.5 },
-    { field: "equipoId", headerName: "Equipo", flex: 0.5, valueGetter: (params) => params.row.equipo.nombre },
+    { field: "equipoId", headerName: "EQUIPO", flex: 0.5, valueGetter: (params) => params.row.equipo.nombre },
+    {
+      field: "observaciones",
+
+      headerName: "OBSERVACIONES",
+      flex: 0.5,
+    },
+    {
+      field: "estado",
+      headerName: "ESTADO",
+      flex: 0.5,
+      renderCell: (params) => <Chip label={params.row.estado ? "ACTIVO" : "DESACTIVADO"} color={params.row.estado ? "success" : "error"} />,
+    },
   ];
   return (
     <Box m="1.5rem 2.5rem">
       <Header title="Detalle Equipo" subtitle="LISTA DE DETALLE DE EQUIPOS" />
       <Box
         mt="40px"
-        height="75vh"
         sx={{
+          height: 400,
+          width: "100%",
           "& .MuiDataGrid-root": {
             border: "none",
           },
