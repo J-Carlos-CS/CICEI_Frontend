@@ -4,7 +4,7 @@ import Header from "components/Header";
 import { Box, Button, Chip, Dialog, IconButton, useTheme, DialogTitle, DialogContent, TextField, FormControlLabel, Switch, DialogActions } from "@mui/material";
 import { EditOutlined, Send } from "@mui/icons-material";
 import { DataGrid } from "@mui/x-data-grid";
-import { getCategoria, putCategoria, } from "services/api";
+import { getCategoria, putCategoria } from "services/api";
 
 const Categoria = () => {
   const theme = useTheme();
@@ -136,7 +136,13 @@ const Categoria = () => {
           },
         }}>
         {" "}
-        <DataGrid getRowId={(row) => row.id} rows={categoria || []} columns={columns} />
+        <DataGrid
+          getRowId={(row) => row.id}
+          rows={categoria || []}
+          columns={columns}
+          initialState={{ pagination: { paginationModel: { pageSize: 25 } } }}
+          pageSizeOptions={[25, 50, 100]}
+        />
       </Box>
       <Dialog open={modal} onClose={closeModal}>
         <DialogTitle color="secondary">{title}</DialogTitle>
@@ -164,12 +170,7 @@ const Categoria = () => {
                 <FormControlLabel
                   label="Categoia Activa"
                   control={
-                    <Switch
-                      color="secondary"
-                      checked={newCategoria.estado}
-                      onChange={(e) => setNewCategoria({ ...newCategoria, estado: e.target.checked })}
-                      name="estado"
-                    />
+                    <Switch color="secondary" checked={newCategoria.estado} onChange={(e) => setNewCategoria({ ...newCategoria, estado: e.target.checked })} name="estado" />
                   }
                 />
               </div>

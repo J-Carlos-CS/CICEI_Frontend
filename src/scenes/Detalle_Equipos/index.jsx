@@ -97,6 +97,8 @@ const DetalleEquipos = () => {
           components={{ Toolbar: DataGridCustomToolbar }}
           columnVisibilityModel={columnVisibilityModel}
           onColumnVisibilityModelChange={(newModel) => setColumnVisibilityModel(newModel)}
+          initialState={{ pagination: { paginationModel: { pageSize: 25 } } }}
+          pageSizeOptions={[25, 50, 100]}
         />
       </Box>
     </Box>

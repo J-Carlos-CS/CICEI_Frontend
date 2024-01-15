@@ -242,7 +242,15 @@ const Reactivos = () => {
           },
         }}>
         {" "}
-        <DataGrid getRowId={(row) => row.id} rows={reactivos || []} columns={columns} disableRowSelectionOnClick components={{ Toolbar: DataGridCustomToolbar }} />
+        <DataGrid
+          getRowId={(row) => row.id}
+          rows={reactivos || []}
+          columns={columns}
+          disableRowSelectionOnClick
+          components={{ Toolbar: DataGridCustomToolbar }}
+          initialState={{ pagination: { paginationModel: { pageSize: 25 } } }}
+          pageSizeOptions={[25, 50, 100]}
+        />
       </Box>
       <Dialog open={modal} onClose={closeModal}>
         <DialogTitle color="secondary">{title}</DialogTitle>
