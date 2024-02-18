@@ -29,7 +29,9 @@ const Equipos = () => {
     proyectoId: 0,
     marca: "",
     modelo: "",
+    fecha_adquisicion: "",
   });
+  const [columnVisibilityModel, setColumnVisibilityModel] = React.useState({});
   useEffect(() => {
     getProducto();
   }, []);
@@ -209,7 +211,16 @@ const Equipos = () => {
             color: `${theme.palette.secondary[200]} !important`,
           },
         }}>
-        <DataGrid getRowId={(row) => row.id} rows={equipo || []} columns={columns} disableRowSelectionOnClick components={{ Toolbar: DataGridCustomToolbar }} />
+        <DataGrid
+          getRowId={(row) => row.id}
+          rows={equipo || []}
+          columns={columns}
+          components={{ Toolbar: DataGridCustomToolbar }}
+          columnVisibilityModel={columnVisibilityModel}
+          onColumnVisibilityModelChange={(newModel) => setColumnVisibilityModel(newModel)}
+          initialState={{ pagination: { paginationModel: { pageSize: 25 } } }}
+          pageSizeOptions={[25, 50, 100]}
+        />
       </Box>
       <Dialog open={modal} onClose={closeModal}>
         <DialogTitle color="secondary">{title}</DialogTitle>
@@ -357,8 +368,8 @@ const Equipos = () => {
                 <TextField
                   id="fecha"
                   type="date"
-                  label="Fecha de Vencimiento"
-                  defaultValue={newEquipo.fecha_vencimiento ? newEquipo.fecha_vencimiento : null}
+                  label="Fecha de Adquisicion"
+                  defaultValue={newEquipo.fecha_adquisicion ? newEquipo.fecha_adquisicion : null}
                   color="secondary"
                   InputLabelProps={{
                     shrink: true,
@@ -366,7 +377,7 @@ const Equipos = () => {
                   onChange={(e) =>
                     setNewEquipo({
                       ...newEquipo,
-                      fecha_vencimiento: e.target.value,
+                      fecha_adquisicion: e.target.value,
                     })
                   }
                 />

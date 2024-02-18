@@ -1,7 +1,8 @@
 import { useTheme } from "@emotion/react";
-import { Box, Chip } from "@mui/material";
+import { Box, Chip, Dialog, IconButton, DialogTitle, DialogContent } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import DataGridCustomToolbar from "components/DataGridCustomToolBar";
+import { DeleteForeverOutlined, EditOutlined, Send, RemoveRedEye, Description } from "@mui/icons-material";
 import Header from "components/Header";
 import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
@@ -13,7 +14,9 @@ const DetalleEquipos = () => {
   const theme = useTheme();
   const [title, setTitle] = useState();
   const [modal, setModal] = useState();
+  const [operation, setOperation] = useState("");
   const [detalleEquipo, setDetalleEquipo] = useState();
+  const [newDetalleEquipo, setNewDetalleEquipo] = useState();
   useEffect(() => {
     getProducto();
   }, []);
@@ -24,6 +27,40 @@ const DetalleEquipos = () => {
   const [columnVisibilityModel, setColumnVisibilityModel] = React.useState({
     observaciones: false,
   });
+  const manual = async (manualId) => {};
+  const cleanModal = async () => {
+    setNewDetalleEquipo({
+      id: 0,
+      num_ucb: "",
+      observaciones: "",
+      fecha_preventivo: "",
+      estado: false,
+      fecha_Correccion: "",
+      fecha_adquisicion: "",
+    });
+  };
+  const openModal = async (op, proyec) => {
+    cleanModal();
+    setOperation(op);
+    setModal(true);
+    setNewDetalleEquipo({
+      id: proyec.id,
+      num_ucb: proyec.num_ucb,
+      observaciones: proyec.observaciones,
+      fecha_preventivo: proyec.fechas_adquisiciones.fecha_preventivo,
+      estado: proyec.estado,
+      fecha_Correccion: proyec.fechas_adquisiciones.fecha_Correccion,
+      fecha_adquisicion: proyec.fechas_adquisiciones.fecha_adquisicion,
+    });
+    if (op === 1) {
+      setTitle("Ver Equipo");
+    } else if (op === 2) {
+      setTitle("Editar Equipo");
+    }
+  };
+  const closeModal = async () => {
+    setModal(false);
+  };
   const columns = [
     { field: "num_ucb", headerName: "CODIGO", flex: 0.5 },
     { field: "equipoId", headerName: "EQUIPO", flex: 0.5, valueGetter: (params) => params.row.equipo.nombre },
@@ -42,10 +79,19 @@ const DetalleEquipos = () => {
       field: "fechas_adquisiciones",
       headerName: "FECHA DE ADQUISICION",
       flex: 0.5,
-      valueGetter: (params) =>
-        params.row.fechas_adquisiciones[0].fecha_adquisicion
-          ? params.row.fechas_adquisiciones[0].fecha_adquisicion.slice(0, params.row.fechas_adquisiciones[0].fecha_adquisicion.indexOf("T"))
-          : "",
+      valueGetter: (params) => (params.row.fechas_adquisiciones[0].fecha_adquisicion ? params.row.fechas_adquisiciones[0].fecha_adquisicion.slice(0, params.row.fechas_adquisiciones[0].fecha_adquisicion.indexOf("T")) : ""),
+    },
+    {
+      field: "fechas_preventivo",
+      headerName: "FECHA DE PREVENCION",
+      flex: 0.5,
+      valueGetter: (params) => (params.row.fechas_adquisiciones[0].fecha_preventivo ? params.row.fechas_adquisiciones[0].fecha_preventivo.slice(0, params.row.fechas_adquisiciones[0].fecha_preventivo.indexOf("T")) : ""),
+    },
+    {
+      field: "fecha_Correccion",
+      headerName: "FECHA DE CORRECCION",
+      flex: 0.5,
+      valueGetter: (params) => (params.row.fechas_adquisiciones[0].fecha_Correccion ? params.row.fechas_adquisiciones[0].fecha_Correccion.slice(0, params.row.fechas_adquisiciones[0].fecha_Correccion.indexOf("T")) : ""),
     },
     {
       field: "createdAt",
@@ -55,9 +101,27 @@ const DetalleEquipos = () => {
     },
     {
       field: "updatedAt",
-      headerName: "FECHA DE Actualizacion",
+      headerName: "FECHA DE ACTUALIZACION",
       flex: 0.5,
       valueGetter: (params) => params.row.updatedAt.slice(0, params.row.updatedAt.indexOf("T")),
+    },
+    {
+      field: "acciones",
+      headerName: "ACCIONES",
+      flex: 0.5,
+      renderCell: (params) => (
+        <Box>
+          <IconButton color="secondary" aria-label="Manual" onClick={() => manual(params.row.manualeId)}>
+            <Description />
+          </IconButton>
+          <IconButton color="secondary" aria-label="Ver" onClick={() => openModal(1, params.row)}>
+            <RemoveRedEye />
+          </IconButton>
+          <IconButton color="secondary" aria-label="Editar" onClick={() => openModal(2, params.row)}>
+            <EditOutlined />
+          </IconButton>
+        </Box>
+      ),
     },
   ];
   return (
@@ -101,6 +165,19 @@ const DetalleEquipos = () => {
           pageSizeOptions={[25, 50, 100]}
         />
       </Box>
+      <Dialog open={modal} onClose={closeModal}>
+        <DialogTitle color="secondary">{title}</DialogTitle>
+        <DialogContent>
+          <Box
+            component="form"
+            sx={{
+              width: "auto",
+              "& .MuiTextField-root": { m: 1, width: "20ch" },
+            }}
+            noValidate
+            autoComplete="off"></Box>
+        </DialogContent>
+      </Dialog>
     </Box>
   );
 };
