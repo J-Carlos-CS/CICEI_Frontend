@@ -1,13 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { show_alerta } from "./../../services/functions";
 import Header from "components/Header";
-import { Box, Button, Chip, Dialog, IconButton, useTheme, DialogTitle, DialogContent, TextField, FormControlLabel, Switch, DialogActions } from "@mui/material";
-import { EditOutlined, Send } from "@mui/icons-material";
-import { DataGrid } from "@mui/x-data-grid";
+import { Box, Button, Chip, Dialog, IconButton, DialogTitle, DialogContent, TextField, FormControlLabel, Switch, DialogActions } from "@mui/material";
+import { EditOutlined } from "@mui/icons-material";
 import { getProyecto, putProyecto } from "services/api";
+import DataTable from "components/DataTable";
 
 const Proyecto = () => {
-  const theme = useTheme();
   const [title, setTitle] = useState("");
   const [modal, setModal] = useState(false);
   const [proyecto, setProyecto] = useState([]);
@@ -102,43 +101,9 @@ const Proyecto = () => {
   ];
 
   return (
-    <Box m="1.5rem 2.5rem">
+    <Box m="1rem 2.5rem">
       <Header title="PROYECTOS" subtitle="Lista de Proyectos" />
-      <Box display="flex" justifyContent="flex-end" mb="1.5rem">
-        <Button variant="contained" color="secondary" style={{ fontSize: "1rem", padding: "0.5rem 1rem" }} endIcon={<Send />} onClick={() => openModal(1)}>
-          Agregar Proyecto
-        </Button>
-      </Box>
-      <Box
-        mt="40px"
-        height="75vh"
-        sx={{
-          "& .MuiDataGrid-root": {
-            border: "none",
-          },
-          "& .MuiDataGrid-cell": {
-            borderBottom: "none",
-          },
-          "& .MuiDataGrid-columnHeaders": {
-            backgroundColor: theme.palette.background.alt,
-            color: theme.palette.secondary[100],
-            borderBottom: "none",
-          },
-          "& .MuiDataGrid-virtualScroller": {
-            backgroundColor: theme.palette.primary.light,
-          },
-          "& .MuiDataGrid-footerContainer": {
-            backgroundColor: theme.palette.background.alt,
-            color: theme.palette.secondary[100],
-            borderTop: "none",
-          },
-          "& .MuiDataGrid-toolbarContainer .MuiButton-text": {
-            color: `${theme.palette.secondary[200]} !important`,
-          },
-        }}>
-        {" "}
-        <DataGrid getRowId={(row) => row.id} rows={proyecto || []} columns={columns} />
-      </Box>
+      <DataTable rows={proyecto || {}} columns={columns || {}} openModal={openModal || {}} />
       <Dialog open={modal} onClose={closeModal}>
         <DialogTitle color="secondary">{title}</DialogTitle>
         <DialogContent>
@@ -151,23 +116,12 @@ const Proyecto = () => {
             autoComplete="off">
             <div>
               {" "}
-              <TextField
-                id="proyectoinput"
-                label="Nombre Proyecto"
-                defaultValue={newProyecto.proyecto}
-                color="secondary"
-                onChange={(e) => setNewProyecto({ ...newProyecto, proyecto: e.target.value })}
-              />
+              <TextField id="proyectoinput" label="Nombre Proyecto" defaultValue={newProyecto.proyecto} color="secondary" onChange={(e) => setNewProyecto({ ...newProyecto, proyecto: e.target.value })} />
             </div>
             {operation === 2 ? (
               <div class="terms">
                 &nbsp; &nbsp;
-                <FormControlLabel
-                  label="Proyecto Activo"
-                  control={
-                    <Switch color="secondary" checked={newProyecto.estado} onChange={(e) => setNewProyecto({ ...newProyecto, estado: e.target.checked })} name="estado" />
-                  }
-                />
+                <FormControlLabel label="Estado" control={<Switch color="secondary" checked={newProyecto.estado} onChange={(e) => setNewProyecto({ ...newProyecto, estado: e.target.checked })} name="estado" />} />
               </div>
             ) : null}
           </Box>

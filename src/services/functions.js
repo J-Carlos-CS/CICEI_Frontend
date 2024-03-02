@@ -5,7 +5,7 @@ export function show_alerta(mensaje, icono, foco = "") {
   onfocus(foco);
   const MySwal = withReactContent(Swal);
   MySwal.fire({
-    timer: 1000,
+    timer: 1500,
     title: mensaje,
     icon: icono,
     showConfirmButton: false,

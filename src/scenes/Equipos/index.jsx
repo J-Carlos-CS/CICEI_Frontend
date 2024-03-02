@@ -1,16 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { show_alerta } from "services/functions";
 import Header from "components/Header";
-import { Box, Button, Chip, Dialog, IconButton, useTheme, DialogTitle, DialogContent, TextField, DialogActions, MenuItem } from "@mui/material";
-import { DeleteForeverOutlined, EditOutlined, Send, RemoveRedEye } from "@mui/icons-material";
-import { DataGrid } from "@mui/x-data-grid";
-import DataGridCustomToolbar from "components/DataGridCustomToolBar";
+import { Box, Button, Chip, Dialog, IconButton, DialogTitle, DialogActions } from "@mui/material";
+import { DeleteForeverOutlined, EditOutlined, RemoveRedEye } from "@mui/icons-material";
 import { deleteEquipos, getCategoria, getEquipos, getProyecto, getUnidades, putEquipos } from "services/api";
-import { Navigate, useNavigate } from "react-router-dom";
-import DetalleEquipos from "scenes/Detalle_Equipos";
+import { useNavigate } from "react-router-dom";
+import DataTable from "components/DataTable";
+import Form from "./Form";
 
 const Equipos = () => {
-  const theme = useTheme();
   const [title, setTitle] = useState("");
   const [modal, setModal] = useState(false);
   const [equipo, setEquipo] = useState([]);
@@ -38,7 +36,6 @@ const Equipos = () => {
   const getProducto = async () => {
     const respuesta = await getEquipos();
     setEquipo(respuesta.data);
-    console.log(equipo);
   };
   const getCategorias = async () => {
     const respuesta = await getCategoria();
@@ -76,17 +73,7 @@ const Equipos = () => {
       setTitle("Agregar Equipo");
     } else if (op === 2) {
       setTitle("Editar Equipo");
-      setNewEquipo({
-        id: proyec.id,
-        nombre: proyec.nombre,
-        cantidad: proyec.cantidad,
-        unidad: proyec.unidad,
-        estado: proyec.estado,
-        categoriaId: proyec.categoriaId,
-        proyectoId: proyec.proyectoId,
-        marca: proyec.marca,
-        modelo: proyec.modelo,
-      });
+      setNewEquipo(proyec);
     }
   };
   const closeModal = async () => {
@@ -94,10 +81,7 @@ const Equipos = () => {
   };
   const validar = () => {
     var method;
-    if (newEquipo.nombre.trim() === "" && newEquipo.cantidad !== 0 && newEquipo.unidad === "" && newEquipo.categoriaId !== 0 && newEquipo.proyectoId !== 0) {
-      closeModal();
-      show_alerta("completa todos los datos", "warning");
-    } else {
+    if (newEquipo.nombre.trim() !== "" && newEquipo.cantidad !== 0 && newEquipo.unidad !== "" && newEquipo.categoriaId !== 0 && newEquipo.proyectoId !== 0 && newEquipo.marca.trim() !== "" && newEquipo.modelo.trim() !== "") {
       closeModal();
       if (operation === 1) {
         method = "POST";
@@ -105,14 +89,17 @@ const Equipos = () => {
         method = "PUT";
       }
       sendData(method);
+    } else {
+      closeModal();
+      show_alerta("COMPLETA TODOS LOS DATOS", "warning");
     }
   };
   const EliminarEquipo = async (id) => {
     const respuesta = await deleteEquipos(id);
     if (respuesta.error) {
-      show_alerta("Error en la solicitud", "error");
+      show_alerta("<b>ERROR</b> EN LA SOLICITUD", "error");
     } else {
-      show_alerta("Equipo: " + newEquipo.nombre + ", fue eliminado con exito! ", "success");
+      show_alerta("<b>EQUIPO</b>: " + newEquipo.nombre + ", FUE ELIMINADO CON EXITO! ", "success");
     }
     getProducto();
   };
@@ -177,214 +164,12 @@ const Equipos = () => {
   ];
 
   return (
-    <Box m="1.5rem 2.5rem">
+    <Box m="1rem 2.5rem">
       <Header title="EQUIPO" subtitle="LISTADO DE EQUIPOS" />
-      <Box display="flex" justifyContent="flex-end" mb="1.5rem">
-        <Button variant="contained" color="secondary" style={{ fontSize: "1rem", padding: "0.5rem 1rem" }} endIcon={<Send />} onClick={() => openModal(1)}>
-          Agregar Equipo
-        </Button>
-      </Box>
-      <Box
-        mt="40px"
-        height="75vh"
-        sx={{
-          "& .MuiDataGrid-root": {
-            border: "none",
-          },
-          "& .MuiDataGrid-cell": {
-            borderBottom: "none",
-          },
-          "& .MuiDataGrid-columnHeaders": {
-            backgroundColor: theme.palette.background.alt,
-            color: theme.palette.secondary[100],
-            borderBottom: "none",
-          },
-          "& .MuiDataGrid-virtualScroller": {
-            backgroundColor: theme.palette.primary.light,
-          },
-          "& .MuiDataGrid-footerContainer": {
-            backgroundColor: theme.palette.background.alt,
-            color: theme.palette.secondary[100],
-            borderTop: "none",
-          },
-          "& .MuiDataGrid-toolbarContainer .MuiButton-text": {
-            color: `${theme.palette.secondary[200]} !important`,
-          },
-        }}>
-        <DataGrid
-          getRowId={(row) => row.id}
-          rows={equipo || []}
-          columns={columns}
-          components={{ Toolbar: DataGridCustomToolbar }}
-          columnVisibilityModel={columnVisibilityModel}
-          onColumnVisibilityModelChange={(newModel) => setColumnVisibilityModel(newModel)}
-          initialState={{ pagination: { paginationModel: { pageSize: 25 } } }}
-          pageSizeOptions={[25, 50, 100]}
-        />
-      </Box>
+      <DataTable rows={equipo || {}} columns={columns || {}} columnVisibilityModel={columnVisibilityModel || {}} setColumnVisibilityModel={setColumnVisibilityModel || {}} openModal={openModal || {}} />
       <Dialog open={modal} onClose={closeModal}>
         <DialogTitle color="secondary">{title}</DialogTitle>
-        <DialogContent>
-          <Box
-            component="form"
-            sx={{
-              width: "auto",
-              "& .MuiTextField-root": { m: 1, width: "20ch" },
-            }}
-            noValidate
-            autoComplete="off">
-            <div>
-              <TextField
-                id="nombreEquipo"
-                label="Nombre Equipo"
-                defaultValue={newEquipo.nombre}
-                color="secondary"
-                InputLabelProps={{
-                  shrink: true,
-                }}
-                onChange={(e) =>
-                  setNewEquipo({
-                    ...newEquipo,
-                    nombre: e.target.value,
-                  })
-                }
-              />
-              <TextField
-                id="cantidadEquipo"
-                type="number"
-                label="Cantidad Equipo"
-                defaultValue={newEquipo.cantidad}
-                color="secondary"
-                InputLabelProps={{
-                  shrink: true,
-                }}
-                onChange={(e) =>
-                  setNewEquipo({
-                    ...newEquipo,
-                    cantidad: e.target.value,
-                  })
-                }
-              />
-            </div>
-            <div>
-              <TextField
-                id="marcaEquipo"
-                label="Marca Equipo"
-                defaultValue={newEquipo.marca}
-                color="secondary"
-                InputLabelProps={{
-                  shrink: true,
-                }}
-                onChange={(e) =>
-                  setNewEquipo({
-                    ...newEquipo,
-                    marca: e.target.value,
-                  })
-                }
-              />
-              <TextField
-                id="modeloEquipo"
-                label="Modelo Equipo"
-                defaultValue={newEquipo.modelo}
-                color="secondary"
-                InputLabelProps={{
-                  shrink: true,
-                }}
-                onChange={(e) =>
-                  setNewEquipo({
-                    ...newEquipo,
-                    modelo: e.target.value,
-                  })
-                }
-              />
-            </div>
-            <div>
-              <TextField
-                id="selectUnidades"
-                select
-                label="Unidades"
-                color="secondary"
-                defaultValue={newEquipo.unidad ? newEquipo.unidad : null}
-                InputLabelProps={{
-                  shrink: true,
-                }}
-                onChange={(event) => {
-                  setNewEquipo({
-                    ...newEquipo,
-                    unidad: event.target.value,
-                  });
-                }}>
-                {unidades.map((option) => (
-                  <MenuItem key={option.unidades} value={option.unidades}>
-                    {option.unidades}
-                  </MenuItem>
-                ))}
-              </TextField>
-              <TextField
-                id="selectCategoria"
-                select
-                label="Categoria"
-                color="secondary"
-                defaultValue={newEquipo.categoriaId ? newEquipo.categoriaId : null}
-                InputLabelProps={{
-                  shrink: true,
-                }}
-                onChange={(event) => {
-                  setNewEquipo({
-                    ...newEquipo,
-                    categoriaId: event.target.value,
-                  });
-                }}>
-                {categorias.map((option) => (
-                  <MenuItem key={option.id.toString()} value={option.id}>
-                    {option.categoria}
-                  </MenuItem>
-                ))}
-              </TextField>
-            </div>
-            <div>
-              <TextField
-                id="selectProyecto"
-                select
-                label="Proyecto"
-                color="secondary"
-                defaultValue={newEquipo.proyectoId ? newEquipo.proyectoId : null}
-                InputLabelProps={{
-                  shrink: true,
-                }}
-                onChange={(event) => {
-                  setNewEquipo({
-                    ...newEquipo,
-                    proyectoId: event.target.value,
-                  });
-                }}>
-                {proyectos.map((option) => (
-                  <MenuItem key={option.id.toString()} value={option.id}>
-                    {option.proyecto}
-                  </MenuItem>
-                ))}
-              </TextField>
-              {operation === 1 ? (
-                <TextField
-                  id="fecha"
-                  type="date"
-                  label="Fecha de Adquisicion"
-                  defaultValue={newEquipo.fecha_adquisicion ? newEquipo.fecha_adquisicion : null}
-                  color="secondary"
-                  InputLabelProps={{
-                    shrink: true,
-                  }}
-                  onChange={(e) =>
-                    setNewEquipo({
-                      ...newEquipo,
-                      fecha_adquisicion: e.target.value,
-                    })
-                  }
-                />
-              ) : null}
-            </div>
-          </Box>
-        </DialogContent>
+        <Form newEquipo={newEquipo || {}} setNewEquipo={setNewEquipo || {}} operation={operation || {}} unidades={unidades || {}} categorias={categorias || {}} proyectos={proyectos || {}} />
         <DialogActions>
           <Button autoFocus color="error" onClick={closeModal}>
             Cancelar

@@ -1,17 +1,14 @@
-import { useTheme } from "@emotion/react";
 import { Box, Chip, Dialog, IconButton, DialogTitle, DialogContent } from "@mui/material";
-import { DataGrid } from "@mui/x-data-grid";
-import DataGridCustomToolbar from "components/DataGridCustomToolBar";
-import { DeleteForeverOutlined, EditOutlined, Send, RemoveRedEye, Description } from "@mui/icons-material";
+import { EditOutlined, RemoveRedEye, Description } from "@mui/icons-material";
 import Header from "components/Header";
 import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { getDetalleEquipo } from "services/api";
+import DataTable from "components/DataTable";
 
 const DetalleEquipos = () => {
   const location = useLocation();
   const equipoId = location.state.id;
-  const theme = useTheme();
   const [title, setTitle] = useState();
   const [modal, setModal] = useState();
   const [operation, setOperation] = useState("");
@@ -125,46 +122,9 @@ const DetalleEquipos = () => {
     },
   ];
   return (
-    <Box m="1.5rem 2.5rem">
+    <Box m="1rem 2.5rem">
       <Header title="Detalle Equipo" subtitle="LISTA DE DETALLE DE EQUIPOS" />
-      <Box
-        mt="40px"
-        height="75vh"
-        sx={{
-          "& .MuiDataGrid-root": {
-            border: "none",
-          },
-          "& .MuiDataGrid-cell": {
-            borderBottom: "none",
-          },
-          "& .MuiDataGrid-columnHeaders": {
-            backgroundColor: theme.palette.background.alt,
-            color: theme.palette.secondary[100],
-            borderBottom: "none",
-          },
-          "& .MuiDataGrid-virtualScroller": {
-            backgroundColor: theme.palette.primary.light,
-          },
-          "& .MuiDataGrid-footerContainer": {
-            backgroundColor: theme.palette.background.alt,
-            color: theme.palette.secondary[100],
-            borderTop: "none",
-          },
-          "& .MuiDataGrid-toolbarContainer .MuiButton-text": {
-            color: `${theme.palette.secondary[200]} !important`,
-          },
-        }}>
-        <DataGrid
-          getRowId={(row) => row.id}
-          rows={detalleEquipo || []}
-          columns={columns}
-          components={{ Toolbar: DataGridCustomToolbar }}
-          columnVisibilityModel={columnVisibilityModel}
-          onColumnVisibilityModelChange={(newModel) => setColumnVisibilityModel(newModel)}
-          initialState={{ pagination: { paginationModel: { pageSize: 25 } } }}
-          pageSizeOptions={[25, 50, 100]}
-        />
-      </Box>
+      <DataTable rows={detalleEquipo || {}} columns={columns || {}} columnVisibilityModel={columnVisibilityModel || {}} setColumnVisibilityModel={setColumnVisibilityModel || {}} openModal={openModal || {}} agregar={false || {}} />
       <Dialog open={modal} onClose={closeModal}>
         <DialogTitle color="secondary">{title}</DialogTitle>
         <DialogContent>

@@ -5,14 +5,14 @@ import { Outlet } from "react-router-dom";
 import { useSelector } from "react-redux";
 import Navbar from "components/Navbar";
 import Sidebar from "components/Sidebar";
-import { selectUser } from "../../Auth/userReducer.js";
+//import { selectUser } from "../../Auth/userReducer.js";
 import { useGetUserQuery } from "state/api.js";
 
 const Layout = () => {
-  const isUser = useSelector(selectUser);
+  //const isUser = useSelector(selectUser);
   const isNonMobile = useMediaQuery("(min-width: 600px)");
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
-  const [isNavbarOpen, setIsNavbarOpen] = useState(true);
+  const [isNavbarOpen] = useState(true);
   const userId = useSelector((state) => state.global.userId);
   const { data } = useGetUserQuery(userId);
   return (
