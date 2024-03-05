@@ -91,15 +91,15 @@ const Equipos = () => {
       sendData(method);
     } else {
       closeModal();
-      show_alerta("COMPLETA TODOS LOS DATOS", "warning");
+      show_alerta("Completa Todos los datos", "warning");
     }
   };
-  const EliminarEquipo = async (id) => {
-    const respuesta = await deleteEquipos(id);
+  const EliminarEquipo = async (proyec) => {
+    const respuesta = await deleteEquipos(proyec.id);
     if (respuesta.error) {
       show_alerta("<b>ERROR</b> EN LA SOLICITUD", "error");
     } else {
-      show_alerta("<b>EQUIPO</b>: " + newEquipo.nombre + ", FUE ELIMINADO CON EXITO! ", "success");
+      show_alerta("<b>EQUIPO</b>: " + proyec.nombre + ", FUE ELIMINADO CON EXITO! ", "success");
     }
     getProducto();
   };
@@ -155,7 +155,7 @@ const Equipos = () => {
           <IconButton color="secondary" aria-label="Editar" onClick={() => openModal(2, params.row)}>
             <EditOutlined />
           </IconButton>
-          <IconButton color="secondary" aria-label="Eliminar" onClick={() => EliminarEquipo(params.row.id)}>
+          <IconButton color="secondary" aria-label="Eliminar" onClick={() => EliminarEquipo(params.row)}>
             <DeleteForeverOutlined />
           </IconButton>
         </Box>

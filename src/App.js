@@ -13,6 +13,8 @@ import Proyecto from "scenes/Proyecto";
 import Unidades from "scenes/Unidades";
 import Equipos from "scenes/Equipos";
 import DetalleEquipos from "scenes/Detalle_Equipos";
+import Manuales from "scenes/Manuales";
+
 function App() {
   const mode = useSelector((state) => state.global.mode);
   const theme = useMemo(() => createTheme(themeSettings(mode)), [mode]);
@@ -32,6 +34,7 @@ function App() {
               <Route path="/proyecto" element={<Proyecto />} />
               <Route path="/proyeto/detalle" element={<DetalleEquipos />} />
               <Route path="/unidades" element={<Unidades roles={["Administrador", "Investigador", "Asociado", "Estudiante", "Consultor", "DirectorNacional"]} />} />
+              <Route path="/manuales" element={<Manuales />} />
             </Route>
           </Routes>
         </ThemeProvider>

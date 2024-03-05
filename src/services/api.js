@@ -91,3 +91,9 @@ export const getDetalleEquipo = async (id) => {
   const result = await axios.get(url + "/detalle/" + id.toString());
   return result;
 };
+
+//Manuales
+export const getManuales = async () => {
+  const result = await axios.get(url + "/manuales");
+  return result;
+};

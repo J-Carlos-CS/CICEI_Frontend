@@ -108,13 +108,13 @@ const DetalleEquipos = () => {
       flex: 0.5,
       renderCell: (params) => (
         <Box>
-          <IconButton color="secondary" aria-label="Manual" onClick={() => manual(params.row.manualeId)}>
+          <IconButton color="secondary" aria-label="Manual" onClick={() => manual(params.row.manualeId)} title="Manual">
             <Description />
           </IconButton>
-          <IconButton color="secondary" aria-label="Ver" onClick={() => openModal(1, params.row)}>
+          <IconButton color="secondary" aria-label="Ver" onClick={() => openModal(1, params.row)} title="Ver">
             <RemoveRedEye />
           </IconButton>
-          <IconButton color="secondary" aria-label="Editar" onClick={() => openModal(2, params.row)}>
+          <IconButton color="secondary" aria-label="Editar" onClick={() => openModal(2, params.row)} title="Editar">
             <EditOutlined />
           </IconButton>
         </Box>

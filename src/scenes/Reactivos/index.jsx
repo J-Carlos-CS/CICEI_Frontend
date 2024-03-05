@@ -104,16 +104,17 @@ const Reactivos = () => {
       sendData(method);
     } else {
       closeModal();
-      show_alerta("completa todos los datos", "warning");
+      show_alerta("Completa Todos los Datos", "warning");
     }
   };
-  const EliminarReactivo = async (id) => {
-    if (id) {
-      const respuesta = await deleteReactivo(id);
+  const EliminarReactivo = async (proyec) => {
+    console.log(proyec);
+    if (proyec.id) {
+      const respuesta = await deleteReactivo(proyec.id);
       if (respuesta.error) {
         show_alerta("Error en la solicitud", "error");
       } else {
-        show_alerta("Reactivos: " + newReactivos.nombre + ", fue eliminado con exito! ", "success");
+        show_alerta("Reactivos: " + proyec.nombre + ", fue eliminado con exito! ", "success");
       }
       getProducto();
     }
@@ -178,7 +179,7 @@ const Reactivos = () => {
           <IconButton color="secondary" aria-label="Editar" onClick={() => openModal(2, params.row)}>
             <EditOutlined />
           </IconButton>
-          <IconButton color="secondary" aria-label="Eliminar" onClick={() => EliminarReactivo(params.row.id)}>
+          <IconButton color="secondary" aria-label="Eliminar" onClick={() => EliminarReactivo(params.row)}>
             <DeleteForeverOutlined />
           </IconButton>
         </Box>

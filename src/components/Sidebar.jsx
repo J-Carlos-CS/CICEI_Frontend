@@ -15,6 +15,7 @@ import {
   CancelOutlined,
   FeedOutlined,
   Scale,
+  Article,
 } from "@mui/icons-material";
 
 import { useEffect, useState } from "react";
@@ -38,6 +39,10 @@ const navItems = [
   {
     text: "Equipos",
     icon: <KitchenOutlined />,
+  },
+  {
+    text: "Manuales",
+    icon: <Article />,
   },
   {
     text: "Categorias",
