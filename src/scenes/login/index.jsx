@@ -24,10 +24,12 @@ const Login = () => {
     await putLogin(user)
       .then((res) => {
         if (res.data?.success) {
-          show_alerta("Inicio de Seccion Correcto", "success");
-          console.log(res.data?.response);
           login(res.data?.response);
+          show_alerta("Inicio de Seccion Correcto", "success");
           navigate("/dashboard");
+          window.location.reload();
+          navigate("/dashboard");
+          window.location.reload();
         }
       })
       .catch((e) => {
@@ -48,12 +50,7 @@ const Login = () => {
             <div>
               <TextField label="Contraseña" type="password" color="secondary" margin="normal" onChange={(e) => setUser({ ...user, password: e.target.value })} />
             </div>
-            <Button
-              variant="contained"
-              color="secondary"
-              style={{ fontSize: "1rem", padding: "0.5rem 1rem", marginTop: theme.spacing(2) }}
-              onClick={() => userlogin()}
-              disabled={isLoading}>
+            <Button variant="contained" color="secondary" style={{ fontSize: "1rem", padding: "0.5rem 1rem", marginTop: theme.spacing(2) }} onClick={() => userlogin()} disabled={isLoading}>
               Iniciar Sesión
             </Button>
           </Box>

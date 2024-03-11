@@ -14,32 +14,41 @@ import Unidades from "scenes/Unidades";
 import Equipos from "scenes/Equipos";
 import DetalleEquipos from "scenes/Detalle_Equipos";
 import Manuales from "scenes/Manuales";
+import { selectUser } from "Auth/userReducer";
 
 function App() {
   const mode = useSelector((state) => state.global.mode);
   const theme = useMemo(() => createTheme(themeSettings(mode)), [mode]);
+  const user = useSelector(selectUser);
+  const isLogged = user;
+  const adminLab = user && user.rol === "Admin";
   return (
-    <div className="app">
-      <BrowserRouter>
-        <ThemeProvider theme={theme}>
-          <CssBaseline />
-          <Routes>
+    <BrowserRouter>
+      <ThemeProvider theme={theme}>
+        <CssBaseline />
+        <Routes>
+          <Route path="/login" element={<Login />} />
+          {isLogged ? (
             <Route element={<Layout />}>
-              <Route path="/" element={<Navigate to="/login" replace />} />
-              <Route path="/login" element={<Login />} />
+              <Route path="/" element={<Navigate to="/dashboard" replace />} />
               <Route path="/dashboard" element={<Dashboard />} />
-              <Route path="/categorias" element={<Categorias />} />
-              <Route path="/reactivos" element={<Reactives />} />
-              <Route path="/equipos" element={<Equipos />} />
-              <Route path="/proyecto" element={<Proyecto />} />
-              <Route path="/proyeto/detalle" element={<DetalleEquipos />} />
-              <Route path="/unidades" element={<Unidades roles={["Administrador", "Investigador", "Asociado", "Estudiante", "Consultor", "DirectorNacional"]} />} />
-              <Route path="/manuales" element={<Manuales />} />
+              {adminLab && (
+                <>
+                  <Route path="/categorias" element={<Categorias />} />
+                  <Route path="/reactivos" element={<Reactives />} />
+                  <Route path="/equipos" element={<Equipos />} />
+                  <Route path="/proyecto" element={<Proyecto />} />
+                  <Route path="/proyeto/detalle" element={<DetalleEquipos />} />
+                  <Route path="/unidades" element={<Unidades roles={["Administrador", "Investigador", "Asociado", "Estudiante", "Consultor", "DirectorNacional"]} />} />
+                  <Route path="/manuales" element={<Manuales />} />
+                </>
+              )}
             </Route>
-          </Routes>
-        </ThemeProvider>
-      </BrowserRouter>
-    </div>
+          ) : undefined}
+          <Route path="*" element={<Navigate to="/login" replace />} />
+        </Routes>
+      </ThemeProvider>
+    </BrowserRouter>
   );
 }
 
