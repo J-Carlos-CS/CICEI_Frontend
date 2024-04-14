@@ -24,7 +24,7 @@ const Categoria = () => {
     setCategoria(respuesta.data);
   };
   const clearModal = async () => {
-    setNewCategoria({ ...newCategoria, estado: false, categoria: "" });
+    setNewCategoria({ ...newCategoria, estado: false, categoria: "", id: 0, CreadoBy: "" });
   };
   const openModal = (op, proyec) => {
     clearModal();
@@ -75,6 +75,21 @@ const Categoria = () => {
       headerName: "ESTADO",
       flex: 0.5,
       renderCell: (params) => <Chip label={params.row.estado ? "ACTIVO" : "DESACTIVADO"} color={params.row.estado ? "success" : "error"} />,
+    },
+    { field: "CreadoBy", headerName: "CREADO POR", flex: 0.5 },
+    { field: "ModificadoBy", headerName: "MODIFICADO POR", flex: 0.5 },
+
+    {
+      field: "createdAt",
+      headerName: "CREADO EN",
+      flex: 0.5,
+      valueGetter: (params) => params.row.createdAt.slice(0, params.row.createdAt.indexOf("T")),
+    },
+    {
+      field: "updatedAt",
+      headerName: "MODIFICADO EN",
+      flex: 0.5,
+      valueGetter: (params) => params.row.updatedAt.slice(0, params.row.updatedAt.indexOf("T")),
     },
     {
       field: "acciones",

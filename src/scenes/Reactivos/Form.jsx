@@ -61,11 +61,13 @@ const Form = ({ newReactivos, setNewReactivos, unidades, categorias, proyectos }
                 unidades: event.target.value,
               });
             }}>
-            {unidades.map((option) => (
-              <MenuItem key={option.unidades} value={option.unidades}>
-                {option.unidades}
-              </MenuItem>
-            ))}
+            {unidades.map((option) =>
+              option.estado ? (
+                <MenuItem key={option.unidades} value={option.unidades}>
+                  {option.unidades}
+                </MenuItem>
+              ) : null
+            )}
           </TextField>
           <TextField
             id="selectClasificacion"
@@ -135,11 +137,13 @@ const Form = ({ newReactivos, setNewReactivos, unidades, categorias, proyectos }
                 categoriaId: event.target.value,
               });
             }}>
-            {categorias.map((option) => (
-              <MenuItem key={option.id.toString()} value={option.id}>
-                {option.categoria}
-              </MenuItem>
-            ))}
+            {categorias.map((option) =>
+              option.estado ? (
+                <MenuItem key={option.id.toString()} value={option.id}>
+                  {option.categoria}
+                </MenuItem>
+              ) : null
+            )}
           </TextField>
           <TextField
             id="selectProyecto"
@@ -156,11 +160,13 @@ const Form = ({ newReactivos, setNewReactivos, unidades, categorias, proyectos }
                 proyectoId: event.target.value,
               });
             }}>
-            {proyectos.map((option) => (
-              <MenuItem key={option.id.toString()} value={option.id}>
-                {option.proyecto}
-              </MenuItem>
-            ))}
+            {proyectos.map((option) =>
+              option.estado ? (
+                <MenuItem key={option.id.toString()} value={option.id}>
+                  {option.proyecto}
+                </MenuItem>
+              ) : null
+            )}
           </TextField>
         </div>
         <div>
@@ -186,7 +192,7 @@ const Form = ({ newReactivos, setNewReactivos, unidades, categorias, proyectos }
             id="cantidadRectivo"
             type="date"
             label="Fecha de Vencimiento"
-            defaultValue={newReactivos.fecha_vencimiento ? newReactivos.fecha_vencimiento : null}
+            defaultValue={newReactivos.fecha_vencimiento ? newReactivos.fecha_vencimiento.slice(0, newReactivos.fecha_vencimiento.indexOf("T")) : ""}
             color="secondary"
             InputLabelProps={{
               shrink: true,

@@ -2,20 +2,27 @@ import React, { useEffect, useState } from "react";
 import { show_alerta } from "../../services/functions";
 import Header from "components/Header";
 import { Box, Button, Chip, Dialog, IconButton, DialogTitle, DialogActions } from "@mui/material";
-import { DeleteForeverOutlined, EditOutlined } from "@mui/icons-material";
+import { DeleteForeverOutlined, EditOutlined, AddCircleOutline, Visibility } from "@mui/icons-material";
 import { getReactivos, putReactivos, getCategoria, getProyecto, getUnidades, deleteReactivo } from "services/api";
 import DataTable from "components/DataTable";
 import Form from "./Form";
+import ImportForm from "./ImportForm";
+import FormImport from "./FormImport";
 
 const Reactivos = () => {
   const [title, setTitle] = useState("");
   const [modal, setModal] = useState(false);
+  const [modalImport, setModalImport] = useState(false);
   const [reactivos, setReactivos] = useState([]);
   const [categorias, setCategoria] = useState([]);
   const [proyectos, setProyecto] = useState([]);
   const [unidades, setUnidades] = useState([]);
   const [operation, setOperation] = useState("");
-  const [columnVisibilityModel, setColumnVisibilityModel] = React.useState({ observaciones: false, marca: false, fecha_vencimiento: false });
+  const [reactivoID, setReactivoID] = useState(0);
+  const [modalForm, setModalForm] = useState(false);
+  const [modalFicha, setModalFicha] = useState(false);
+  const [URL, setURL] = useState("");
+  const [columnVisibilityModel, setColumnVisibilityModel] = React.useState({ observaciones: false, marca: false, fecha_vencimiento: false, CreadoBy: false, ModificadoBy: false, createdAt: false, updatedAt: false });
   const [newReactivos, setNewReactivos] = useState({
     id: 0,
     nombre: "",
@@ -83,6 +90,20 @@ const Reactivos = () => {
   const closeModal = () => {
     setModal(false);
   };
+  const closeModalForm = () => {
+    setModalForm(false);
+  };
+  const openModalImport = () => {
+    setModalImport(true);
+  };
+  const closeModalImport = () => {
+    setModalImport(false);
+    getProducto();
+  };
+  const openModalForm = (proyect) => {
+    setModalForm(true);
+    setReactivoID(proyect.id);
+  };
   const validar = () => {
     var method;
     closeModal();
@@ -133,6 +154,13 @@ const Reactivos = () => {
     }
     getProducto();
   };
+  const openFicha = (proyect) => {
+    setModalFicha(true);
+    setURL(proyect.ficha_tecnica);
+  };
+  const closeModalFicha = () => {
+    setModalFicha(false);
+  };
 
   const columns = [
     { field: "nombre", headerName: "NOMBRE", flex: 0.5 },
@@ -162,13 +190,47 @@ const Reactivos = () => {
       field: "fecha_vencimiento",
       headerName: "FECHA VENCIMIENTO",
       flex: 0.5,
-      valueGetter: (params) => params.row.fecha_vencimiento.slice(0, params.row.fecha_vencimiento.indexOf("T")),
+      valueGetter: (params) => (params.row.fecha_vencimiento ? params.row.fecha_vencimiento.slice(0, params.row.fecha_vencimiento.indexOf("T")) : ""),
+    },
+    {
+      field: "ficha_tecnica",
+      headerName: "FICHA TECNICA",
+      flex: 0.5,
+      renderCell: (params) =>
+        params.row.ficha_tecnica ? (
+          <Box>
+            <IconButton color="secondary" aria-label="Ver Ficha" onClick={() => openFicha(params.row)}>
+              <Visibility />
+            </IconButton>
+          </Box>
+        ) : (
+          <Box>
+            <IconButton color="secondary" aria-label="Agregar Ficha" onClick={() => openModalForm(params.row)}>
+              <AddCircleOutline />
+            </IconButton>
+          </Box>
+        ),
     },
     {
       field: "estado",
       headerName: "ESTADO",
       flex: 0.5,
       renderCell: (params) => <Chip label={params.row.estado ? "ACTIVO" : "DESACTIVADO"} color={params.row.estado ? "success" : "error"} />,
+    },
+    { field: "CreadoBy", headerName: "CREADO POR", flex: 0.5 },
+    { field: "ModificadoBy", headerName: "MODIFICADO POR", flex: 0.5 },
+
+    {
+      field: "createdAt",
+      headerName: "CREADO EN",
+      flex: 0.5,
+      valueGetter: (params) => params.row.createdAt.slice(0, params.row.createdAt.indexOf("T")),
+    },
+    {
+      field: "updatedAt",
+      headerName: "MODIFICADO EN",
+      flex: 0.5,
+      valueGetter: (params) => params.row.updatedAt.slice(0, params.row.updatedAt.indexOf("T")),
     },
     {
       field: "acciones",
@@ -190,7 +252,15 @@ const Reactivos = () => {
   return (
     <Box m="1rem 2.5rem">
       <Header title="REACTIVOS" subtitle="Lista de Reactivos" />
-      <DataTable rows={reactivos || {}} columns={columns || {}} columnVisibilityModel={columnVisibilityModel || {}} setColumnVisibilityModel={setColumnVisibilityModel || {}} openModal={openModal || {}} />
+      <DataTable
+        rows={reactivos || {}}
+        columns={columns || {}}
+        columnVisibilityModel={columnVisibilityModel || {}}
+        setColumnVisibilityModel={setColumnVisibilityModel || {}}
+        openModal={openModal || {}}
+        openModalImport={openModalImport || {}}
+        agregarImport={true || {}}
+      />
       <Dialog open={modal} onClose={closeModal}>
         <DialogTitle color="secondary">{title}</DialogTitle>
         <Form newReactivos={newReactivos || {}} setNewReactivos={setNewReactivos || {}} unidades={unidades || {}} categorias={categorias || {}} proyectos={proyectos || {}} />
@@ -202,6 +272,16 @@ const Reactivos = () => {
             Guardar
           </Button>
         </DialogActions>
+      </Dialog>
+      <Dialog open={modalImport} onClose={closeModalImport} alignItems="center" PaperProps={{ style: { maxHeight: 600, maxWidth: 1200 } }}>
+        <DialogTitle color="secondary">Importar Datos para Reactivos</DialogTitle>
+        <ImportForm closeModalImport={closeModalImport} />
+      </Dialog>
+      <Dialog open={modalForm} onClose={closeModalForm}>
+        <FormImport id={reactivoID || {}} closeModalForm={closeModalForm || {}} />
+      </Dialog>
+      <Dialog open={modalFicha} onClose={closeModalFicha} alignItems="center" PaperProps={{ style: { maxHeight: 600, maxWidth: 1200 } }}>
+        <iframe src={`https://drive.google.com/file/d/${URL}/preview`} title="Ficha Técnica" width="1200" height="1200" allow="autoplay"></iframe>
       </Dialog>
     </Box>
   );

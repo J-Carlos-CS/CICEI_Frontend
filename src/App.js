@@ -2,8 +2,9 @@ import { CssBaseline, ThemeProvider } from "@mui/material";
 import { createTheme } from "@mui/material/styles";
 import { useMemo } from "react";
 import { themeSettings } from "theme";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
+import { selectUser } from "Auth/userReducer";
 import Dashboard from "scenes/dashboard";
 import Layout from "scenes/layout";
 import Categorias from "scenes/Categorias";
@@ -14,11 +15,12 @@ import Unidades from "scenes/Unidades";
 import Equipos from "scenes/Equipos";
 import DetalleEquipos from "scenes/Detalle_Equipos";
 import Manuales from "scenes/Manuales";
-import { selectUser } from "Auth/userReducer";
+import Usuario from "scenes/Usuario";
 
 function App() {
   const mode = useSelector((state) => state.global.mode);
   const theme = useMemo(() => createTheme(themeSettings(mode)), [mode]);
+  const dispatch = useDispatch();
   const user = useSelector(selectUser);
   const isLogged = user;
   const adminLab = user && user.rol === "Admin";
@@ -31,7 +33,7 @@ function App() {
           {isLogged ? (
             <Route element={<Layout />}>
               <Route path="/" element={<Navigate to="/dashboard" replace />} />
-              <Route path="/dashboard" element={<Dashboard />} />
+              <Route path="/inicio" element={<Dashboard />} />
               {adminLab && (
                 <>
                   <Route path="/categorias" element={<Categorias />} />
@@ -41,6 +43,7 @@ function App() {
                   <Route path="/proyeto/detalle" element={<DetalleEquipos />} />
                   <Route path="/unidades" element={<Unidades roles={["Administrador", "Investigador", "Asociado", "Estudiante", "Consultor", "DirectorNacional"]} />} />
                   <Route path="/manuales" element={<Manuales />} />
+                  <Route path="/usuarios" element={<Usuario />} />
                 </>
               )}
             </Route>

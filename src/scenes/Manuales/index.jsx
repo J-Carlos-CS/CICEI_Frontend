@@ -31,6 +31,21 @@ const Manuales = () => {
       renderCell: (params) => <Chip label={params.row.digital ? "Si" : "No"} color={params.row.digital ? "success" : "error"} />,
     },
     { field: "link_manual", headerName: "LINK", flex: 1 },
+    { field: "CreadoBy", headerName: "CREADO POR", flex: 0.5 },
+    { field: "ModificadoBy", headerName: "MODIFICADO POR", flex: 0.5 },
+
+    {
+      field: "createdAt",
+      headerName: "CREADO EN",
+      flex: 0.5,
+      valueGetter: (params) => params.row.createdAt.slice(0, params.row.createdAt.indexOf("T")),
+    },
+    {
+      field: "updatedAt",
+      headerName: "MODIFICADO EN",
+      flex: 0.5,
+      valueGetter: (params) => params.row.updatedAt.slice(0, params.row.updatedAt.indexOf("T")),
+    },
     {
       field: "estado",
       headerName: "ESTADO",

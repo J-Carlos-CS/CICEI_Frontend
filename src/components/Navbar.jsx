@@ -12,7 +12,7 @@ const Navbar = ({ user, isSidebarOpen, isNavarOpen, setIsSidebarOpen }) => {
   const theme = useTheme();
   const navigate = useNavigate();
   const [anchorEl, setAnchorEl] = useState(null);
-  const isOpen = Boolean(anchorEl);
+  let isOpen = Boolean(anchorEl);
   const handleClick = (event) => setAnchorEl(event.currentTarget);
   const close = () => {
     console.log("cerrar");
@@ -22,6 +22,7 @@ const Navbar = ({ user, isSidebarOpen, isNavarOpen, setIsSidebarOpen }) => {
       window.location.reload();
     }
   };
+  const isClose = () => (isOpen = false);
   return isNavarOpen ? (
     <AppBar
       sx={{
@@ -31,9 +32,7 @@ const Navbar = ({ user, isSidebarOpen, isNavarOpen, setIsSidebarOpen }) => {
       }}>
       <Toolbar sx={{ justifyContent: "space-between" }}>
         {/* LEFT SIDE */}
-        <FlexBetween>
-          <IconButton onClick={() => setIsSidebarOpen(!isSidebarOpen)}></IconButton>
-        </FlexBetween>
+        <FlexBetween></FlexBetween>
 
         {/* RIGHT SIDE */}
         <FlexBetween gap="1.5rem">
@@ -56,7 +55,7 @@ const Navbar = ({ user, isSidebarOpen, isNavarOpen, setIsSidebarOpen }) => {
               />
               <Box textAlign="left">
                 <Typography fontWeight="bold" fontSize="0.85rem" sx={{ color: theme.palette.secondary[100] }}>
-                  {user.firstName}
+                  {user.firstName ? user.firstName + " " + user.lastName : ""}
                 </Typography>
                 <Typography fontSize="0.75rem" sx={{ color: theme.palette.secondary[200] }}>
                   {user.systemRol}
@@ -64,7 +63,7 @@ const Navbar = ({ user, isSidebarOpen, isNavarOpen, setIsSidebarOpen }) => {
               </Box>
               <ArrowDropDownOutlined sx={{ color: theme.palette.secondary[300], fontSize: "25px" }} />
             </Button>
-            <Menu anchorEl={anchorEl} open={isOpen} anchorOrigin={{ vertical: "bottom", horizontal: "center" }}>
+            <Menu anchorEl={anchorEl} open={isOpen} onClose={isClose} anchorOrigin={{ vertical: "bottom", horizontal: "center" }}>
               <MenuItem onClick={() => close()}>Log Out</MenuItem>
             </Menu>
           </FlexBetween>

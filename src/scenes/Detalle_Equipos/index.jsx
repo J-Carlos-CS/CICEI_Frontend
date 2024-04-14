@@ -1,10 +1,12 @@
-import { Box, Chip, Dialog, IconButton, DialogTitle, DialogContent } from "@mui/material";
+import { Box, Chip, Dialog, IconButton, DialogTitle, DialogActions, Button } from "@mui/material";
 import { EditOutlined, RemoveRedEye, Description } from "@mui/icons-material";
 import Header from "components/Header";
 import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
-import { getDetalleEquipo } from "services/api";
+import { getDetalleEquipo, postDetalleEquipo } from "services/api";
 import DataTable from "components/DataTable";
+import Form from "./Form";
+import { show_alerta } from "services/functions";
 
 const DetalleEquipos = () => {
   const location = useLocation();
@@ -17,12 +19,17 @@ const DetalleEquipos = () => {
   useEffect(() => {
     getProducto();
   }, []);
+
   const getProducto = async () => {
     const respuesta = await getDetalleEquipo(equipoId);
     setDetalleEquipo(respuesta.data);
   };
   const [columnVisibilityModel, setColumnVisibilityModel] = React.useState({
     observaciones: false,
+    CreadoBy: false,
+    ModificadoBy: false,
+    createdAt: false,
+    updatedAt: false,
   });
   const manual = async (manualId) => {};
   const cleanModal = async () => {
@@ -44,10 +51,10 @@ const DetalleEquipos = () => {
       id: proyec.id,
       num_ucb: proyec.num_ucb,
       observaciones: proyec.observaciones,
-      fecha_preventivo: proyec.fechas_adquisiciones.fecha_preventivo,
+      fecha_preventivo: proyec.fechas_adquisiciones[0].fecha_preventivo,
       estado: proyec.estado,
-      fecha_Correccion: proyec.fechas_adquisiciones.fecha_Correccion,
-      fecha_adquisicion: proyec.fechas_adquisiciones.fecha_adquisicion,
+      fecha_Correccion: proyec.fechas_adquisiciones[0].fecha_Correccion,
+      fecha_adquisicion: proyec.fechas_adquisiciones[0].fecha_adquisicion,
     });
     if (op === 1) {
       setTitle("Ver Equipo");
@@ -57,6 +64,32 @@ const DetalleEquipos = () => {
   };
   const closeModal = async () => {
     setModal(false);
+  };
+
+  const validar = async () => {
+    var method;
+    if (newDetalleEquipo.num_ucb.trim() !== "") {
+      closeModal();
+      if (operation === 1) {
+        method = "POST";
+      } else {
+        method = "PUT";
+      }
+      sendData(method);
+    }
+  };
+  const sendData = async (method) => {
+    const respuesta = await postDetalleEquipo(method, newDetalleEquipo);
+    if (respuesta.error) {
+      show_alerta("Error en la solicitud", "error");
+    } else {
+      if (operation === 1) {
+        show_alerta("Equipo: " + newDetalleEquipo.num_ucb + ", fue creado con exito! ", "success");
+      } else {
+        show_alerta("Equipo: " + newDetalleEquipo.num_ucb + ", fue actualizado con exito! ", "success");
+      }
+    }
+    getProducto();
   };
   const columns = [
     { field: "num_ucb", headerName: "CODIGO", flex: 0.5 },
@@ -90,6 +123,8 @@ const DetalleEquipos = () => {
       flex: 0.5,
       valueGetter: (params) => (params.row.fechas_adquisiciones[0].fecha_Correccion ? params.row.fechas_adquisiciones[0].fecha_Correccion.slice(0, params.row.fechas_adquisiciones[0].fecha_Correccion.indexOf("T")) : ""),
     },
+    { field: "CreadoBy", headerName: "CREADO POR", flex: 0.5 },
+    { field: "ModificadoBy", headerName: "MODIFICADO POR", flex: 0.5 },
     {
       field: "createdAt",
       headerName: "FECHA DE CREACION",
@@ -127,16 +162,15 @@ const DetalleEquipos = () => {
       <DataTable rows={detalleEquipo || {}} columns={columns || {}} columnVisibilityModel={columnVisibilityModel || {}} setColumnVisibilityModel={setColumnVisibilityModel || {}} openModal={openModal || {}} agregar={false || {}} />
       <Dialog open={modal} onClose={closeModal}>
         <DialogTitle color="secondary">{title}</DialogTitle>
-        <DialogContent>
-          <Box
-            component="form"
-            sx={{
-              width: "auto",
-              "& .MuiTextField-root": { m: 1, width: "20ch" },
-            }}
-            noValidate
-            autoComplete="off"></Box>
-        </DialogContent>
+        <Form newDetalleEquipo={newDetalleEquipo || {}} setNewDetalleEquipo={setNewDetalleEquipo || {}} />
+        <DialogActions>
+          <Button autoFocus color="error" onClick={closeModal}>
+            Cancelar
+          </Button>
+          <Button autoFocus color="secondary" onClick={() => validar()}>
+            Guardar
+          </Button>
+        </DialogActions>
       </Dialog>
     </Box>
   );

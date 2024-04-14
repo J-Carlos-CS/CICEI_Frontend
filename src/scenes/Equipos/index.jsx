@@ -7,10 +7,14 @@ import { deleteEquipos, getCategoria, getEquipos, getProyecto, getUnidades, putE
 import { useNavigate } from "react-router-dom";
 import DataTable from "components/DataTable";
 import Form from "./Form";
-
+import { useSelector } from "react-redux";
+import { selectUser } from "../../Auth/userReducer";
+import ImportForm from "./ImportForm";
 const Equipos = () => {
+  const user = useSelector(selectUser);
   const [title, setTitle] = useState("");
   const [modal, setModal] = useState(false);
+  const [modalImport, setModalImport] = useState(false);
   const [equipo, setEquipo] = useState([]);
   const [categorias, setCategoria] = useState([]);
   const [proyectos, setProyecto] = useState([]);
@@ -29,7 +33,7 @@ const Equipos = () => {
     modelo: "",
     fecha_adquisicion: "",
   });
-  const [columnVisibilityModel, setColumnVisibilityModel] = React.useState({});
+  const [columnVisibilityModel, setColumnVisibilityModel] = React.useState({ CreadoBy: false, ModificadoBy: false, createdAt: false, updatedAt: false });
   useEffect(() => {
     getProducto();
   }, []);
@@ -78,6 +82,13 @@ const Equipos = () => {
   };
   const closeModal = async () => {
     setModal(false);
+  };
+  const openModalImport = () => {
+    setModalImport(true);
+  };
+  const closeModalImport = () => {
+    setModalImport(false);
+    getProducto();
   };
   const validar = () => {
     var method;
@@ -143,6 +154,21 @@ const Equipos = () => {
       flex: 0.5,
       renderCell: (params) => <Chip label={params.row.estado ? "ACTIVO" : "DESACTIVADO"} color={params.row.estado ? "success" : "error"} />,
     },
+    { field: "CreadoBy", headerName: "CREADO POR", flex: 0.5 },
+    { field: "ModificadoBy", headerName: "MODIFICADO POR", flex: 0.5 },
+
+    {
+      field: "createdAt",
+      headerName: "CREADO EN",
+      flex: 0.5,
+      valueGetter: (params) => params.row.createdAt.slice(0, params.row.createdAt.indexOf("T")),
+    },
+    {
+      field: "updatedAt",
+      headerName: "MODIFICADO EN",
+      flex: 0.5,
+      valueGetter: (params) => params.row.updatedAt.slice(0, params.row.updatedAt.indexOf("T")),
+    },
     {
       field: "acciones",
       headerName: "ACCIONES",
@@ -166,7 +192,15 @@ const Equipos = () => {
   return (
     <Box m="1rem 2.5rem">
       <Header title="EQUIPO" subtitle="LISTADO DE EQUIPOS" />
-      <DataTable rows={equipo || {}} columns={columns || {}} columnVisibilityModel={columnVisibilityModel || {}} setColumnVisibilityModel={setColumnVisibilityModel || {}} openModal={openModal || {}} />
+      <DataTable
+        rows={equipo || {}}
+        columns={columns || {}}
+        columnVisibilityModel={columnVisibilityModel || {}}
+        setColumnVisibilityModel={setColumnVisibilityModel || {}}
+        openModal={openModal || {}}
+        openModalImport={openModalImport || {}}
+        agregarImport={true}
+      />
       <Dialog open={modal} onClose={closeModal}>
         <DialogTitle color="secondary">{title}</DialogTitle>
         <Form newEquipo={newEquipo || {}} setNewEquipo={setNewEquipo || {}} operation={operation || {}} unidades={unidades || {}} categorias={categorias || {}} proyectos={proyectos || {}} />
@@ -178,6 +212,10 @@ const Equipos = () => {
             Guardar
           </Button>
         </DialogActions>
+      </Dialog>
+      <Dialog open={modalImport} onClose={closeModalImport} alignItems="center" PaperProps={{ style: { maxHeight: 600, maxWidth: 1200 } }}>
+        <DialogTitle color="secondary">Importar Datos para Equipos</DialogTitle>
+        <ImportForm closeModalImport={closeModalImport} />
       </Dialog>
     </Box>
   );

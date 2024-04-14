@@ -28,8 +28,6 @@ const Login = () => {
           show_alerta("Inicio de Seccion Correcto", "success");
           navigate("/dashboard");
           window.location.reload();
-          navigate("/dashboard");
-          window.location.reload();
         }
       })
       .catch((e) => {
@@ -41,7 +39,7 @@ const Login = () => {
     <Grid container justifyContent="center" alignItems="center" height="100vh" color="secondary">
       <Grid item>
         <Paper elevation={3} style={{ padding: theme.spacing(4) }}>
-          <Box ustifyContent="center" alignItems="center" color="secondary">
+          <Box justifyContent="center" alignItems="center" color="secondary">
             <Header color="secondary" title="LOGIN" />
             {/* Formulario de inicio de sesión */}
             <div>

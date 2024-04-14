@@ -15,6 +15,7 @@ import {
   CancelOutlined,
   FeedOutlined,
   Scale,
+  PeopleAlt,
   Article,
 } from "@mui/icons-material";
 
@@ -23,79 +24,80 @@ import { useLocation, useNavigate } from "react-router-dom";
 import FlexBetween from "./FlexBetween.jsx";
 import LogoCICEI from "assets/LogoCiceiVertical.png";
 
-const navItems = [
-  {
-    text: "Dashboard",
-    icon: <HomeOutlined />,
-  },
-  {
-    text: "Inventario",
-    icon: null,
-  },
-  {
-    text: "Reactivos",
-    icon: <WaterDropOutlined />,
-  },
-  {
-    text: "Equipos",
-    icon: <KitchenOutlined />,
-  },
-  {
-    text: "Manuales",
-    icon: <Article />,
-  },
-  {
-    text: "Categorias",
-    icon: <AutoStoriesOutlined />,
-  },
-  {
-    text: "Proyecto",
-    icon: <LibraryBooksOutlined />,
-  },
-  {
-    text: "Unidades",
-    icon: <Scale />,
-  },
-
-  {
-    text: "",
-    icon: null,
-  },
-  {
-    text: "Guias",
-    icon: <FeedOutlined />,
-  },
-  {
-    text: "Ambientes",
-    icon: <BiotechOutlined />,
-  },
-  {
-    text: "Solicitudes",
-    icon: null,
-  },
-  {
-    text: "Aprobadas",
-    icon: <CheckCircleOutlineOutlined />,
-  },
-  {
-    text: "Pendientes",
-    icon: <PauseCircleOutlineOutlined />,
-  },
-  {
-    text: "Negadas",
-    icon: <CancelOutlined />,
-  },
-];
 const Sidebar = ({ user, drawerWidth, isSidebarOpen, setIsSidebarOpen, isNonMobile }) => {
   const { pathname } = useLocation();
   const [active, setActive] = useState("");
   const navigate = useNavigate();
   const theme = useTheme();
-
   useEffect(() => {
     setActive(pathname.substring(1));
   }, [pathname]);
-
+  const navItems = [
+    {
+      text: "Inicio",
+      icon: <HomeOutlined />,
+    },
+    {
+      text: "Inventario",
+      icon: null,
+    },
+    {
+      text: "Reactivos",
+      icon: <WaterDropOutlined />,
+    },
+    {
+      text: "Equipos",
+      icon: <KitchenOutlined />,
+    },
+    {
+      text: "Manuales",
+      icon: <Article />,
+    },
+    {
+      text: "Categorias",
+      icon: <AutoStoriesOutlined />,
+    },
+    {
+      text: "Proyecto",
+      icon: <LibraryBooksOutlined />,
+    },
+    {
+      text: "Unidades",
+      icon: <Scale />,
+    },
+    {
+      text: "Usuarios",
+      icon: <PeopleAlt />,
+    },
+    {
+      text: "",
+      icon: null,
+    },
+    {
+      text: "Guias",
+      icon: <FeedOutlined />,
+    },
+    {
+      text: "Ambientes",
+      icon: <BiotechOutlined />,
+    },
+    {
+      text: "Solicitudes",
+      icon: null,
+    },
+    {
+      text: "Aprobadas",
+      icon: <CheckCircleOutlineOutlined />,
+    },
+    {
+      text: "Pendientes",
+      icon: <PauseCircleOutlineOutlined />,
+    },
+    {
+      text: "Negadas",
+      icon: <CancelOutlined />,
+    },
+  ];
   return (
     <Box component="nav">
       {isSidebarOpen && (
@@ -131,7 +133,10 @@ const Sidebar = ({ user, drawerWidth, isSidebarOpen, setIsSidebarOpen, isNonMobi
               </FlexBetween>
             </Box>
             <List>
-              {navItems.map(({ text, icon }) => {
+              {navItems.map(({ text, icon, visible }) => {
+                // if (!visible) {
+                //   return null;
+                // }
                 if (!icon) {
                   return (
                     <Typography key={text} sx={{ m: "2.25rem 0 1rem 3rem" }}>
