@@ -43,7 +43,6 @@ const Solicitud = () => {
   };
   const [Equipos, setEquipos] = useState([]);
   const [reactivos, setReactivos] = useState([]);
-  console.log(solicitud);
   return (
     <Box display="flex" justifyContent="center" alignItems="center" minHeight="90vh">
       <Box
@@ -168,7 +167,7 @@ const Solicitud = () => {
             Agregar Reactivo
           </Button>
           <Button variant="contained" color="secondary" style={{ fontSize: "1rem", padding: "0.5rem 1rem" }} onClick={() => setModal(true)}>
-            Agregar Material
+            Agregar Equipo
           </Button>
         </Stack>
 
@@ -206,6 +205,8 @@ const Solicitud = () => {
                 { field: "cantidad", flex: 0.5 },
               ]}
               rows={reactivos}
+              initialState={{ pagination: { paginationModel: { pageSize: 10 } } }}
+              pageSizeOptions={[10, 25, 50, 100]}
               components={{ Toolbar: reactivoTitulo }}
             />
           </Box>
@@ -242,10 +243,19 @@ const Solicitud = () => {
                 { field: "cantidad", flex: 0.5 },
               ]}
               rows={Equipos}
+              initialState={{ pagination: { paginationModel: { pageSize: 10 } } }}
+              pageSizeOptions={[10, 25, 50, 100]}
               components={{ Toolbar: EquipoTitulo }}
             />
           </Box>
+          <br />
+          <br />
         </div>
+        <Stack spacing={3}>
+          <Button variant="contained" style={{ fontSize: "1rem", padding: "0.5rem 1rem" }} color="success">
+            Enviar Solicitud
+          </Button>
+        </Stack>
       </Box>
       <Dialog open={modal} onClose={() => setModal(false)}>
         <Box>

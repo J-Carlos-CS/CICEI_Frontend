@@ -91,9 +91,6 @@ const AgregarEquipo = ({ Equipos, setData, closeModal, getEquipoSolicitud, titul
           color="secondary"
           onClick={() => {
             if (equipoSeleccionado.cantidad !== cantidadtotal.cantidad && equipoSeleccionado.cantidad > 0) {
-              console.log("++++++++++++++++++++++++++++++++++++++++++++++");
-              console.log(cantidadtotal);
-              console.log(equipoSeleccionado);
               setData((prevCount) => [...prevCount, equipoSeleccionado]);
             } else {
               show_alerta("La cantidad debe ser mayor a 0", "error");
