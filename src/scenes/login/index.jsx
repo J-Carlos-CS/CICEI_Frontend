@@ -17,7 +17,7 @@ const Login = () => {
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
   if (isUser) {
-    return <Navigate to={{ pathname: "/dashboard" }} />;
+    return <Navigate to={{ pathname: "/inicio" }} />;
   }
   const userlogin = async () => {
     setIsLoading(true);
@@ -26,7 +26,7 @@ const Login = () => {
         if (res.data?.success) {
           login(res.data?.response);
           show_alerta("Inicio de Seccion Correcto", "success");
-          navigate("/dashboard");
+          navigate("/inicio");
           window.location.reload();
         }
       })

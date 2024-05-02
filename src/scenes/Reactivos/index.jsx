@@ -278,7 +278,7 @@ const Reactivos = () => {
         <ImportForm closeModalImport={closeModalImport} />
       </Dialog>
       <Dialog open={modalForm} onClose={closeModalForm}>
-        <FormImport id={reactivoID || {}} closeModalForm={closeModalForm || {}} />
+        <FormImport id={reactivoID || {}} closeModalForm={closeModalForm || {}} getProducto={getProducto} />
       </Dialog>
       <Dialog open={modalFicha} onClose={closeModalFicha} alignItems="center" PaperProps={{ style: { maxHeight: 600, maxWidth: 1200 } }}>
         <iframe src={`https://drive.google.com/file/d/${URL}/preview`} title="Ficha Técnica" width="1200" height="1200" allow="autoplay"></iframe>

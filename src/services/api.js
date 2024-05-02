@@ -25,6 +25,15 @@ export const postInvitarUsuario = async (newUsuario) => {
   }
 };
 
+export const putUsuario = async (newUsuario) => {
+  try {
+    const response = await axios.put(url + "/user/" + newUsuario.id, newUsuario);
+    return response;
+  } catch (error) {
+    return error;
+  }
+};
+
 //Proyecto
 export const getProyecto = async () => {
   const result = await axios.get(url + "/proyectos");
@@ -160,4 +169,50 @@ export const postDocumentos = async (file) => {
   } catch (error) {
     return error;
   }
+};
+
+//Guias
+export const getGuias = async (id) => {
+  const result = await axios.get(url + "/guias/" + id.toString());
+  console.log(result);
+  return result;
+};
+export const postGuia = async (newGuia) => {
+  try {
+    const config = {
+      headers: { "content-type": "multipart/form-data" },
+    };
+    const response = await axios.post(url + "/guias", newGuia, config);
+    return response;
+  } catch (error) {
+    return error;
+  }
+};
+
+//Tutor
+export const getInvesigadores = async (id) => {
+  const result = await axios.get(url + "/tutorinvestigador/" + id.toString());
+  return result;
+};
+export const getAllInvestigadores = async () => {
+  const result = await axios.get(url + "/user/investigador/all");
+  return result;
+};
+export const postInvesigadores = async (newInvestigador) => {
+  const result = await axios.post(url + "/tutorinvestigador", newInvestigador);
+  return result;
+};
+export const getTutor = async (id) => {
+  const result = await axios.get(url + "/tutorinvestigador/investigador/" + id.toString());
+  return result;
+};
+
+//solicitud
+export const getEquipoSolicitud = async () => {
+  const result = await axios.get(url + "/equipos/equipo/disponible");
+  return result;
+};
+export const getReactivosSolicitud = async () => {
+  const result = await axios.get(url + "/reactivos/reactivo/disponible");
+  return result;
 };

@@ -1,13 +1,16 @@
 import React, { useEffect, useState } from "react";
-import { Box, Button, Chip, Dialog, DialogActions, DialogTitle } from "@mui/material";
+import { Box, Button, Chip, Dialog, DialogActions, DialogTitle, IconButton } from "@mui/material";
 import DataTable from "components/DataTable";
 import Header from "components/Header";
 import { getAllUsuarios } from "services/api";
 import UsuarioForm from "./UsuarioForm";
+import { EditOutlined } from "@mui/icons-material";
+import UsuarioFormEdit from "./UsuarioFormEdit";
 
 const Usuario = () => {
   const [title, setTitle] = useState("");
   const [modal, setModal] = useState(false);
+  const [modalEdit, setModalEdit] = useState(false);
   const [usuario, setUsuario] = useState([]);
   const [newUsuario, setNewUsuario] = useState({
     email: "",
@@ -26,9 +29,6 @@ const Usuario = () => {
     const respuesta = await getAllUsuarios();
     setUsuario(respuesta.data);
   };
-  const validar = () => {
-    var method;
-  };
   const openModal = async (proyec) => {
     setNewUsuario(proyec);
     setModal(true);
@@ -36,6 +36,11 @@ const Usuario = () => {
   };
   const closeModal = async () => {
     setModal(false);
+  };
+  const openModalEdit = async (proyec) => {
+    setNewUsuario(proyec);
+    setModalEdit(true);
+    setTitle("Editar Usuario");
   };
   const columns = [
     { field: "firstName", headerName: "NOMBRE", flex: 0.5 },
@@ -53,6 +58,18 @@ const Usuario = () => {
     },
     { field: "createdAt", headerName: "CREADO EN", flex: 0.5, valueGetter: (params) => params.row.createdAt.slice(0, params.row.createdAt.indexOf("T")) },
     { field: "updatedAt", headerName: "MODIFICADO EN", flex: 0.5, valueGetter: (params) => params.row.updatedAt.slice(0, params.row.updatedAt.indexOf("T")) },
+    {
+      field: "acciones",
+      headerName: "ACCIONES",
+      flex: 0.5,
+      renderCell: (params) => (
+        <Box>
+          <IconButton color="secondary" aria-label="Editar" onClick={() => openModalEdit(params.row)}>
+            <EditOutlined />
+          </IconButton>
+        </Box>
+      ),
+    },
   ];
   return (
     <Box m="1rem 2.5rem">
@@ -60,6 +77,9 @@ const Usuario = () => {
       <DataTable rows={usuario || {}} columns={columns || {}} columnVisibilityModel={columnVisibilityModel || {}} setColumnVisibilityModel={setColumnVisibilityModel || {}} openModal={openModal || {}} />
       <Dialog open={modal} onClose={closeModal} PaperProps={{ style: { maxHeight: 600, maxWidth: 1200 } }}>
         <UsuarioForm getProducto={getProducto || {}} closeModal={closeModal} title={title || {}} />
+      </Dialog>
+      <Dialog open={modalEdit} onClose={() => setModalEdit(false)}>
+        <UsuarioFormEdit getProducto={getProducto || {}} closeModal={() => setModalEdit(false)} title={title || {}} Usuario={newUsuario || {}} />
       </Dialog>
     </Box>
   );

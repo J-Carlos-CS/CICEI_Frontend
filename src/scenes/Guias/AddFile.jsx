@@ -1,19 +1,18 @@
 import { DialogContent, DialogTitle } from "@mui/material";
 import React, { useState } from "react";
 import "../../../node_modules/bootstrap/dist/css/bootstrap.css";
+import { postGuia } from "services/api";
 import { show_alerta } from "services/functions";
-import { postFichaTecnica } from "services/api";
 
-const FormImport = ({ id, closeModalForm, getProducto }) => {
+const AddFile = ({ id, user, getProducto, setModal }) => {
   const [file, setFile] = useState("");
-
   const submitText = (e) => {
     e.preventDefault();
     const formData = new FormData();
     formData.append("file", file);
     formData.append("id", id);
-    console.log(formData);
-    postFichaTecnica(formData)
+    formData.append("user", user);
+    postGuia(formData)
       .then((res) => {
         if (res.data?.success) {
           show_alerta("Ficha Tecnica Agregada", "success");
@@ -25,11 +24,11 @@ const FormImport = ({ id, closeModalForm, getProducto }) => {
       .catch((err) => {
         show_alerta("Error al agregar la ficha tecnica", "error");
       });
-    closeModalForm();
+    setModal(false);
   };
   return (
-    <div>
-      <DialogTitle color="secondary">Agregar Ficha Tecnica</DialogTitle>
+    <>
+      <DialogTitle color="secondary">Agregar Guia de Laboratorio</DialogTitle>
       <DialogContent>
         <div className="wrapper">
           <form className="formStyle" onSubmit={submitText}>
@@ -40,9 +39,9 @@ const FormImport = ({ id, closeModalForm, getProducto }) => {
             </button>
           </form>
         </div>
-      </DialogContent>
-    </div>
+      </DialogContent>{" "}
+    </>
   );
 };
 
-export default FormImport;
+export default AddFile;

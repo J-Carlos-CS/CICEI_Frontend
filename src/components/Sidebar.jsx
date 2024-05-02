@@ -10,13 +10,14 @@ import {
   AutoStoriesOutlined,
   WaterDropOutlined,
   LibraryBooksOutlined,
-  BiotechOutlined,
+  InsertDriveFile,
   HomeOutlined,
   CancelOutlined,
   FeedOutlined,
   Scale,
   PeopleAlt,
   Article,
+  Groups,
 } from "@mui/icons-material";
 
 import { useEffect, useState } from "react";
@@ -36,66 +37,92 @@ const Sidebar = ({ user, drawerWidth, isSidebarOpen, setIsSidebarOpen, isNonMobi
     {
       text: "Inicio",
       icon: <HomeOutlined />,
+      visible: true,
     },
     {
       text: "Inventario",
       icon: null,
+      visible: user && user.rol === "Administrador",
     },
     {
       text: "Reactivos",
       icon: <WaterDropOutlined />,
+      visible: user && user.rol === "Administrador",
     },
     {
       text: "Equipos",
       icon: <KitchenOutlined />,
+      visible: user && user.rol === "Administrador",
     },
     {
       text: "Manuales",
       icon: <Article />,
+      visible: user && user.rol === "Administrador",
     },
     {
       text: "Categorias",
       icon: <AutoStoriesOutlined />,
+      visible: user && user.rol === "Administrador",
     },
     {
       text: "Proyecto",
       icon: <LibraryBooksOutlined />,
+      visible: user && user.rol === "Administrador",
     },
     {
       text: "Unidades",
       icon: <Scale />,
-    },
-    {
-      text: "Usuarios",
-      icon: <PeopleAlt />,
+      visible: user && user.rol === "Administrador",
     },
     {
       text: "",
       icon: null,
+      visible: true,
+    },
+    {
+      text: "Usuario",
+      icon: null,
+      visible: true,
+    },
+    {
+      text: "Usuarios",
+      icon: <PeopleAlt />,
+      visible: user && user.rol === "Administrador",
+    },
+    {
+      text: "Tutor",
+      icon: <Groups />,
+      visible: user && (user.rol === "Administrador" || user.rol === "Tutor"),
     },
     {
       text: "Guias",
       icon: <FeedOutlined />,
+      visible: true,
     },
     {
-      text: "Ambientes",
-      icon: <BiotechOutlined />,
+      text: "Solicitud",
+      icon: <InsertDriveFile />,
+      visible: true,
     },
     {
       text: "Solicitudes",
       icon: null,
-    },
-    {
-      text: "Aprobadas",
-      icon: <CheckCircleOutlineOutlined />,
+      visible: user && user.rol === "Administrador",
     },
     {
       text: "Pendientes",
       icon: <PauseCircleOutlineOutlined />,
+      visible: user && user.rol === "Administrador",
+    },
+    {
+      text: "Aprobadas",
+      icon: <CheckCircleOutlineOutlined />,
+      visible: user && user.rol === "Administrador",
     },
     {
       text: "Negadas",
       icon: <CancelOutlined />,
+      visible: user && user.rol === "Administrador",
     },
   ];
   return (
@@ -134,9 +161,9 @@ const Sidebar = ({ user, drawerWidth, isSidebarOpen, setIsSidebarOpen, isNonMobi
             </Box>
             <List>
               {navItems.map(({ text, icon, visible }) => {
-                // if (!visible) {
-                //   return null;
-                // }
+                if (!visible) {
+                  return null;
+                }
                 if (!icon) {
                   return (
                     <Typography key={text} sx={{ m: "2.25rem 0 1rem 3rem" }}>
