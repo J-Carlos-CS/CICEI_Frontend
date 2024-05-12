@@ -19,6 +19,7 @@ import Usuario from "scenes/Usuario";
 import Guias from "scenes/Guias";
 import Tutor from "scenes/Tutor";
 import Solicitud from "scenes/Solicitud";
+import SolicitudView from "scenes/SolicitudView";
 
 function App() {
   const mode = useSelector((state) => state.global.mode);
@@ -46,8 +47,8 @@ function App() {
                   <Route path="/equipos" element={<Equipos />} />
                   <Route path="/proyecto" element={<Proyecto />} />
                   <Route path="/proyeto/detalle" element={<DetalleEquipos />} />
-                  <Route path="/unidades" element={<Unidades roles={["Administrador", "Investigador", "Asociado", "Estudiante", "Consultor", "DirectorNacional"]} />} />
-                  <Route path="/manuales" element={<Manuales />} />
+                  <Route path="/unidades" element={<Unidades />} />
+                  {/* <Route path="/manuales" element={<Manuales />} /> */}
                   <Route path="/usuarios" element={<Usuario />} />
                 </>
               )}
@@ -56,10 +57,13 @@ function App() {
                   <Route path="/tutor" element={<Tutor />} />
                 </>
               )}
+              <Route path="/pendientes" element={<SolicitudView />} />
               <Route path="/guias" element={<Guias />} />
               <Route path="/solicitud" element={<Solicitud />} />
             </Route>
           ) : undefined}
+          <Route path="/pendientes" element={<SolicitudView />} />
+
           <Route path="*" element={<Navigate to="/login" replace />} />
         </Routes>
       </ThemeProvider>

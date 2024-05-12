@@ -2,10 +2,11 @@ import { Box, Button, Dialog, MenuItem, Stack, TextField, Typography, useTheme }
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { selectUser } from "Auth/userReducer";
-import { getEquipoSolicitud, getGuias, getReactivosSolicitud, getTutor } from "services/api";
+import { getEquipoSolicitud, getGuias, getReactivosSolicitud, getTutor, postSolicitud, postSolicitudEquipo, postSolicitudReactivo } from "services/api";
 import Header from "components/Header";
 import { DataGrid } from "@mui/x-data-grid";
 import AgregarEquipo from "./agregarEquipo";
+import { show_alerta } from "services/functions";
 function EquipoTitulo() {
   return (
     <Box style={{ width: "100%", display: "flex", justifyContent: "center", alignItems: "center" }}>
@@ -29,6 +30,11 @@ const Solicitud = () => {
     solicitante: user.firstName + " " + user.lastName,
     solicitanteid: user.id,
     carera: user.career,
+    tutorId: null,
+    materia: "",
+    fieldId: 0,
+    fecha: null,
+    hora: null,
   });
   const [modal, setModal] = useState(false);
   const [modalRectivo, setModalReactivo] = useState(false);
@@ -43,6 +49,70 @@ const Solicitud = () => {
   };
   const [Equipos, setEquipos] = useState([]);
   const [reactivos, setReactivos] = useState([]);
+  const validar = () => {
+    if (solicitud.solicitanteid !== 0) {
+      if (solicitud.tutorId !== 0) {
+        if (solicitud.materia.trim() !== "") {
+          if (solicitud.fieldId !== 0) {
+            if (solicitud.fecha !== "") {
+              if (solicitud.hora !== "") {
+                if (Equipos.length > 0) {
+                  if (reactivos.length > 0) {
+                    postSolicitud(solicitud)
+                      .then((result) => {
+                        if (result.data.success) {
+                          let res = null;
+                          if (Equipos.length > 0) {
+                            for (let index = 0; index < Equipos.length; index++) {
+                              Equipos[index].solicitudId = result.data.response.id;
+                              res = postSolicitudEquipo(Equipos[index]);
+                              if (res.error) {
+                                throw new Error("Error en la solicitud");
+                              }
+                            }
+                          }
+                          if (reactivos.length > 0) {
+                            for (let index = 0; index < reactivos.length; index++) {
+                              reactivos[index].solicitudId = result.data.response.id;
+                              res = postSolicitudReactivo(reactivos[index]);
+                              if (res.error) {
+                                throw new Error("Error en la solicitud");
+                              }
+                            }
+                          }
+                          show_alerta("Solicitud Enviada Correctamente", "success");
+                        } else {
+                          show_alerta("Error al enviar la solicitud", "error");
+                        }
+                      })
+                      .catch((err) => {
+                        show_alerta("Error al enviar la solicitud", "error");
+                      });
+                  } else {
+                    show_alerta("Agrega un Reactivo", "warning");
+                  }
+                } else {
+                  show_alerta("Agrega un Equipo", "warning");
+                }
+              } else {
+                show_alerta("Agrega una Hora", "warning");
+              }
+            } else {
+              show_alerta("Agrega una Fecha", "warning");
+            }
+          } else {
+            show_alerta("Agrega una Guia", "warning");
+          }
+        } else {
+          show_alerta("Agrega una Materia", "warning");
+        }
+      } else {
+        show_alerta("Agrega un Tutor", "warning");
+      }
+    } else {
+      show_alerta("Agrega un Solicitante", "warning");
+    }
+  };
   return (
     <Box display="flex" justifyContent="center" alignItems="center" minHeight="90vh">
       <Box
@@ -75,7 +145,7 @@ const Solicitud = () => {
             onChange={(event) => {
               setSolicitud({
                 ...solicitud,
-                tutorId: event.target.key,
+                tutorId: event.target.value,
               });
             }}>
             {tutor.map((option) =>
@@ -118,7 +188,7 @@ const Solicitud = () => {
             onChange={(event) => {
               setSolicitud({
                 ...solicitud,
-                fileId: event.target.key,
+                fieldId: event.target.value,
               });
             }}>
             {guias.map((option) =>
@@ -142,7 +212,7 @@ const Solicitud = () => {
             onChange={(e) =>
               setSolicitud({
                 ...solicitud,
-                hora: e.target.value,
+                fecha: e.target.value,
               })
             }
           />
@@ -205,7 +275,7 @@ const Solicitud = () => {
                 { field: "cantidad", flex: 0.5 },
               ]}
               rows={reactivos}
-              initialState={{ pagination: { paginationModel: { pageSize: 10 } } }}
+              initialState={{ pagination: { paginationModel: { pageSize: 5 } } }}
               pageSizeOptions={[10, 25, 50, 100]}
               components={{ Toolbar: reactivoTitulo }}
             />
@@ -243,7 +313,7 @@ const Solicitud = () => {
                 { field: "cantidad", flex: 0.5 },
               ]}
               rows={Equipos}
-              initialState={{ pagination: { paginationModel: { pageSize: 10 } } }}
+              initialState={{ pagination: { paginationModel: { pageSize: 5 } } }}
               pageSizeOptions={[10, 25, 50, 100]}
               components={{ Toolbar: EquipoTitulo }}
             />
@@ -252,7 +322,7 @@ const Solicitud = () => {
           <br />
         </div>
         <Stack spacing={3}>
-          <Button variant="contained" style={{ fontSize: "1rem", padding: "0.5rem 1rem" }} color="success">
+          <Button variant="contained" style={{ fontSize: "1rem", padding: "0.5rem 1rem" }} color="success" onClick={() => validar()}>
             Enviar Solicitud
           </Button>
         </Stack>

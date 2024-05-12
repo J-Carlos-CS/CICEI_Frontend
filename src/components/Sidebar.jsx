@@ -54,11 +54,11 @@ const Sidebar = ({ user, drawerWidth, isSidebarOpen, setIsSidebarOpen, isNonMobi
       icon: <KitchenOutlined />,
       visible: user && user.rol === "Administrador",
     },
-    {
-      text: "Manuales",
-      icon: <Article />,
-      visible: user && user.rol === "Administrador",
-    },
+    // {
+    //   text: "Manuales",
+    //   icon: <Article />,
+    //   visible: user && user.rol === "Administrador",
+    // },
     {
       text: "Categorias",
       icon: <AutoStoriesOutlined />,
@@ -107,22 +107,22 @@ const Sidebar = ({ user, drawerWidth, isSidebarOpen, setIsSidebarOpen, isNonMobi
     {
       text: "Solicitudes",
       icon: null,
-      visible: user && user.rol === "Administrador",
+      visible: true,
     },
     {
       text: "Pendientes",
       icon: <PauseCircleOutlineOutlined />,
-      visible: user && user.rol === "Administrador",
+      visible: true,
     },
     {
       text: "Aprobadas",
       icon: <CheckCircleOutlineOutlined />,
-      visible: user && user.rol === "Administrador",
+      visible: true,
     },
     {
       text: "Negadas",
       icon: <CancelOutlined />,
-      visible: user && user.rol === "Administrador",
+      visible: true,
     },
   ];
   return (

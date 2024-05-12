@@ -188,7 +188,6 @@ export const postGuia = async (newGuia) => {
     return error;
   }
 };
-
 //Tutor
 export const getInvesigadores = async (id) => {
   const result = await axios.get(url + "/tutorinvestigador/" + id.toString());
@@ -206,7 +205,6 @@ export const getTutor = async (id) => {
   const result = await axios.get(url + "/tutorinvestigador/investigador/" + id.toString());
   return result;
 };
-
 //solicitud
 export const getEquipoSolicitud = async () => {
   const result = await axios.get(url + "/equipos/equipo/disponible");
@@ -214,5 +212,48 @@ export const getEquipoSolicitud = async () => {
 };
 export const getReactivosSolicitud = async () => {
   const result = await axios.get(url + "/reactivos/reactivo/disponible");
+  return result;
+};
+export const postSolicitud = async (newSolicitud) => {
+  newSolicitud.CreadoBy = creadoBy;
+  const result = await axios.post(url + "/solicitud", newSolicitud);
+  return result;
+};
+export const postSolicitudEquipo = async (newSolicitudEquipo) => {
+  newSolicitudEquipo.CreadoBy = creadoBy;
+  console.log(newSolicitudEquipo);
+  const result = await axios.post(url + "/solicitud/equipo", newSolicitudEquipo);
+  return result;
+};
+export const postSolicitudReactivo = async (newSolicitudReactivo) => {
+  newSolicitudReactivo.CreadoBy = creadoBy;
+  const result = await axios.post(url + "/solicitud/reactivo", newSolicitudReactivo);
+  return result;
+};
+export const getSolicitud = async () => {
+  const result = await axios.get(url + "/solicitud/" + user.id + "/" + user.rol);
+  return result;
+};
+export const getEquipoSolicitudView = async (id) => {
+  try {
+    const result = await axios.get(url + "/solicitud/solicitud/equipos/" + id.toString());
+    return result;
+  } catch (error) {
+    return error;
+  }
+};
+export const getReactivoSolicitudView = async (id) => {
+  try {
+    const result = await axios.get(url + "/solicitud/solicitud/reactivos/" + id.toString());
+    return result;
+  } catch (error) {
+    return error;
+  }
+};
+export const postSolicitudAprobacion = async (aprobacion) => {
+  aprobacion.creadoBy = creadoBy;
+  aprobacion.rol = user.rol;
+  aprobacion.userid = user.id;
+  const result = await axios.post(url + "/solicitud/aprobar/solicitud", aprobacion);
   return result;
 };
