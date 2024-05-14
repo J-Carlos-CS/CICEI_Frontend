@@ -231,7 +231,7 @@ export const postSolicitudReactivo = async (newSolicitudReactivo) => {
   return result;
 };
 export const getSolicitud = async () => {
-  const result = await axios.get(url + "/solicitud/" + user.id + "/" + user.rol);
+  const result = await axios.get(url + "/solicitud/solicitud/" + user.id + "/" + user.rol);
   return result;
 };
 export const getEquipoSolicitudView = async (id) => {
@@ -255,5 +255,20 @@ export const postSolicitudAprobacion = async (aprobacion) => {
   aprobacion.rol = user.rol;
   aprobacion.userid = user.id;
   const result = await axios.post(url + "/solicitud/aprobar/solicitud", aprobacion);
+  return result;
+};
+export const getAllSolicitudAprobadas = async () => {
+  const result = await axios.get(url + "/solicitud/getAllSolicitudes/" + user.id + "/" + user.rol);
+  return result;
+};
+export const postSolicitudRechazo = async (rechazo) => {
+  rechazo.creadoBy = creadoBy;
+  rechazo.rol = user.rol;
+  rechazo.userid = user.id;
+  const result = await axios.post(url + "/solicitud/recharzarSolicitud", rechazo);
+  return result;
+};
+export const getAllSolicitudesRechazadas = async () => {
+  const result = await axios.get(url + "/solicitud/getAllSolicitudesRecharzadas/" + user.id + "/" + user.rol);
   return result;
 };

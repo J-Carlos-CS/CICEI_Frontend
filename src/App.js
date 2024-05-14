@@ -2,7 +2,7 @@ import { CssBaseline, ThemeProvider } from "@mui/material";
 import { createTheme } from "@mui/material/styles";
 import { useMemo } from "react";
 import { themeSettings } from "theme";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
 import { selectUser } from "Auth/userReducer";
 import Dashboard from "scenes/dashboard";
@@ -14,17 +14,19 @@ import Proyecto from "scenes/Proyecto";
 import Unidades from "scenes/Unidades";
 import Equipos from "scenes/Equipos";
 import DetalleEquipos from "scenes/Detalle_Equipos";
-import Manuales from "scenes/Manuales";
+// import Manuales from "scenes/Manuales";
 import Usuario from "scenes/Usuario";
 import Guias from "scenes/Guias";
 import Tutor from "scenes/Tutor";
 import Solicitud from "scenes/Solicitud";
 import SolicitudView from "scenes/SolicitudView";
+import SolicitudAprobadasView from "scenes/SolicitudAprobada";
+import SolicitudRechazadasView from "scenes/SolicitudRechazado";
+import UsuarioPerfil from "scenes/UsuarioPerfil";
 
 function App() {
   const mode = useSelector((state) => state.global.mode);
   const theme = useMemo(() => createTheme(themeSettings(mode)), [mode]);
-  const dispatch = useDispatch();
   const user = useSelector(selectUser);
   const isLogged = user;
   const adminLab = user && user.rol === "Administrador";
@@ -58,12 +60,13 @@ function App() {
                 </>
               )}
               <Route path="/pendientes" element={<SolicitudView />} />
+              <Route path="/aprobadas" element={<SolicitudAprobadasView />} />
               <Route path="/guias" element={<Guias />} />
               <Route path="/solicitud" element={<Solicitud />} />
+              <Route path="/negadas" element={<SolicitudRechazadasView />} />
+              <Route path="/perfil" element={<UsuarioPerfil />} />
             </Route>
           ) : undefined}
-          <Route path="/pendientes" element={<SolicitudView />} />
-
           <Route path="*" element={<Navigate to="/login" replace />} />
         </Routes>
       </ThemeProvider>

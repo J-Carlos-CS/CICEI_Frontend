@@ -1,18 +1,13 @@
-import { CancelOutlined, CheckCircleOutlineOutlined, KitchenOutlined, Visibility, WaterDropOutlined } from "@mui/icons-material";
+import { KitchenOutlined, Visibility, WaterDropOutlined } from "@mui/icons-material";
 import { Box, Chip, Dialog, DialogTitle, IconButton } from "@mui/material";
 import DataTable from "components/DataTable";
 import Header from "components/Header";
 import React, { useEffect, useState } from "react";
-import { getSolicitud, postSolicitudAprobacion, postSolicitudRechazo } from "services/api";
-import SolicitudViewTable from "./SolicitudViewTable";
-import Swal from "sweetalert2";
-import { show_alerta } from "services/functions";
-import { selectUser } from "Auth/userReducer";
-import { useSelector } from "react-redux";
+import { getAllSolicitudesRechazadas } from "services/api";
+import SolicitudViewTable from "scenes/SolicitudView/SolicitudViewTable";
 
-const SolicitudView = () => {
-  const user = useSelector(selectUser);
-  const [solicitudes, setSolicitudes] = useState([]);
+const SolicitudRechazadasView = () => {
+  const [solicitudesRechazadas, setSolicitudesRezadas] = useState([]);
   const [modalFicha, setModalFicha] = useState(false);
   const [url, setURL] = useState({});
   const [id, setID] = useState([""]);
@@ -23,8 +18,8 @@ const SolicitudView = () => {
     getProducto();
   }, []);
   const getProducto = async () => {
-    const respuesta = await getSolicitud();
-    setSolicitudes(respuesta.data.response);
+    const respuesta = await getAllSolicitudesRechazadas();
+    setSolicitudesRezadas(respuesta.data.response);
   };
   const openFicha = (proyect) => {
     setModalFicha(true);
@@ -37,56 +32,6 @@ const SolicitudView = () => {
   const openEquipo = (proyect) => {
     setModalEquipo(true);
     setID(proyect.id);
-  };
-  const aproveSolicitud = async (proyect) => {
-    Swal.fire({
-      title: "¿Quieres Aprobar la Solicitud?",
-      showCancelButton: true,
-      confirmButtonText: "Aprobar",
-      cancelButtonText: "Cancelar",
-    }).then((result) => {
-      if (result.isConfirmed) {
-        postSolicitudAprobacion(proyect)
-          .then((result) => {
-            if (result.data.success) {
-              show_alerta("Solicitud Aprobada", "success");
-              getProducto();
-            } else {
-              show_alerta("Error al enviar la solicitud", "error");
-            }
-          })
-          .catch((err) => {
-            show_alerta("Error al enviar la solicitud", "error");
-          });
-      }
-    });
-  };
-  const CancelSolicitud = async (proyect) => {
-    const { value: comentario } = await Swal.fire({
-      title: "¿Quiere Cancelar la Solicitud?",
-      input: "text",
-      inputLabel: "Escriba un comentario",
-      inputValidator: (value) => {
-        if (!value) {
-          return "Por favor, escriba un comentario!";
-        }
-      },
-    });
-    if (comentario) {
-      proyect.comentario = comentario;
-      postSolicitudRechazo(proyect)
-        .then((result) => {
-          if (result.data.success) {
-            show_alerta("Solicitud Rechazada", "success");
-            getProducto();
-          } else {
-            show_alerta("Error al enviar la solicitud", "error");
-          }
-        })
-        .catch((err) => {
-          show_alerta("Error al enviar la solicitud", "error");
-        });
-    }
   };
   const columns = [
     { field: "id", headerName: "NUMERO DE SOLICITUD", flex: 0.5 },
@@ -142,24 +87,6 @@ const SolicitudView = () => {
         </Box>
       ),
     },
-    user.rol === "Administrador" || user.rol === "Tutor"
-      ? {
-          field: "test",
-          headerName: "Acciones",
-          flex: 0.5,
-          renderCell: (params) => (
-            <Box>
-              <IconButton color="secondary" aria-label="Ver Reactivos" title="Aprobar Solicitud" onClick={() => aproveSolicitud(params.row)}>
-                <CheckCircleOutlineOutlined />
-              </IconButton>
-              <IconButton color="secondary" aria-label="Ver Equipos" title="Rechazer Solicitud" onClick={() => CancelSolicitud(params.row)}>
-                <CancelOutlined />
-              </IconButton>
-            </Box>
-          ),
-        }
-      : {},
-
     { field: "CreadoBy", headerName: "CREADO POR", flex: 0.5 },
     {
       field: "createdAt",
@@ -167,7 +94,6 @@ const SolicitudView = () => {
       flex: 0.5,
       valueGetter: (params) => params.row.createdAt.slice(0, params.row.createdAt.indexOf("T")),
     },
-    { field: "ModificadoBy", headerName: "MODIFICADO POR", flex: 0.5 },
     {
       field: "updatedAt",
       headerName: "MODIFICADO EN",
@@ -178,7 +104,7 @@ const SolicitudView = () => {
   return (
     <Box m="1rem 2.5rem">
       <Header title="Solicitudes Pendientes" subtitle="Lista de Todas las Solicitudes Pendientes" />
-      <DataTable rows={solicitudes || {}} columns={columns || {}} columnVisibilityModel={columnVisibilityModel || {}} setColumnVisibilityModel={setColumnVisibilityModel || {}} agregar={false || {}} />
+      <DataTable rows={solicitudesRechazadas || {}} columns={columns || {}} columnVisibilityModel={columnVisibilityModel || {}} setColumnVisibilityModel={setColumnVisibilityModel || {}} agregar={false || {}} />
       <Dialog open={modalFicha} onClose={() => setModalFicha(false)} alignItems="center" PaperProps={{ style: { maxHeight: 600, maxWidth: 1200 } }}>
         <DialogTitle color="secondary">{url.titulo}</DialogTitle>
         <iframe src={`https://drive.google.com/file/d/${url.guia}/preview`} title="Ficha Técnica" width="1200" height="1200" allow="autoplay"></iframe>
@@ -193,4 +119,4 @@ const SolicitudView = () => {
   );
 };
 
-export default SolicitudView;
+export default SolicitudRechazadasView;

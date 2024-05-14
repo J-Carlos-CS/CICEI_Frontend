@@ -5,7 +5,7 @@ import { useDispatch } from "react-redux";
 import { setMode } from "state";
 import ImagePerfil from "assets/ImagePerfil.jpg";
 import { AppBar, useTheme, Toolbar, IconButton, Button, Box, Typography, Menu, MenuItem } from "@mui/material";
-import { useNavigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 import { logout } from "./../Auth/userReducer";
 const Navbar = ({ user, isSidebarOpen, isNavarOpen, setIsSidebarOpen }) => {
   const dispatch = useDispatch();
@@ -23,6 +23,12 @@ const Navbar = ({ user, isSidebarOpen, isNavarOpen, setIsSidebarOpen }) => {
     }
   };
   const isClose = () => (isOpen = false);
+  const perfil = () => {
+    isClose();
+    navigate("/perfil");
+    isClose();
+    setAnchorEl(null);
+  };
   return isNavarOpen ? (
     <AppBar
       sx={{
@@ -64,6 +70,7 @@ const Navbar = ({ user, isSidebarOpen, isNavarOpen, setIsSidebarOpen }) => {
               <ArrowDropDownOutlined sx={{ color: theme.palette.secondary[300], fontSize: "25px" }} />
             </Button>
             <Menu anchorEl={anchorEl} open={isOpen} onClose={isClose} anchorOrigin={{ vertical: "bottom", horizontal: "center" }}>
+              <MenuItem onClick={() => perfil()}>Perfil</MenuItem>
               <MenuItem onClick={() => close()}>Log Out</MenuItem>
             </Menu>
           </FlexBetween>
