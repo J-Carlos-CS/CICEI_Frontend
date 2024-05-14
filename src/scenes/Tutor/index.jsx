@@ -19,7 +19,7 @@ const Tutor = () => {
     setModal(true);
   }
   const getProducto = async () => {
-    const respuesta = await getInvesigadores(user.id);
+    const respuesta = await getInvesigadores();
     setInvestigadores(respuesta.data.response);
   };
   const columns = [

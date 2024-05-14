@@ -186,8 +186,8 @@ export const postGuia = async (newGuia) => {
   }
 };
 //Tutor
-export const getInvesigadores = async (id) => {
-  const result = await axios.get(url + "/tutorinvestigador/" + id.toString());
+export const getInvesigadores = async () => {
+  const result = await axios.get(url + "/tutorinvestigador/" + user.id.toString());
   return result;
 };
 export const getAllInvestigadores = async () => {
