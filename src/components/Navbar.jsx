@@ -15,7 +15,6 @@ const Navbar = ({ user, isSidebarOpen, isNavarOpen, setIsSidebarOpen }) => {
   let isOpen = Boolean(anchorEl);
   const handleClick = (event) => setAnchorEl(event.currentTarget);
   const close = () => {
-    console.log("cerrar");
     var res = logout();
     if (res) {
       navigate("/login");

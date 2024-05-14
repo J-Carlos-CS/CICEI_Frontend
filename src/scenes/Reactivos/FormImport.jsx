@@ -12,7 +12,6 @@ const FormImport = ({ id, closeModalForm, getProducto }) => {
     const formData = new FormData();
     formData.append("file", file);
     formData.append("id", id);
-    console.log(formData);
     postFichaTecnica(formData)
       .then((res) => {
         if (res.data?.success) {

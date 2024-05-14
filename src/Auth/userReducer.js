@@ -25,7 +25,6 @@ export const user = createSlice({
   reducers: {
     login: (action) => {
       localStorage.setItem("user", JSON.stringify(action));
-      console.log("okey login");
     },
     logout: (state) => {
       window.localStorage.removeItem("user");
@@ -33,13 +32,11 @@ export const user = createSlice({
       state.user = null;
       window.localStorage.setItem("viewBar", "collapse");
       state.viewBar = "hidden";
-      console.log("okey logout");
     },
     updateToken: (state, action) => {
       let user = action.payload;
       state.user = user;
       state.viewBar = "visible";
-      console.log("okey refresh");
     },
   },
 });

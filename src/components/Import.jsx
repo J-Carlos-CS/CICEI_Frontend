@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import * as XLSX from "xlsx";
 import "../../node_modules/bootstrap/dist/css/bootstrap.css";
+import { show_alerta } from "services/functions";
 
 const Import = ({ excelData, setExcelData, sendData }) => {
   const [excelFile, setExcelFile] = useState(null);
@@ -23,9 +24,8 @@ const Import = ({ excelData, setExcelData, sendData }) => {
         setExcelFile(null);
       }
     } else {
-      console.log("Por favor seleccione un archivo");
+      show_alerta("Por favor seleccione un archivo", "warning");
     }
-    console.log(excelFile);
   };
 
   // submit event

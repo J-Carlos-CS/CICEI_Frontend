@@ -12,7 +12,6 @@ export const putLogin = async (login) => {
 };
 export const getAllUsuarios = async () => {
   const result = await axios.get(url + "/user");
-  console.log(result);
   return result;
 };
 
@@ -160,7 +159,6 @@ export const getManuales = async () => {
 //Documentos
 export const postDocumentos = async (file) => {
   try {
-    console.log("file-----------");
     const config = {
       headers: { "content-type": "multipart/form-data" },
     };
@@ -174,7 +172,6 @@ export const postDocumentos = async (file) => {
 //Guias
 export const getGuias = async () => {
   const result = await axios.get(url + "/guias/" + user.id.toString());
-  console.log(result);
   return result;
 };
 export const postGuia = async (newGuia) => {
@@ -221,7 +218,6 @@ export const postSolicitud = async (newSolicitud) => {
 };
 export const postSolicitudEquipo = async (newSolicitudEquipo) => {
   newSolicitudEquipo.CreadoBy = creadoBy;
-  console.log(newSolicitudEquipo);
   const result = await axios.post(url + "/solicitud/equipo", newSolicitudEquipo);
   return result;
 };

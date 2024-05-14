@@ -2,8 +2,6 @@ import { Box, DialogContent, FormControlLabel, Switch, TextField } from "@mui/ma
 import React from "react";
 
 const Form = ({ newDetalleEquipo, setNewDetalleEquipo }) => {
-  console.log("---------------------------------------------------------");
-  console.log(newDetalleEquipo);
   return (
     <DialogContent>
       <Box

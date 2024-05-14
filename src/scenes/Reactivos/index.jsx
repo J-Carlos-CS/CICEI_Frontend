@@ -129,7 +129,6 @@ const Reactivos = () => {
     }
   };
   const EliminarReactivo = async (proyec) => {
-    console.log(proyec);
     if (proyec.id) {
       const respuesta = await deleteReactivo(proyec.id);
       if (respuesta.error) {
@@ -141,7 +140,6 @@ const Reactivos = () => {
     }
   };
   const sendData = async (metodo) => {
-    console.log(newReactivos);
     const respuesta = await putReactivos(metodo, newReactivos);
     if (respuesta.error) {
       show_alerta("Error en la solicitud", "error");
