@@ -7,11 +7,8 @@ import { deleteEquipos, getCategoria, getEquipos, getProyecto, getUnidades, putE
 import { useNavigate } from "react-router-dom";
 import DataTable from "components/DataTable";
 import Form from "./Form";
-import { useSelector } from "react-redux";
-import { selectUser } from "../../Auth/userReducer";
 import ImportForm from "./ImportForm";
 const Equipos = () => {
-  const user = useSelector(selectUser);
   const [title, setTitle] = useState("");
   const [modal, setModal] = useState(false);
   const [modalImport, setModalImport] = useState(false);

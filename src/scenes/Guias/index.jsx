@@ -5,13 +5,12 @@ import Header from "components/Header";
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { getGuias } from "services/api";
-import { DeleteForeverOutlined, EditOutlined, AddCircleOutline, Visibility } from "@mui/icons-material";
+import { Visibility } from "@mui/icons-material";
 
 import AddFile from "./AddFile";
 
 const Guias = () => {
   const user = useSelector(selectUser);
-  const [title, setTitle] = useState("");
   const [modal, setModal] = useState(false);
   const [guias, setGuias] = useState([]);
   const [modalGuia, setModalGuia] = useState(false);
@@ -21,7 +20,7 @@ const Guias = () => {
     getProducto();
   }, []);
   const getProducto = async () => {
-    const respuesta = await getGuias(user.id);
+    const respuesta = await getGuias();
     setGuias(respuesta.data.response);
   };
   const openModal = (op, proyec) => {

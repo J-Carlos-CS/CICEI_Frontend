@@ -5,7 +5,7 @@ import { useDispatch } from "react-redux";
 import { setMode } from "state";
 import ImagePerfil from "assets/ImagePerfil.jpg";
 import { AppBar, useTheme, Toolbar, IconButton, Button, Box, Typography, Menu, MenuItem } from "@mui/material";
-import { Navigate, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { logout } from "./../Auth/userReducer";
 const Navbar = ({ user, isSidebarOpen, isNavarOpen, setIsSidebarOpen }) => {
   const dispatch = useDispatch();

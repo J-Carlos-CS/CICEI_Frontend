@@ -1,13 +1,12 @@
-import { Box, useMediaQuery } from "@mui/material";
+import { Box } from "@mui/material";
 import React from "react";
 import LogoCICEI from "../../assets/LogoCiceiVertical.png";
 import StatBox from "components/StatBox";
-import { CancelOutlined, CheckCircleOutlineOutlined, Email, PauseCircleOutlineOutlined } from "@mui/icons-material";
+import { CancelOutlined, CheckCircleOutlineOutlined, PauseCircleOutlineOutlined } from "@mui/icons-material";
 import { useTheme } from "@emotion/react";
 
 const Dashboard = () => {
   const theme = useTheme();
-  const isNonMediumScreens = useMediaQuery("(min-width: 1200px)");
 
   return (
     <Box display="flex" justifyContent="center" alignItems="center" minHeight="90vh">

@@ -172,8 +172,8 @@ export const postDocumentos = async (file) => {
 };
 
 //Guias
-export const getGuias = async (id) => {
-  const result = await axios.get(url + "/guias/" + id.toString());
+export const getGuias = async () => {
+  const result = await axios.get(url + "/guias/" + user.id.toString());
   console.log(result);
   return result;
 };
