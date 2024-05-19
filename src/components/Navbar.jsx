@@ -47,7 +47,7 @@ const Navbar = ({ user, isSidebarOpen, isNavarOpen, setIsSidebarOpen }) => {
           </IconButton>
           <FlexBetween>
             <Button onClick={handleClick} sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", textTransform: "none", gap: "1rem" }}>
-              <Box
+              {/* <Box
                 component="img"
                 alt="profile"
                 src={ImagePerfil}
@@ -57,7 +57,7 @@ const Navbar = ({ user, isSidebarOpen, isNavarOpen, setIsSidebarOpen }) => {
                 sx={{
                   objectFit: "cover",
                 }}
-              />
+              /> */}
               <Box textAlign="left">
                 <Typography fontWeight="bold" fontSize="0.85rem" sx={{ color: theme.palette.secondary[100] }}>
                   {user.firstName ? user.firstName + " " + user.lastName : ""}

@@ -16,6 +16,7 @@ import {
   FeedOutlined,
   Scale,
   PeopleAlt,
+  Article,
   Groups,
 } from "@mui/icons-material";
 

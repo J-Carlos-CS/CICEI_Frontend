@@ -23,6 +23,7 @@ import SolicitudView from "scenes/SolicitudView";
 import SolicitudAprobadasView from "scenes/SolicitudAprobada";
 import SolicitudRechazadasView from "scenes/SolicitudRechazado";
 import UsuarioPerfil from "scenes/UsuarioPerfil";
+import SolicitudEntregada from "scenes/solicitudEntregada";
 
 function App() {
   const mode = useSelector((state) => state.global.mode);
@@ -38,6 +39,7 @@ function App() {
         <CssBaseline />
         <Routes>
           <Route path="/login" element={<Login />} />
+          <Route path="/solicitud/entregada" element={<SolicitudEntregada />} />
           {isLogged ? (
             <Route element={<Layout />}>
               <Route path="/" element={<Navigate to="/inicio" replace />} />

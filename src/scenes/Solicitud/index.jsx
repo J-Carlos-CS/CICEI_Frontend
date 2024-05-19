@@ -29,7 +29,7 @@ const Solicitud = () => {
   const [solicitud, setSolicitud] = useState({
     solicitante: user.firstName + " " + user.lastName,
     solicitanteid: user.id,
-    carera: user.career,
+    carrera: user.career,
     tutorId: null,
     materia: "",
     fieldId: 0,

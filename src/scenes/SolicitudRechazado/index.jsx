@@ -43,14 +43,14 @@ const SolicitudRechazadasView = () => {
       field: "aprobadoTutor",
       headerName: "APROBADO",
       flex: 0.5,
-      renderCell: (params) => <Chip label={params.row.aprobadoTutor ? "APROBADO" : "PENDIENTE"} color={params.row.aprobadoTutor ? "success" : "error"} />,
+      renderCell: (params) => <Chip label={params.row.aprobadoTutor ? "APROBADO" : "RECHAZADO"} color={params.row.aprobadoTutor ? "success" : "error"} />,
     },
     { field: "adminNombre", headerName: "ADMINISTRADOR", flex: 0.5 },
     {
       field: "aprobadoAdministrador",
       headerName: "APROBADO",
       flex: 0.5,
-      renderCell: (params) => <Chip label={params.row.aprobadoAdministrador ? "APROBADO" : "PENDIENTE"} color={params.row.aprobadoAdministrador ? "success" : "error"} />,
+      renderCell: (params) => <Chip label={params.row.aprobadoAdministrador ? "APROBADO" : "RECHAZADO"} color={params.row.aprobadoAdministrador ? "success" : "error"} />,
     },
     {
       field: "fecha",

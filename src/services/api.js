@@ -32,7 +32,10 @@ export const putUsuario = async (newUsuario) => {
     return error;
   }
 };
-
+export const getUsuario = async () => {
+  const result = await axios.get(url + "/user/" + user.id);
+  return result;
+};
 //Proyecto
 export const getProyecto = async () => {
   const result = await axios.get(url + "/proyectos");
@@ -232,7 +235,7 @@ export const getSolicitud = async () => {
 };
 export const getEquipoSolicitudView = async (id) => {
   try {
-    const result = await axios.get(url + "/solicitud/solicitud/equipos/" + id.toString());
+    const result = await axios.get(url + "/solicitud/solicitud-view/equipos/" + id.toString());
     return result;
   } catch (error) {
     return error;
@@ -240,7 +243,7 @@ export const getEquipoSolicitudView = async (id) => {
 };
 export const getReactivoSolicitudView = async (id) => {
   try {
-    const result = await axios.get(url + "/solicitud/solicitud/reactivos/" + id.toString());
+    const result = await axios.get(url + "/solicitud/solicitud-view/reactivos/" + id.toString());
     return result;
   } catch (error) {
     return error;
@@ -266,5 +269,25 @@ export const postSolicitudRechazo = async (rechazo) => {
 };
 export const getAllSolicitudesRechazadas = async () => {
   const result = await axios.get(url + "/solicitud/getAllSolicitudesRecharzadas/" + user.id + "/" + user.rol);
+  return result;
+};
+export const postSolicitudEntregada = async (entrega) => {
+  entrega.creadoBy = creadoBy;
+  entrega.rol = user.rol;
+  entrega.userid = user.id;
+  const result = await axios.post(url + "/solicitud/entregar/solicitud", entrega);
+  return result;
+};
+export const postSolicitudEntragadaInvestigador = async (entrega) => {
+  const result = await axios.post(url + "/solicitud/entregar/investigador", entrega);
+  return result;
+};
+export const getAllMateriales = async (id) => {
+  const result = await axios.get(url + "/solicitud/materiales/" + id);
+  return result;
+};
+export const postEnviarMateriales = async (materiales) => {
+  console.log(materiales);
+  const result = await axios.post(url + "/solicitud/materialesDevueltos", materiales);
   return result;
 };
