@@ -20,13 +20,13 @@ const Dashboard = () => {
         <div style={{ textAlign: "center" }}>
           <Box component="img" alt="Logo CICEI" src={LogoCICEI} height="400px" width="500px" borderRadius="50%"></Box>
         </div>
-        <div style={{ textAlign: "center" }}>
+        {/* <div style={{ textAlign: "center" }}>
           <Box mt="20px" display="grid" gridAutoRows="160px" gap="20px">
             <StatBox title="Solicitudes Pendientes" value={"hola"} icon={<PauseCircleOutlineOutlined sx={{ color: theme.palette.secondary[300], fontSize: "26px" }} />} />
             <StatBox title="Solicitudes Aprobadas" value={"hola"} icon={<CheckCircleOutlineOutlined sx={{ color: theme.palette.secondary[300], fontSize: "26px" }} />} />
             <StatBox title="Solicitudes Rechazadas" value={"hola"} icon={<CancelOutlined sx={{ color: theme.palette.secondary[300], fontSize: "26px" }} />} />
           </Box>
-        </div>
+        </div> */}
       </Box>
     </Box>
   );
