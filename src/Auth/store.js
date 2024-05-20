@@ -1,14 +1,13 @@
-import { configureStore } from '@reduxjs/toolkit';
-import userReducer from './userReducer';
-import dataCenterReducer from './dataCenterReducer';
-import themeReducer from './themeReducer';
-import centerInformationReducer from './centerInformationReducer';
+import { configureStore } from "@reduxjs/toolkit";
+import userReducer from "./userReducer";
+import globalReducer from "state";
+import { api } from "state/api";
 
 export default configureStore({
   reducer: {
     user: userReducer,
-    dataCenter:dataCenterReducer,
-    myTheme: themeReducer,
-    centerInformation: centerInformationReducer,
+    global: globalReducer,
+    [api.reducerPath]: api.reducer,
   },
+  middleware: (getDefault) => getDefault().concat(api.middleware),
 });

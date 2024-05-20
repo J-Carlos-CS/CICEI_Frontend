@@ -1,8 +1,0 @@
-.my-own-card-news {
-    border:1px solid gray;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: center;
-    min-height: 300px;
-}
