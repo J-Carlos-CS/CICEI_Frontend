@@ -20,13 +20,13 @@ const DevolucionActions = ({ params, rowId, setRowId }) => {
                 setSuccess(true);
                 setRowId(null);
               } else {
-                alert("Error al procesar la solicitud");
+                alert(result.data.response);
                 setSuccess(false);
                 setRowId(null);
               }
             })
             .catch((err) => {
-              alert("Error al enviar la solicitud");
+              alert(err.message);
             });
         } else {
           alert("El campo estado no puede estar vacio");

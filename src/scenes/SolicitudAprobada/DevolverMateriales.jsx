@@ -1,12 +1,13 @@
 import { useTheme } from "@emotion/react";
-import { Box, DialogContent, DialogTitle } from "@mui/material";
+import { Box, Button, DialogActions, DialogContent, DialogTitle } from "@mui/material";
 import { DataGrid, gridClasses } from "@mui/x-data-grid";
 import React, { useEffect, useState } from "react";
-import { getAllMateriales } from "services/api";
+import { getAllMateriales, getMaterialesDevueltos } from "services/api";
 import { grey } from "@mui/material/colors";
 import DevolucionActions from "./DevolucionActions";
+import { show_alerta } from "services/functions";
 
-const DevolverMateriales = ({ _idSolicitud }) => {
+const DevolverMateriales = ({ _idSolicitud, closeModal, call }) => {
   const theme = useTheme();
   const [materiales, setMateriales] = useState([]);
   const [pageSize, setPageSize] = useState(10);
@@ -18,6 +19,25 @@ const DevolverMateriales = ({ _idSolicitud }) => {
   const getProducto = async () => {
     const response = await getAllMateriales(_idSolicitud);
     setMateriales(response.data.response);
+  };
+  const confirmarDevolucion = () => {
+    try {
+      closeModal(false);
+      getMaterialesDevueltos(_idSolicitud)
+        .then((result) => {
+          if (result.data.success) {
+            show_alerta("Materiales Devueltos", "success");
+            call();
+          } else {
+            show_alerta(result.data.response, "error");
+          }
+        })
+        .catch((err) => {
+          show_alerta("Error al enviar la solicitud", "error");
+        });
+    } catch (err) {
+      console.log(err);
+    }
   };
   const columns = [
     { field: "nombre", headerName: "NOMBRE", width: 170 },
@@ -83,8 +103,13 @@ const DevolverMateriales = ({ _idSolicitud }) => {
             })}
             onCellEditCommit={(params) => setRowId(params._id)}
           />
-        </Box>{" "}
+        </Box>
       </DialogContent>
+      <DialogActions>
+        <Button autoFocus color="secondary" onClick={() => confirmarDevolucion()}>
+          Actualizar
+        </Button>
+      </DialogActions>
     </>
   );
 };

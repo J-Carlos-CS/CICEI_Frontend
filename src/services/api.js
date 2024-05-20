@@ -291,3 +291,7 @@ export const postEnviarMateriales = async (materiales) => {
   const result = await axios.post(url + "/solicitud/materialesDevueltos", materiales);
   return result;
 };
+export const getMaterialesDevueltos = async (id) => {
+  const result = await axios.get(url + "/solicitud/materialesDevueltos/" + id);
+  return result;
+};

@@ -147,13 +147,17 @@ const SolicitudAprobadasView = () => {
           headerName: "Devolucion",
           flex: 0.5,
           renderCell: (params) =>
-            params.row.entregadoAdmi && params.row.entregadoInvestigador ? (
-              <Box>
-                <IconButton color="secondary" aria-label="Ver Ficha" title="Devolver Material" onClick={() => devolverMateriales(params.row)}>
-                  <AssignmentTurnedIn />
-                </IconButton>
-              </Box>
-            ) : null,
+            params.row.devuelto === null ? (
+              params.row.entregadoAdmi && params.row.entregadoInvestigador && params.row.devuelto === null ? (
+                <Box>
+                  <IconButton color="secondary" aria-label="Ver Ficha" title="Devolver Material" onClick={() => devolverMateriales(params.row)}>
+                    <AssignmentTurnedIn />
+                  </IconButton>
+                </Box>
+              ) : null
+            ) : (
+              <Chip label={params.row.devuelto ? "DEVUELTO" : "PENDIENTE"} color={params.row.devuelto ? "success" : "error"} />
+            ),
         }
       : {},
     { field: "CreadoBy", headerName: "CREADO POR", flex: 0.5 },
@@ -185,7 +189,7 @@ const SolicitudAprobadasView = () => {
         <SolicitudViewTable id={id} val="Reactivos" />
       </Dialog>
       <Dialog open={modalDevolucion} onClose={() => setModalDevolucion(false)} alignItems="center" PaperProps={{ style: { maxHeight: 600, maxWidth: 1200 } }}>
-        <DevolverMateriales _idSolicitud={idSolicitud || {}} />
+        <DevolverMateriales _idSolicitud={idSolicitud || {}} closeModal={setModalDevolucion || {}} call={getProducto} />
       </Dialog>
     </Box>
   );
