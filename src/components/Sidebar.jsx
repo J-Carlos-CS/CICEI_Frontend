@@ -18,6 +18,7 @@ import {
   PeopleAlt,
   Article,
   Groups,
+  BrokenImage,
 } from "@mui/icons-material";
 
 import { useEffect, useState } from "react";
@@ -75,11 +76,6 @@ const Sidebar = ({ user, drawerWidth, isSidebarOpen, setIsSidebarOpen, isNonMobi
       visible: user && user.rol === "Administrador",
     },
     {
-      text: "",
-      icon: null,
-      visible: true,
-    },
-    {
       text: "Usuario",
       icon: null,
       visible: true,
@@ -123,6 +119,11 @@ const Sidebar = ({ user, drawerWidth, isSidebarOpen, setIsSidebarOpen, isNonMobi
       text: "Negadas",
       icon: <CancelOutlined />,
       visible: true,
+    },
+    {
+      text: "Pendientes-Rotos",
+      icon: <BrokenImage />,
+      visible: user && user.rol === "Administrador",
     },
   ];
   return (

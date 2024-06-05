@@ -24,6 +24,7 @@ import SolicitudAprobadasView from "scenes/SolicitudAprobada";
 import SolicitudRechazadasView from "scenes/SolicitudRechazado";
 import UsuarioPerfil from "scenes/UsuarioPerfil";
 import SolicitudEntregada from "scenes/solicitudEntregada";
+import PendientesRotos from "scenes/Pendientes-Rotos";
 
 function App() {
   const mode = useSelector((state) => state.global.mode);
@@ -54,6 +55,7 @@ function App() {
                   <Route path="/unidades" element={<Unidades />} />
                   {/* <Route path="/manuales" element={<Manuales />} /> */}
                   <Route path="/usuarios" element={<Usuario />} />
+                  <Route path="/pendientes-rotos" element={<PendientesRotos />} />
                 </>
               )}
               {(tutor || adminLab) && (

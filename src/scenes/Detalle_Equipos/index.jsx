@@ -143,9 +143,6 @@ const DetalleEquipos = () => {
       flex: 0.5,
       renderCell: (params) => (
         <Box>
-          <IconButton color="secondary" aria-label="Manual" onClick={() => manual(params.row.manualeId)} title="Manual">
-            <Description />
-          </IconButton>
           <IconButton color="secondary" aria-label="Ver" onClick={() => openModal(1, params.row)} title="Ver">
             <RemoveRedEye />
           </IconButton>
@@ -163,14 +160,16 @@ const DetalleEquipos = () => {
       <Dialog open={modal} onClose={closeModal}>
         <DialogTitle color="secondary">{title}</DialogTitle>
         <Form newDetalleEquipo={newDetalleEquipo || {}} setNewDetalleEquipo={setNewDetalleEquipo || {}} />
-        <DialogActions>
-          <Button autoFocus color="error" onClick={closeModal}>
-            Cancelar
-          </Button>
-          <Button autoFocus color="secondary" onClick={() => validar()}>
-            Guardar
-          </Button>
-        </DialogActions>
+        {operation === 2 && (
+          <DialogActions>
+            <Button autoFocus color="error" onClick={closeModal}>
+              Cancelar
+            </Button>
+            <Button autoFocus color="secondary" onClick={() => validar()}>
+              Guardar
+            </Button>
+          </DialogActions>
+        )}
       </Dialog>
     </Box>
   );
