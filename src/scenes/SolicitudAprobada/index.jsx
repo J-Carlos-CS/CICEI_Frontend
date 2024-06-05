@@ -176,7 +176,7 @@ const SolicitudAprobadasView = () => {
   ];
   return (
     <Box m="1rem 2.5rem">
-      <Header title="Solicitudes Pendientes" subtitle="Lista de Todas las Solicitudes Pendientes" />
+      <Header title="Solicitudes Aprobadas" subtitle="Lista de Todas las Solicitudes Aprobadas" />
       <DataTable rows={solicitudesaprobadas || {}} columns={columns || {}} columnVisibilityModel={columnVisibilityModel || {}} setColumnVisibilityModel={setColumnVisibilityModel || {}} agregar={false || {}} />
       <Dialog open={modalFicha} onClose={() => setModalFicha(false)} alignItems="center" PaperProps={{ style: { maxHeight: 600, maxWidth: 1200 } }}>
         <DialogTitle color="secondary">{url.titulo}</DialogTitle>

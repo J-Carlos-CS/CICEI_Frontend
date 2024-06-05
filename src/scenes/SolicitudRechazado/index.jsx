@@ -103,7 +103,7 @@ const SolicitudRechazadasView = () => {
   ];
   return (
     <Box m="1rem 2.5rem">
-      <Header title="Solicitudes Pendientes" subtitle="Lista de Todas las Solicitudes Pendientes" />
+      <Header title="Solicitudes Rechazadas" subtitle="Lista de Todas las Solicitudes Rechazadas" />
       <DataTable rows={solicitudesRechazadas || {}} columns={columns || {}} columnVisibilityModel={columnVisibilityModel || {}} setColumnVisibilityModel={setColumnVisibilityModel || {}} agregar={false || {}} />
       <Dialog open={modalFicha} onClose={() => setModalFicha(false)} alignItems="center" PaperProps={{ style: { maxHeight: 600, maxWidth: 1200 } }}>
         <DialogTitle color="secondary">{url.titulo}</DialogTitle>

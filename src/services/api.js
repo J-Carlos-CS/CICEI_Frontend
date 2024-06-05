@@ -295,3 +295,7 @@ export const getMaterialesDevueltos = async (id) => {
   const result = await axios.get(url + "/solicitud/materialesDevueltos/" + id);
   return result;
 };
+export const getAllmaterialesRotos = async () => {
+  const result = await axios.get(url + "/solicitud/material/roto");
+  return result;
+};
