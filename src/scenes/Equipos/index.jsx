@@ -3,7 +3,7 @@ import { show_alerta } from "services/functions";
 import Header from "components/Header";
 import { Box, Button, Chip, Dialog, IconButton, DialogTitle, DialogActions } from "@mui/material";
 import { DeleteForeverOutlined, EditOutlined, RemoveRedEye } from "@mui/icons-material";
-import { deleteEquipos, getCategoria, getEquipos, getProyecto, getUnidades, putEquipos } from "services/api";
+import { deleteEquipos, getCategoria, getEquipos, getProyecto, getProyectoFiltro, getUnidades, getUnidadesFiltro, putEquipos } from "services/api";
 import { useNavigate } from "react-router-dom";
 import DataTable from "components/DataTable";
 import Form from "./Form";
@@ -18,6 +18,7 @@ const Equipos = () => {
   const [unidades, setUnidades] = useState([]);
   const [operation, setOperation] = useState("");
   const navigate = useNavigate();
+  const _URL = "https://docs.google.com/spreadsheets/d/15TN-FPmN5RXImiCzV8syhlYevjaErh-YHdFniWSosn8/edit?usp=drive_link";
   const [newEquipo, setNewEquipo] = useState({
     id: 0,
     nombre: "",
@@ -43,11 +44,11 @@ const Equipos = () => {
     setCategoria(respuesta.data);
   };
   const getProyectos = async () => {
-    const respuesta = await getProyecto();
+    const respuesta = await getProyectoFiltro("Equipo");
     setProyecto(respuesta.data);
   };
   const getUnidad = async () => {
-    const respuesta = await getUnidades();
+    const respuesta = await getUnidadesFiltro("Equipo");
     setUnidades(respuesta.data);
   };
   const cleanModal = async () => {
@@ -197,6 +198,7 @@ const Equipos = () => {
         openModal={openModal || {}}
         openModalImport={openModalImport || {}}
         agregarImport={true}
+        URL={_URL}
       />
       <Dialog open={modal} onClose={closeModal}>
         <DialogTitle color="secondary">{title}</DialogTitle>

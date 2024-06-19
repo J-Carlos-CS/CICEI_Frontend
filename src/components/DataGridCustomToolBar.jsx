@@ -9,7 +9,7 @@ const DataGridCustomToolbar = ({ searchInput, setSearchInput, setSearch }) => {
         <FlexBetween>
           <GridToolbarColumnsButton />
           <GridToolbarDensitySelector />
-          <GridToolbarExport />
+          <GridToolbarExport slotProps={{ toolbar: { printOptions: { disableToolbarButton: false } } }} />
         </FlexBetween>
       </FlexBetween>
     </GridToolbarContainer>

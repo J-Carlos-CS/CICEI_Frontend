@@ -2,9 +2,10 @@ import React from "react";
 import { Box, useTheme, Button, IconButton } from "@mui/material";
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import DataGridCustomToolbar from "components/DataGridCustomToolBar";
-import { Send, Publish } from "@mui/icons-material";
+import { Send, Publish, FilePresent } from "@mui/icons-material";
+import { Link } from "react-router-dom";
 
-const DataTable = ({ rows, columns, columnVisibilityModel, setColumnVisibilityModel, openModal, agregar, openModalImport, agregarImport }) => {
+const DataTable = ({ rows, columns, columnVisibilityModel, setColumnVisibilityModel, openModal, agregar, openModalImport, agregarImport, URL }) => {
   const theme = useTheme();
   const [filterModel, setFilterModel] = React.useState({
     items: [],
@@ -15,9 +16,14 @@ const DataTable = ({ rows, columns, columnVisibilityModel, setColumnVisibilityMo
     <div>
       <Box display="flex" justifyContent="flex-end" mb="1.5rem">
         {agregarImport && (
-          <IconButton aria-label="Importar" color="secondary" size="large" style={{ fontSize: "2rem", padding: "0.5rem 1rem" }} onClick={() => openModalImport()}>
-            <Publish />
-          </IconButton>
+          <>
+            <IconButton component={Link} to={URL} variant="contained" target="_blank" color="secondary" style={{ fontSize: "2rem", padding: "0.5rem 1rem" }}>
+              <FilePresent />
+            </IconButton>
+            <IconButton aria-label="Importar" color="secondary" size="large" style={{ fontSize: "2rem", padding: "0.5rem 1rem" }} onClick={() => openModalImport()}>
+              <Publish />
+            </IconButton>
+          </>
         )}
         {!agregar && (
           <Button variant="contained" color="secondary" style={{ fontSize: "1rem", padding: "0.5rem 1rem" }} endIcon={<Send />} onClick={() => openModal(1)}>

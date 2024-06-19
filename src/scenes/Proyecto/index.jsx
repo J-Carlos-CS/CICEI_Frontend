@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { show_alerta } from "./../../services/functions";
 import Header from "components/Header";
-import { Box, Button, Chip, Dialog, IconButton, DialogTitle, DialogContent, TextField, FormControlLabel, Switch, DialogActions } from "@mui/material";
+import { Box, Button, Chip, Dialog, IconButton, DialogTitle, DialogContent, TextField, FormControlLabel, Switch, DialogActions, MenuItem } from "@mui/material";
 import { EditOutlined } from "@mui/icons-material";
 import { getProyecto, putProyecto } from "services/api";
 import DataTable from "components/DataTable";
@@ -14,6 +14,7 @@ const Proyecto = () => {
   const [newProyecto, setNewProyecto] = useState({
     id: 0,
     proyecto: "",
+    tipo: "",
     estado: false,
   });
 
@@ -26,7 +27,7 @@ const Proyecto = () => {
     setProyecto(respuesta.data);
   };
   const clearModal = async () => {
-    setNewProyecto({ ...newProyecto, estado: false, proyecto: "" });
+    setNewProyecto({ ...newProyecto, id: 0, estado: false, proyecto: "", tipo: "" });
   };
   const openModal = (op, proyec) => {
     clearModal();
@@ -36,7 +37,7 @@ const Proyecto = () => {
       setModal(true);
     } else if (op === 2) {
       setTitle("Editar Proyecto");
-      setNewProyecto({ estado: proyec.estado, proyecto: proyec.proyecto, id: proyec.id });
+      setNewProyecto(proyec);
       setModal(true);
     }
   };
@@ -50,6 +51,10 @@ const Proyecto = () => {
     if (newProyecto.proyecto.trim() === "") {
       closeModal();
       show_alerta("Escribe el nombre del proyecto", "warning");
+    }
+    if (newProyecto.tipo.trim() === "") {
+      closeModal();
+      show_alerta("Selecciona el tipo de unidad", "warning");
     } else {
       closeModal();
       if (operation === 1) {
@@ -76,7 +81,9 @@ const Proyecto = () => {
   };
 
   const columns = [
+    { field: "id", headerName: "ID", flex: 0.5 },
     { field: "proyecto", headerName: "PROYECTO", flex: 0.5 },
+    { field: "tipo", headerName: "TIPO", flex: 0.5 },
     {
       field: "estado",
       headerName: "ESTADO",
@@ -130,8 +137,22 @@ const Proyecto = () => {
             noValidate
             autoComplete="off">
             <div>
-              {" "}
               <TextField id="proyectoinput" label="Nombre Proyecto" defaultValue={newProyecto.proyecto} color="secondary" onChange={(e) => setNewProyecto({ ...newProyecto, proyecto: e.target.value })} />
+              <TextField
+                id="selectClasificacion"
+                select
+                label="Clasificacion"
+                color="secondary"
+                defaultValue={newProyecto.tipo ? newProyecto.tipo : null}
+                onChange={(event) => {
+                  setNewProyecto({
+                    ...newProyecto,
+                    tipo: event.target.value,
+                  });
+                }}>
+                <MenuItem value="Reactivo">Reactivo</MenuItem>
+                <MenuItem value="Equipo">Equipo</MenuItem>
+              </TextField>
             </div>
             {operation === 2 ? (
               <div class="terms">

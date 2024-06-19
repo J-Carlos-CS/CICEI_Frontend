@@ -15,7 +15,7 @@ const ImportForm = ({ closeModalImport }) => {
       const newReactivos = {
         id: 0,
         nombre: data.NOMBRE,
-        cantidad: parseInt(data.CANTIDAD),
+        cantidad: parseFloat(data.CANTIDAD),
         unidades: data.UNIDADES,
         categoriaId: parseInt(data.CATEGORIA),
         proyectoId: parseInt(data.PROYECTO),

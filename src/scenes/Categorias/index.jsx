@@ -69,6 +69,7 @@ const Categoria = () => {
     getProducto();
   };
   const columns = [
+    { field: "id", headerName: "ID", flex: 0.5 },
     { field: "categoria", headerName: "CATEGORIA", flex: 0.5 },
     {
       field: "estado",

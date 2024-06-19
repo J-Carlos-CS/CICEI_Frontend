@@ -42,8 +42,8 @@ const Solicitud = () => {
     getProducto();
   }, []);
   const getProducto = async () => {
-    const guia = await getGuias(user.id);
-    const tutor = await getTutor(user.id);
+    const guia = await getGuias();
+    const tutor = await getTutor();
     setGuias(guia.data.response);
     setTutor(tutor.data.response);
   };

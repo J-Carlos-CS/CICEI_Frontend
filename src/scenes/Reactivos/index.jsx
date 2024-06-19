@@ -3,7 +3,7 @@ import { show_alerta } from "../../services/functions";
 import Header from "components/Header";
 import { Box, Button, Chip, Dialog, IconButton, DialogTitle, DialogActions } from "@mui/material";
 import { DeleteForeverOutlined, EditOutlined, AddCircleOutline, Visibility } from "@mui/icons-material";
-import { getReactivos, putReactivos, getCategoria, getProyecto, getUnidades, deleteReactivo } from "services/api";
+import { getReactivos, putReactivos, getCategoria, getProyecto, getUnidades, deleteReactivo, getProyectoFiltro, getUnidadesFiltro } from "services/api";
 import DataTable from "components/DataTable";
 import Form from "./Form";
 import ImportForm from "./ImportForm";
@@ -11,6 +11,7 @@ import FormImport from "./FormImport";
 
 const Reactivos = () => {
   const [title, setTitle] = useState("");
+  const _URL = "https://docs.google.com/spreadsheets/d/19LPiayNHd9KbG0Ik2gDBwmwRO0zMfDD41sPi8RqiH1c/edit?usp=sharing";
   const [modal, setModal] = useState(false);
   const [modalImport, setModalImport] = useState(false);
   const [reactivos, setReactivos] = useState([]);
@@ -33,7 +34,7 @@ const Reactivos = () => {
     observaciones: "",
     estado: false,
     marca: "",
-    fecha_vencimiento: "",
+    fecha_vencimiento: null,
     categoriaId: 0,
     proyectoId: 0,
   });
@@ -49,11 +50,11 @@ const Reactivos = () => {
     setCategoria(respuesta.data);
   };
   const getProyectos = async () => {
-    const respuesta = await getProyecto();
+    const respuesta = await getProyectoFiltro("Reactivo");
     setProyecto(respuesta.data);
   };
   const getUnidad = async () => {
-    const respuesta = await getUnidades();
+    const respuesta = await getUnidadesFiltro("Reactivo");
     setUnidades(respuesta.data);
   };
   const clearModal = async () => {
@@ -68,7 +69,7 @@ const Reactivos = () => {
       observaciones: "",
       estado: false,
       marca: "",
-      fecha_vencimiento: "",
+      fecha_vencimiento: null,
       categoriaId: 0,
       proyectoId: 0,
     });
@@ -258,6 +259,7 @@ const Reactivos = () => {
         openModal={openModal || {}}
         openModalImport={openModalImport || {}}
         agregarImport={true || {}}
+        URL={_URL}
       />
       <Dialog open={modal} onClose={closeModal}>
         <DialogTitle color="secondary">{title}</DialogTitle>

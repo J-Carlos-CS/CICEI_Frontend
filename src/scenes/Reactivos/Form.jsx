@@ -72,7 +72,7 @@ const Form = ({ newReactivos, setNewReactivos, unidades, categorias, proyectos }
           <TextField
             id="selectClasificacion"
             select
-            label="Clasificacion"
+            label="Peligrosidad"
             color="secondary"
             defaultValue={newReactivos.clasificacion ? newReactivos.clasificacion : null}
             InputLabelProps={{

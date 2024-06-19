@@ -45,7 +45,7 @@ const UsuarioPerfil = () => {
         </Box>
       </Box>
       <Dialog open={modal} onClose={() => setModal(false)} fullWidth maxWidth="md">
-        <ActualizarDatos user={user} />
+        <ActualizarDatos user={user} closeModal={() => setModal(false)} getProducto={getProducto} />
       </Dialog>
     </>
   );

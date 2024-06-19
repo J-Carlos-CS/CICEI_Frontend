@@ -1,7 +1,7 @@
 import axios from "axios";
 import { selectUser } from "../Auth/userReducer";
 
-const url = "http://146.190.144.202:9000/laboratorio/api";
+const url = "http://localhost:9000/laboratorio/api";
 const user = selectUser();
 const creadoBy = user ? user.firstName + " " + user.lastName : "";
 
@@ -41,6 +41,10 @@ export const getProyecto = async () => {
   const result = await axios.get(url + "/proyectos");
   return result;
 };
+export const getProyectoFiltro = async (data) => {
+  const result = await axios.get(url + "/proyectos/data/" + data);
+  return result;
+};
 export const putProyecto = async (metodo, newProyecto) => {
   newProyecto.CreadoBy = creadoBy;
   const result = await axios({
@@ -49,6 +53,14 @@ export const putProyecto = async (metodo, newProyecto) => {
     data: newProyecto,
   });
   return result;
+};
+export const postActualizarDatos = async (newUsuario) => {
+  try {
+    const response = await axios.put(url + "/user/" + user.id, newUsuario);
+    return response;
+  } catch (error) {
+    return error;
+  }
 };
 
 //Categoria
@@ -69,6 +81,10 @@ export const putCategoria = async (metodo, newCategoria) => {
 //Unidades
 export const getUnidades = async () => {
   const result = await axios.get(url + "/unidades");
+  return result;
+};
+export const getUnidadesFiltro = async (data) => {
+  const result = await axios.get(url + "/unidades/filtro/" + data);
   return result;
 };
 export const putUnidades = async (metodo, newUnidades) => {
@@ -201,8 +217,8 @@ export const postInvesigadores = async (newInvestigador) => {
   const result = await axios.post(url + "/tutorinvestigador", newInvestigador);
   return result;
 };
-export const getTutor = async (id) => {
-  const result = await axios.get(url + "/tutorinvestigador/investigador/" + id.toString());
+export const getTutor = async () => {
+  const result = await axios.get(url + "/tutorinvestigador/investigador/" + user.id);
   return result;
 };
 //solicitud

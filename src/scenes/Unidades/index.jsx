@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { show_alerta } from "../../services/functions";
 import Header from "components/Header";
-import { Box, Button, Chip, Dialog, IconButton, DialogTitle, DialogContent, TextField, FormControlLabel, Switch, DialogActions } from "@mui/material";
+import { Box, Button, Chip, Dialog, IconButton, DialogTitle, DialogContent, TextField, FormControlLabel, Switch, DialogActions, MenuItem } from "@mui/material";
 import { EditOutlined } from "@mui/icons-material";
 import { getUnidades, putUnidades } from "services/api";
 import DataTable from "components/DataTable";
@@ -14,6 +14,7 @@ const Unidades = (roles) => {
   const [newUnidades, setNewUnidades] = useState({
     id: 0,
     unidades: "",
+    tipo: "",
     estado: false,
   });
   useEffect(() => {
@@ -24,7 +25,7 @@ const Unidades = (roles) => {
     setUnidades(respuesta.data);
   };
   const clearModal = async () => {
-    setNewUnidades({ ...newUnidades, estado: false, unidades: "" });
+    setNewUnidades({ ...newUnidades, id: 0, estado: false, unidades: "", tipo: "" });
   };
   const openModal = (op, proyec) => {
     clearModal();
@@ -34,7 +35,7 @@ const Unidades = (roles) => {
       setModal(true);
     } else if (op === 2) {
       setTitle("Editar Unidades");
-      setNewUnidades({ estado: proyec.estado, unidades: proyec.unidades, id: proyec.id });
+      setNewUnidades(proyec);
       setModal(true);
     }
   };
@@ -46,6 +47,10 @@ const Unidades = (roles) => {
     if (newUnidades.unidades.trim() === "") {
       closeModal();
       show_alerta("Escribe el nombre de la unidad", "warning");
+    }
+    if (newUnidades.tipo.trim() === "") {
+      closeModal();
+      show_alerta("Selecciona el tipo de unidad", "warning");
     } else {
       closeModal();
       if (operation === 1) {
@@ -71,7 +76,9 @@ const Unidades = (roles) => {
     getProducto();
   };
   const columns = [
+    { field: "id", headerName: "ID", flex: 0.5 },
     { field: "unidades", headerName: "UNIDADES", flex: 0.5 },
+    { field: "tipo", headerName: "TIPO", flex: 0.5 },
     {
       field: "estado",
       headerName: "ESTADO",
@@ -123,6 +130,21 @@ const Unidades = (roles) => {
             <div>
               {" "}
               <TextField id="unidadesinput" label="Nombre Unidades" defaultValue={newUnidades.unidades} color="secondary" onChange={(e) => setNewUnidades({ ...newUnidades, unidades: e.target.value })} />
+              <TextField
+                id="selectClasificacion"
+                select
+                label="Clasificacion"
+                color="secondary"
+                defaultValue={newUnidades.tipo ? newUnidades.tipo : null}
+                onChange={(event) => {
+                  setNewUnidades({
+                    ...newUnidades,
+                    tipo: event.target.value,
+                  });
+                }}>
+                <MenuItem value="Reactivo">Reactivo</MenuItem>
+                <MenuItem value="Equipo">Equipo</MenuItem>
+              </TextField>
             </div>
             {operation === 2 ? (
               <div class="terms">
