@@ -1,7 +1,7 @@
 import axios from "axios";
 import { selectUser } from "../Auth/userReducer";
 
-const url = "http://localhost:9000/laboratorio/api";
+const url = "http://146.190.144.202:9000/laboratorio/api";
 const user = selectUser();
 const creadoBy = user ? user.firstName + " " + user.lastName : "";
 
